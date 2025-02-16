@@ -4,78 +4,96 @@ import tn.esprit.models.Formation;
 import tn.esprit.models.Certificat;
 import tn.esprit.services.ServiceFormation;
 import tn.esprit.services.ServiceCertificat;
+import tn.esprit.services.ServiceGiveaway;
+import tn.esprit.models.Giveaway;
 
 import java.time.LocalDate;
 
 public class Main {
 
     public static void main(String[] args) {
-    /*    // Création de l'objet ServiceFormation
-        ServiceFormation sf = new ServiceFormation();
 
-        // Ajouter une nouvelle formation pour tester l'ajout
-        Formation f1 = new Formation("Java Avancé", "Formation pour les développeurs Java", "Avancé", LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 15), 25, 500.0, 1);
+      /*  ServiceFormation sf = new ServiceFormation();
+
+
+        Formation f1 = new Formation("C avancée", "Formation pour les développeurs Java", "debutant", LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 15), 25, 500.0, 1);
         sf.add(f1);  // Ajout de la formation
 
-        // Tester l'affichage de toutes les formations
         System.out.println("Formations dans la base de données : ");
         System.out.println(sf.getAll());
 
-        // Mise à jour d'une formation existante
-        // (Assurez-vous d'utiliser un ID existant pour effectuer l'update)
-        Formation f2 = new Formation("Java Débutant", "Formation pour les débutants Java", "Débutant", LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 15), 30, 300.0, 1);
-        f2.setIdf(9);  // Supposons que l'ID de la formation que tu veux mettre à jour est 1
-        sf.update(f2);  // Mise à jour de la formation
 
-        // Affichage après la mise à jour
+
+       Formation f2 = new Formation("Java Débutant", "Formation pour les débutants Java", "Débutant", LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 15), 30, 300.0, 1);
+        f2.setIdf(2);
+        sf.update(f2);
+
+
         System.out.println("Formations après mise à jour : ");
         System.out.println(sf.getAll());
 
-        // Suppression d'une formation existante
-        int idToDelete = 11;  // ID de la formation à supprimer
+
+        int idToDelete = 4;
         Formation f3 = new Formation();
-        f3.setIdf(idToDelete);  // Assurez-vous que cette formation existe déjà
+        f3.setIdf(idToDelete);
+        sf.delete(f3);
 
-    }*/
+    }}*/
 
-        // Création de l'objet ServiceCertificat
-        ServiceCertificat sc = new ServiceCertificat();
 
-// Ajouter un nouveau certificat pour tester l'ajout
-        Certificat cert1 = new Certificat( 1, 1, "Valide", LocalDate.of(2025, 3, 15), "Certificat de réussite Java");
-        sc.add(cert1);  // Ajout du certificat
+     /*   ServiceCertificat sc = new ServiceCertificat();
 
-// Tester l'affichage de tous les certificats
+
+        Certificat cert1 = new Certificat( 1, 1, "5 ans", LocalDate.of(2025, 3, 15), "Certificat de Valo");
+        sc.add(cert1);
+
+
         System.out.println("Certificats dans la base de données : ");
         System.out.println(sc.getAll());
 
-// Mise à jour d'un certificat existant
-// (Assurez-vous d'utiliser un ID existant pour effectuer l'update)
-        Certificat cert2 = new Certificat( 1, 1, "Non valide", LocalDate.of(2025, 4, 15), "Certificat Java corrigé");
-        cert2.setIdc(2);  // Supposons que l'ID de la certification que tu veux mettre à jour est 9
-        sc.update(cert2);  // Mise à jour du certificat
 
-// Affichage après la mise à jour
+        Certificat cert2 = new Certificat( 5, 1, "Non valide", LocalDate.of(2025, 4, 15), "Certificat Java corrigé");
+        cert2.setIdc(1);
+        sc.update(cert2);
+
+
         System.out.println("Certificats après mise à jour : ");
         System.out.println(sc.getAll());
 
-// Suppression d'un certificat existant
-        int idToDelete = 4;  // ID du certificat à supprimer
+
+        int idToDelete = 1;
         Certificat cert3 = new Certificat();
-        cert3.setIdc(idToDelete);  // Assurez-vous que ce certificat existe déjà
-        sc.delete(cert3);  // Suppression du certificat
+        cert3.setIdc(idToDelete);
+        sc.delete(cert3);*/
 
 
 
+        ServiceGiveaway sg = new ServiceGiveaway();
 
+        // Ajout d'un nouveau giveaway
+        /*Giveaway g1 = new Giveaway(1, "PC Gamer", "Gagnez un PC Gamer !", LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 15), "Actif");
+        sg.add(g1);
 
+        // Affichage de tous les giveaways
+        System.out.println("Giveaways dans la base de données : ");
+        System.out.println(sg.getAll());
 
+        // Mise à jour d'un giveaway
+        Giveaway g2 = new Giveaway(1, "Clavier Gaming", "Clavier mécanique RGB", LocalDate.of(2025, 4, 1), LocalDate.of(2025, 4, 20), "Terminé");
+        g2.setIdg(1); // ID supposé existant en base
+        sg.update(g2);
 
+        // Affichage après mise à jour
+        System.out.println("Giveaways après mise à jour : ");
+        System.out.println(sg.getAll());*/
 
-
+        // Suppression d'un giveaway
+        int idToDelete = 1;
+        Giveaway g3 = new Giveaway();
+        g3.setIdg(idToDelete);
+        sg.delete(g3);
+     }
     }
-    }
-
 
 
 
