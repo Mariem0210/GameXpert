@@ -8,29 +8,31 @@ public class Utilisateur {
     private LocalDate datenaissanceu, dateinscriu;
 
     // Constructeur
-    public Utilisateur() {
+    public Utilisateur(int idu, String text, String prenomuTfText, String mailuTfText, String mdpuTfText, String typeuTfText, int numTel, LocalDate dateNaissance, LocalDate dateInscription) {
 
     }
-    public Utilisateur(int idu, int numtelu, String nomu, String prenomu, String mailu, String mdpu, String typeu, LocalDate datenaissanceu, LocalDate dateinscriu) {
+    public Utilisateur(int idu, String nomu, String prenomu, String mailu,
+                       String mdpu, int numtelu, LocalDate datenaissanceu) {
         this.idu = idu;
-        this.numtelu = numtelu;
         this.nomu = nomu;
         this.prenomu = prenomu;
         this.mailu = mailu;
         this.mdpu = mdpu;
-        this.typeu = typeu;
+        this.numtelu = numtelu;
         this.datenaissanceu = datenaissanceu;
-        this.dateinscriu = dateinscriu;
+        this.dateinscriu = LocalDate.now();
     }
-    public Utilisateur(int numtelu, String nomu, String prenomu, String mailu, String mdpu, String typeu, LocalDate datenaissanceu, LocalDate dateinscriu) {
-        this.numtelu = numtelu;
+
+    // Constructeur sans ID
+    public Utilisateur(String nomu, String prenomu, String mailu,
+                       String mdpu, int numtelu, LocalDate datenaissanceu) {
         this.nomu = nomu;
         this.prenomu = prenomu;
         this.mailu = mailu;
         this.mdpu = mdpu;
-        this.typeu = typeu;
+        this.numtelu = numtelu;
         this.datenaissanceu = datenaissanceu;
-        this.dateinscriu = dateinscriu;
+        this.dateinscriu = LocalDate.now();
     }
 
     // Getters
