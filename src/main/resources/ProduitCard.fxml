@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+
+<VBox fx:id="cardProduit" spacing="10" styleClass="product-card" xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView fx:id="imageProduit" fitHeight="100" fitWidth="100" />
+    <Label fx:id="nomProduit" styleClass="product-title"/>
+    <Label fx:id="descriptionProduit" styleClass="product-description"/>
+    <Label fx:id="prixProduit" styleClass="product-price"/>
+
+    <HBox spacing="5">
+        <Button fx:id="btnModifier" text="Modifier" styleClass="edit-button"/>
+        <Button fx:id="btnSupprimer" text="Supprimer" styleClass="delete-button"/>
+    </HBox>
+</VBox>
