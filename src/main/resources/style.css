@@ -109,3 +109,26 @@
     -fx-text-fill: white;
     -fx-font-weight: bold;
 }
+.table-view {
+    -fx-background-color: #1e1e2e;
+    -fx-border-color: #ffcc00;
+    -fx-border-radius: 5px;
+}
+
+.table-column {
+    -fx-alignment: CENTER;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-background-color: #252538;
+}
+
+.table-row-cell {
+    -fx-background-color: #2a2a3d;
+    -fx-text-fill: white;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #ffcc00;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
