@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1080.0"
             xmlns="http://javafx.com/javafx/23.0.1"
@@ -26,12 +26,19 @@
         <Label layoutX="180.0" layoutY="430.0" text="Prix" styleClass="label"/>
         <Label layoutX="180.0" layoutY="490.0" text="Statut" styleClass="label"/>
 
+        <!-- ListView pour afficher les tournois -->
+        <ListView fx:id="listViewTournois" layoutX="520.0" layoutY="100.0" prefHeight="367.0" prefWidth="488.0"/>
+
+        <!-- Boutons -->
         <Button id="ajouterTournoi" layoutX="229.0" layoutY="600.0" mnemonicParsing="false"
                 onAction="#ajouterTournoi" text="Ajouter" styleClass="button button-ajouter"/>
-        <Button id="afficherTournois" layoutX="738.0" layoutY="600.0" mnemonicParsing="false"
-                onAction="#afficherTournois" text="Afficher" styleClass="button button-afficher"/>
+        <Button id="afficherTournois" layoutX="380.0" layoutY="600.0" mnemonicParsing="false"
+                onAction="#refreshTournoisList" text="Afficher" styleClass="button button-afficher"/>
 
-        <Label fx:id="lbTournois" layoutX="520.0" layoutY="100.0" prefHeight="367.0" prefWidth="488.0"/>
-
+        <!-- HBox contenant les boutons Modifier et Supprimer -->
+        <HBox layoutX="650.0" layoutY="600.0" spacing="10">
+            <Button fx:id="btnModifier" text="Modifier" onAction="#modifierTournoi" styleClass="edit-button"/>
+            <Button fx:id="btnSupprimer" text="Supprimer" onAction="#supprimerTournoi" styleClass="delete-button"/>
+        </HBox>
     </children>
 </AnchorPane>
