@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.ScrollPane?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionFormation">
+
+    <!-- Section Titre -->
+    <Label layoutX="320.0" layoutY="20.0" styleClass="title" text="Les Formations - GameXpert" />
+
+    <!-- Section Formulaire -->
+    <Label layoutX="87.0" layoutY="103.0" text="Ajouter une nouvelle formation" />
+
+    <TextField fx:id="tfNomf" layoutX="124.0" layoutY="137.0" prefHeight="28.0" prefWidth="165.0" promptText="Nom de la formation" />
+    <TextField fx:id="tfDescriptionf" layoutX="124.0" layoutY="187.0" prefHeight="28.0" prefWidth="166.0" promptText="Description" />
+    <TextField fx:id="tfNiveauf" layoutX="124.0" layoutY="237.0" prefHeight="28.0" prefWidth="166.0" promptText="Niveau" />
+    <DatePicker fx:id="tfDateDebutf" layoutX="124.0" layoutY="287.0" prefHeight="41.0" prefWidth="166.0" promptText="Date de début" />
+    <DatePicker fx:id="tfDateFinf" layoutX="124.0" layoutY="338.0" prefHeight="41.0" prefWidth="165.0" promptText="Date de fin" />
+    <TextField fx:id="tfCapacitef" layoutX="123.0" layoutY="397.0" prefHeight="28.0" prefWidth="166.0" promptText="Capacité" />
+    <TextField fx:id="tfPrixf" layoutX="123.0" layoutY="443.0" prefHeight="28.0" prefWidth="166.0" promptText="Prix" />
+    <TextField fx:id="tfIdu" layoutX="124.0" layoutY="497.0" prefHeight="28.0" prefWidth="166.0" promptText="ID Utilisateur" />
+
+    <!-- Boutons -->
+    <Button layoutX="124.0" layoutY="551.0" mnemonicParsing="false" onAction="#ajouterFormation" prefHeight="28.0" prefWidth="80.0" styleClass="button button-ajouter" text="Ajouter" />
+    <Button layoutX="214.0" layoutY="551.0" mnemonicParsing="false" onAction="#afficherFormations" styleClass="button button-afficher" text="Afficher" />
+
+    <!-- Section Formations -->
+    <Label layoutX="614.0" layoutY="83.0" text="Les Formation Disponibles" />
+
+    <!-- ScrollPane pour rendre le FlowPane défilable -->
+    <ScrollPane layoutX="492.0" layoutY="154.0" prefHeight="367.0" prefWidth="488.0" style="-fx-background-color: #1e1e2e; -fx-padding: 15px; -fx-border-radius: 10px; -fx-border-color: #1e1e2e;">
+        <FlowPane fx:id="cardContainer" hgap="10" vgap="10" />
+    </ScrollPane>
+
+</AnchorPane>

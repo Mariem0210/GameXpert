@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-      /*  ServiceFormation sf = new ServiceFormation();
+        ServiceFormation sf = new ServiceFormation();
 
 
         Formation f1 = new Formation("C avancée", "Formation pour les développeurs Java", "debutant", LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 15), 25, 500.0, 1);
@@ -38,7 +38,7 @@ public class Main {
         f3.setIdf(idToDelete);
         sf.delete(f3);
 
-    }}*/
+    }}
 
 
      /*   ServiceCertificat sc = new ServiceCertificat();
@@ -68,10 +68,10 @@ public class Main {
 
 
 
-        ServiceGiveaway sg = new ServiceGiveaway();
+       /* ServiceGiveaway sg = new ServiceGiveaway();
 
         // Ajout d'un nouveau giveaway
-        /*Giveaway g1 = new Giveaway(1, "PC Gamer", "Gagnez un PC Gamer !", LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 15), "Actif");
+        Giveaway g1 = new Giveaway(1, "PC Gamer", "Gagnez un PC Gamer !", LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 15), "Actif");
         sg.add(g1);
 
         // Affichage de tous les giveaways
@@ -85,7 +85,7 @@ public class Main {
 
         // Affichage après mise à jour
         System.out.println("Giveaways après mise à jour : ");
-        System.out.println(sg.getAll());*/
+        System.out.println(sg.getAll());
 
         // Suppression d'un giveaway
         int idToDelete = 1;
@@ -93,7 +93,8 @@ public class Main {
         g3.setIdg(idToDelete);
         sg.delete(g3);
      }
-    }
+    }*/
+
 
 
 
