@@ -1,10 +1,7 @@
-package tn.esprit;
+package tn.esprit.test;
 
 import tn.esprit.models.Match;
-import tn.esprit.models.Tournoi;
 import tn.esprit.services.ServiceMatch;
-import tn.esprit.services.ServiceTournoi;
-import tn.esprit.utils.MyDatabase;
 
 import java.time.LocalDate;
 

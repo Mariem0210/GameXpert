@@ -1,0 +1,60 @@
+/* Style général */
+.root {
+    -fx-background-color: #1e1e2e;
+    -fx-font-family: "Arial";
+}
+
+/* Style des labels */
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+
+/* Style des champs de texte */
+.text-field, .date-picker {
+    -fx-background-color: #2a2a3d;
+    -fx-text-fill: white;
+    -fx-border-color: #03a9f4;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Style des boutons */
+.button {
+    -fx-background-radius: 5px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+}
+
+.button-ajouter {
+    -fx-background-color: #ff5722;
+    -fx-text-fill: white;
+}
+
+.button-afficher {
+    -fx-background-color: #03a9f4;
+    -fx-text-fill: white;
+}
+
+/* Style du container des cartes */
+#cardContainer {
+    -fx-background-color: #252538;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ffcc00;
+}
+
+/* Style des cartes */
+.card {
+    -fx-background-color: #1e1e2e;
+    -fx-border-color: #ffcc00;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-min-width: 200px;
+    -fx-max-width: 250px;
+}
+
+.card Label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
