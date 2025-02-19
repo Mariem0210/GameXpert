@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionEquipe">
+
+    <!-- Section Titre -->
+    <Label layoutX="320.0" layoutY="20.0" styleClass="title" text="Gestion des Équipes" />
+
+    <!-- Section Formulaire -->
+    <Label layoutX="87.0" layoutY="80.0" text="Ajouter une nouvelle équipe" />
+
+    <!-- Champs pour l'équipe -->
+    <TextField fx:id="tfIdeq" layoutX="124.0" layoutY="120.0" prefHeight="28.0" prefWidth="165.0" promptText="ID Équipe" />
+    <TextField fx:id="tfNomEquipe" layoutX="124.0" layoutY="170.0" prefHeight="28.0" prefWidth="165.0" promptText="Nom de l'Équipe" />
+    <DatePicker fx:id="dpDateCreation" layoutX="124.0" layoutY="220.0" prefHeight="28.0" prefWidth="165.0" promptText="Date de Création" />
+    <TextField fx:id="tfIdu" layoutX="124.0" layoutY="270.0" prefHeight="28.0" prefWidth="165.0" promptText="ID Utilisateur" />
+
+    <!-- Boutons avec événements -->
+    <Button fx:id="btnAjouter" layoutX="124.0" layoutY="320.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-ajouter" text="Ajouter" onAction="#ajouterEquipe"/>
+    <Button fx:id="btnModifier" layoutX="214.0" layoutY="320.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-modifier" text="Modifier" onAction="#modifierEquipe"/>
+    <Button fx:id="btnSupprimer" layoutX="304.0" layoutY="320.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-supprimer" text="Supprimer" onAction="#supprimerEquipe"/>
+    <Button fx:id="btnAfficher" layoutX="394.0" layoutY="320.0" mnemonicParsing="false" styleClass="button button-afficher" text="Afficher" onAction="#refreshEquipesList" />
+
+    <!-- Section Équipes Disponibles -->
+    <Label layoutX="614.0" layoutY="83.0" text="Liste des Équipes Disponibles" />
+
+    <TableView fx:id="tableViewEquipes" layoutX="492.0" layoutY="120.0" prefHeight="450.0" prefWidth="500.0" >
+        <columns>
+            <TableColumn text="ID" fx:id="colIdeq" prefWidth="50"/>
+            <TableColumn text="Nom Équipe" fx:id="colNomEquipe" prefWidth="150"/>
+            <TableColumn text="Date Création" fx:id="colDateCreation" prefWidth="100"/>
+            <TableColumn text="ID Utilisateur" fx:id="colIdu" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+</AnchorPane>

@@ -1,0 +1,19 @@
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="boxh" prefHeight="338.0" prefWidth="721.0" spacing="5" style="-fx-padding: 10px; -fx-border-color: black; -fx-border-radius: 5px; -fx-background-color: white;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CardView">
+
+    <children>
+        <Label fx:id="lblNomf" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: black;" />
+        <Label fx:id="lblDescriptionf" style="-fx-text-fill: black;" />
+        <Label fx:id="lblNiveauf" style="-fx-text-fill: black;" />
+        <Label fx:id="lblDateDebutf" style="-fx-text-fill: black;" />
+        <Label fx:id="lblDateFinf" style="-fx-text-fill: black;" />
+        <Label fx:id="lblCapacitef" style="-fx-text-fill: black;" />
+        <Label fx:id="lblPrixf" style="-fx-text-fill: black;" />
+        <Label fx:id="lblIdu" style="-fx-text-fill: black;" />
+    </children>
+</VBox>-->
