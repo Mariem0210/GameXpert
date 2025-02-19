@@ -82,6 +82,48 @@ public class Certificat {
         this.description = description;
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public String toString() {
         return "Certificat{" +

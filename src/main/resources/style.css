@@ -78,6 +78,18 @@
     -fx-text-fill: white; /* Texte en blanc */
     -fx-font-size: 14px;
 }
+.card {
+    -fx-background-color: #2e2e3e;
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+}
+.button-update {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+}
 
 
 

@@ -1,17 +1,23 @@
 package tn.esprit.models;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Formation {
-    private int idf, capacitef, idu;
-    private String nomf, descriptionf, niveauf;
-    private LocalDate dateDebutf, dateFinf;
-    private double prixf;
+    private int idf;
+    private String nomf;
+    private String descriptionf;
+    private String niveauf;
+    private LocalDate dateDebutf;
+    private LocalDate dateFinf;
+    private int capacitef;
+    private float prixf;
+    private int idu;
 
-    public Formation() {
-    }
+    // Constructors
+    public Formation() {}
 
-    public Formation(int idf, String nomf, String descriptionf, String niveauf, LocalDate dateDebutf, LocalDate dateFinf, int capacitef, double prixf, int idu) {
+    public Formation(int idf, String nomf, String descriptionf, String niveauf, LocalDate dateDebutf, LocalDate dateFinf, int capacitef, float prixf, int idu) {
         this.idf = idf;
         this.nomf = nomf;
         this.descriptionf = descriptionf;
@@ -23,17 +29,13 @@ public class Formation {
         this.idu = idu;
     }
 
-    public Formation(String nomf, String descriptionf, String niveauf, LocalDate dateDebutf, LocalDate dateFinf, int capacitef, double prixf, int idu) {
-        this.nomf = nomf;
-        this.descriptionf = descriptionf;
-        this.niveauf = niveauf;
-        this.dateDebutf = dateDebutf;
-        this.dateFinf = dateFinf;
-        this.capacitef = capacitef;
-        this.prixf = prixf;
-        this.idu = idu;
+    public Formation(String nomf, String descriptionf, String niveauf, LocalDate dateDebutf, LocalDate dateFinf, int capacitef, float prixf, int idu) {
     }
 
+
+
+
+    // Getters and setters
     public int getIdf() {
         return idf;
     }
@@ -90,11 +92,11 @@ public class Formation {
         this.capacitef = capacitef;
     }
 
-    public double getPrixf() {
+    public float getPrixf() {
         return prixf;
     }
 
-    public void setPrixf(double prixf) {
+    public void setPrixf(float prixf) {
         this.prixf = prixf;
     }
 
@@ -118,6 +120,6 @@ public class Formation {
                 ", capacitef=" + capacitef +
                 ", prixf=" + prixf +
                 ", idu=" + idu +
-                "}\n";
+                '}';
     }
 }

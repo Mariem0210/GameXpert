@@ -1,8 +1,8 @@
-package tn.esprit.test;
+/*package tn.esprit.test;
 
 import tn.esprit.models.Formation;
 import tn.esprit.models.Certificat;
-import tn.esprit.services.ServiceFormation;
+import tn.esprit.interfaces.FormationService;
 import tn.esprit.services.ServiceCertificat;
 import tn.esprit.services.ServiceGiveaway;
 import tn.esprit.models.Giveaway;
@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ServiceFormation sf = new ServiceFormation();
+        FormationService sf = new FormationService();
 
 
         Formation f1 = new Formation("C avancée", "Formation pour les développeurs Java", "debutant", LocalDate.of(2025, 3, 1), LocalDate.of(2025, 3, 15), 25, 500.0, 1);

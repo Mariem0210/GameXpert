@@ -1,7 +1,7 @@
-
+/*
 package tn.esprit.services;
 
-import tn.esprit.interfaces.IService;
+import tn.esprit.interfaces.IServiceFormation;
 import tn.esprit.models.Certificat;
 import tn.esprit.utils.MyDatabase;
 
@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceCertificat implements IService<Certificat> {
+public class ServiceCertificat implements IServiceFormation<Certificat> {
     private Connection cnx;
 
     public ServiceCertificat() {
@@ -121,4 +121,4 @@ public class ServiceCertificat implements IService<Certificat> {
             System.out.println("Erreur lors de la suppression du certificat : " + e.getMessage());
         }
     }
-}
+}*/

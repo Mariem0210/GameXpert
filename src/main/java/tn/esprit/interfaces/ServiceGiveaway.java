@@ -1,8 +1,8 @@
-package tn.esprit.services;
+/*package tn.esprit.services;
 
 
 
-import tn.esprit.interfaces.IService;
+import tn.esprit.interfaces.IServiceFormation;
 import tn.esprit.models.Giveaway;
 import tn.esprit.utils.MyDatabase;
 
@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceGiveaway implements IService<Giveaway> {
+public class ServiceGiveaway implements IServiceFormation<Giveaway> {
     private Connection cnx;
 
     public ServiceGiveaway() {
@@ -120,4 +120,4 @@ public class ServiceGiveaway implements IService<Giveaway> {
             System.out.println("Erreur lors de la suppression du giveaway : " + e.getMessage());
         }
     }
-}
+}*/

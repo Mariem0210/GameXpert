@@ -9,23 +9,26 @@ import java.io.IOException;
 
 public class MainFX extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
 
     @Override
     public void start(Stage primaryStage) {
-
-        FXMLLoader loader =new FXMLLoader(getClass().getResource("/GestionFormation.fxml"));
         try {
+            // Charger le fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFormation.fxml"));
             Parent root = loader.load();
+
+            // Configurer la scène
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("---- Gestion Formation -----");
+            primaryStage.setTitle("Ajouter Produit");
             primaryStage.show();
-
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Erreur lors du chargement de l'interface : " + e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }

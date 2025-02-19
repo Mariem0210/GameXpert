@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.controllers.ModifierFormationController">
+
+    <Label text="Modifier Formation" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <TextField fx:id="nomfField" promptText="Nom de la Formation"/>
+    <TextField fx:id="descriptionfField" promptText="Description de la Formation"/>
+    <TextField fx:id="niveaufField" promptText="Niveau de la Formation"/>
+    <TextField fx:id="dateDebutfField" promptText="Date Début (YYYY-MM-DD)"/>
+    <TextField fx:id="dateFinfField" promptText="Date Fin (YYYY-MM-DD)"/>
+    <TextField fx:id="capacitefField" promptText="Capacité de la Formation"/>
+    <TextField fx:id="prixField" promptText="Prix de la Formation"/>
+    <TextField fx:id="idUserField" promptText="ID Utilisateur"/>
+
+    <HBox spacing="10">
+        <Button fx:id="modifierButton" text="Modifier" onAction="#validerModification"/>
+        <Button fx:id="annulerButton" text="Annuler" onAction="#annulerModification"/>
+    </HBox>
+
+</VBox>
