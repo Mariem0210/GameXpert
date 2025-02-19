@@ -2,6 +2,7 @@ package tn.esprit.services;
 
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Offre_de_recrutement;
+import tn.esprit.models.Equipe;
 import tn.esprit.models.Transfert;
 import tn.esprit.utils.MyDatabase;
 import java.sql.*;
