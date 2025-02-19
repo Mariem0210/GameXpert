@@ -13,7 +13,7 @@ public final class Admin extends Utilisateur {
 
     // Constructeur sans ID
     public Admin(String nomu, String prenomu, String mailu,
-                 String mdpu, int numtelu, LocalDate datenaissanceu) {
+                 String mdpu, int numtelu,LocalDate datenaissanceu) {
         super(nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu);
         this.setTypeu(UserType.ADMIN.toString());
     }

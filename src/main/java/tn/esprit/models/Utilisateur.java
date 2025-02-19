@@ -4,15 +4,20 @@ import java.time.LocalDate;
 
 public class Utilisateur {
     private int idu, numtelu;
-    private String nomu, prenomu, mailu, mdpu, typeu;
-    private LocalDate datenaissanceu, dateinscriu;
+    private String nomu;
+    private String prenomu;
+    private String mailu;
+    private String mdpu;
+    private static String typeu;
+    private LocalDate  dateinscriu,datenaissanceu;
+
+
 
     // Constructeur
     public Utilisateur(int idu, String text, String prenomuTfText, String mailuTfText, String mdpuTfText, String typeuTfText, int numTel, LocalDate dateNaissance, LocalDate dateInscription) {
 
     }
-    public Utilisateur(int idu, String nomu, String prenomu, String mailu,
-                       String mdpu, int numtelu, LocalDate datenaissanceu) {
+    public Utilisateur(int idu, String nomu, String prenomu, String mailu, String mdpu, int numtelu, LocalDate datenaissanceu) {
         this.idu = idu;
         this.nomu = nomu;
         this.prenomu = prenomu;
@@ -24,8 +29,7 @@ public class Utilisateur {
     }
 
     // Constructeur sans ID
-    public Utilisateur(String nomu, String prenomu, String mailu,
-                       String mdpu, int numtelu, LocalDate datenaissanceu) {
+    public Utilisateur(String nomu, String prenomu, String mailu, String mdpu,int numtelu, LocalDate datenaissanceu) {
         this.nomu = nomu;
         this.prenomu = prenomu;
         this.mailu = mailu;
@@ -35,6 +39,18 @@ public class Utilisateur {
         this.dateinscriu = LocalDate.now();
     }
 
+
+    public Utilisateur(String nomu, String prenomu, String mailu, String mdpu, int numtelu, String datenaissanceu, String typeu ,LocalDate dateinscriu) {
+    }
+
+    public Utilisateur(int id, String nom, String prenom, String userType, String email, String password, LocalDate dateDeNaissance, int numTelephone) {
+    }
+
+    public Utilisateur() {
+
+    }
+
+
     // Getters
     public int getIdu() { return idu; }
     public int getNumtelu() { return numtelu; }
@@ -42,7 +58,7 @@ public class Utilisateur {
     public String getPrenomu() { return prenomu; }
     public String getMailu() { return mailu; }
     public String getMdpu() { return mdpu; }
-    public String getTypeu() { return typeu; }
+    public static String getTypeu() { return typeu; }
     public LocalDate getDatenaissanceu() { return datenaissanceu; }
     public LocalDate getDateinscriu() { return dateinscriu; }
 
