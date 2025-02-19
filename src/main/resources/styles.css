@@ -1,60 +1,59 @@
-/* Style général */
 .root {
-    -fx-background-color: #1e1e2e;
-    -fx-font-family: "Arial";
+    -fx-background-color: #f4f4f4;
+}
+.transparent{
+    -fx-background-color: rgba(0,0,0,0);
 }
 
-/* Style des labels */
-.label {
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-}
-
-/* Style des champs de texte */
 .text-field, .date-picker {
-    -fx-background-color: #2a2a3d;
-    -fx-text-fill: white;
-    -fx-border-color: #03a9f4;
     -fx-border-radius: 5px;
-    -fx-padding: 5px;
+    -fx-padding: 8px;
+}
+.right-bar{
+    -fx-background-color: #D3D3D3;
+}
+.shadow{
+    -fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);
 }
 
-/* Style des boutons */
 .button {
-    -fx-background-radius: 5px;
-    -fx-font-size: 14px;
-    -fx-padding: 8px 16px;
-}
-
-.button-ajouter {
-    -fx-background-color: #ff5722;
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
 }
 
-.button-afficher {
-    -fx-background-color: #03a9f4;
-    -fx-text-fill: white;
-}
-
-/* Style du container des cartes */
-#cardContainer {
-    -fx-background-color: #252538;
+.card {
+    -fx-background-color: white;
     -fx-padding: 15px;
     -fx-border-radius: 10px;
-    -fx-border-color: #ffcc00;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+.root {
+    -fx-background-color: #f4f4f4;
 }
 
-/* Style des cartes */
-.card {
-    -fx-background-color: #1e1e2e;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-min-width: 200px;
-    -fx-max-width: 250px;
+.text-field, .date-picker {
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
 }
 
-.card Label {
+.button {
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
 }
