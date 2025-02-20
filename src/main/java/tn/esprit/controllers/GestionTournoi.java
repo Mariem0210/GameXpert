@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-
 public class GestionTournoi {
 
     @FXML private TextField tfNomt;
@@ -125,17 +124,17 @@ public class GestionTournoi {
     public void refreshTournoisList() {
         cardContainer.getChildren().clear();
 
-        HBox currentRow = new HBox(10);  // Create a row with 10px spacing between cards
-        currentRow.setAlignment(Pos.TOP_LEFT); // Align cards to the top left
+        HBox currentRow = new HBox(10);  // Crée une ligne avec un espacement de 10px entre les cartes
+        currentRow.setAlignment(Pos.TOP_LEFT); // Alignement des cartes dans la ligne
 
         int cardCount = 0;
 
         for (Tournoi t : st.getAll()) {
-            // Create a VBox for each card
+            // Créer un VBox pour chaque carte
             VBox card = new VBox(10);
             card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
 
-            // Add tournament details inside the card
+            // Ajouter des informations à l'intérieur de la carte
             Label nameLabel = new Label("Nom: " + t.getNomt());
             nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Cambria', serif; -fx-font-weight: bold;");
 
@@ -157,36 +156,32 @@ public class GestionTournoi {
             Label statusLabel = new Label("Statut: " + t.getStatutt());
             statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Arial', sans-serif;");
 
-            // Add labels to the card
+            // Ajouter les étiquettes à la carte
             card.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
 
-            // Handle single-click to select the tournament
-            card.setOnMouseClicked(event -> {
-                selectedTournoi = t;
-                remplirChamps(t);
-            });
-
-            // Handle double-click to navigate to GestionMatch interface
+            // Définir l'action lors du clic sur la carte
             card.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2) { // Double click
                     ouvrirGestionMatch(t);
+                } else { // Single click
+                    selectedTournoi = t;
+                    remplirChamps(t);
                 }
             });
-
-            // Add the card to the current row
+            // Ajouter la carte à la ligne actuelle
             currentRow.getChildren().add(card);
             cardCount++;
 
-            // If the row contains 4 cards, start a new row
+            // Si la ligne contient 4 cartes, commencer une nouvelle ligne
             if (cardCount >= 4) {
-                cardContainer.getChildren().add(currentRow);
-                currentRow = new HBox(10); // Create a new row
+                cardContainer.getChildren().add(currentRow);  // Ajouter la ligne complète au conteneur principal
+                currentRow = new HBox(10);  // Créer une nouvelle ligne
                 currentRow.setAlignment(Pos.TOP_LEFT);
-                cardCount = 0; // Reset the card count
+                cardCount = 0;  // Réinitialiser le compteur de cartes dans la ligne
             }
         }
 
-        // Add the last row if it contains fewer than 4 cards
+        // Ajouter la dernière ligne si elle contient moins de 4 cartes
         if (cardCount > 0) {
             cardContainer.getChildren().add(currentRow);
         }
