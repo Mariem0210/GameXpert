@@ -10,6 +10,7 @@ import tn.esprit.interfaces.IService;
 import tn.esprit.models.Match;
 import tn.esprit.services.ServiceMatch;
 import tn.esprit.models.Tournoi;
+import javafx.application.Platform;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -32,23 +33,26 @@ public class GestionMatch {
     public void setTournoi(Tournoi tournoi) {
         this.tournoiActuel = tournoi;
         System.out.println("Tournoi sélectionné : " + tournoi.getNomt());
+        tfIdt.setText(String.valueOf(tournoi.getIdt())); // Afficher l'ID du tournoi
+
     }
     @FXML
     public void initialize() {
         refreshMatchesList();
+
     }
 
 
     @FXML
     public void ajouterMatch(ActionEvent actionEvent) {
-        if (tfIdm.getText().isEmpty() || tfEquipe1.getText().isEmpty() || tfEquipe2.getText().isEmpty() || dpDateDebutm.getValue() == null || tfScore.getText().isEmpty() || tfStatus.getText().isEmpty()) {
+        if ( tfEquipe1.getText().isEmpty() || tfEquipe2.getText().isEmpty() || dpDateDebutm.getValue() == null || tfScore.getText().isEmpty() || tfStatus.getText().isEmpty()) {
             showAlert("Erreur", "Tous les champs doivent être remplis.", Alert.AlertType.ERROR);
             return;
         }
 
         try {
             Match m = new Match();
-            m.setIdm(Integer.parseInt(tfIdm.getText()));
+            //m.setIdm(Integer.parseInt(tfIdm.getText()));
             m.setIdt(Integer.parseInt(tfIdt.getText()));
             m.setEquipe1(tfEquipe1.getText());
             m.setEquipe2(tfEquipe2.getText());
@@ -120,42 +124,58 @@ public class GestionMatch {
 
     @FXML
     public void refreshMatchesList() {
-        cardContainer.getChildren().clear();
+        Platform.runLater(() -> { // Exécuter sur le thread UI
+
+            cardContainer.getChildren().clear(); // Efface les cartes précédentes
         HBox currentRow = new HBox(10);
         currentRow.setAlignment(Pos.TOP_LEFT);
 
         int cardCount = 0;
 
+        // Vérifie si un tournoi est sélectionné
+        if (tournoiActuel == null) {
+            System.out.println("❌ Aucun tournoi sélectionné !");
+            return; // Retourne si aucun tournoi n'est sélectionné
+        }
+
+        int tournoiId = tournoiActuel.getIdt(); // Récupère l'ID du tournoi sélectionné
+        System.out.println("✅ Tournoi sélectionné IDT: " + tournoiId);
+
+        // Filtrer et afficher seulement les matchs qui ont le même ID que le tournoi sélectionné
         for (Match m : sm.getAll()) {
-            VBox card = new VBox(10);
-            card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px;");
+            if (m.getIdt() == tournoiId) { // Si le match appartient au tournoi sélectionné
+                VBox card = new VBox(10);
+                card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px;");
 
-            Label team1Label = new Label("Equipe 1: " + m.getEquipe1());
-            Label team2Label = new Label("Equipe 2: " + m.getEquipe2());
-            Label dateLabel = new Label("Date: " + m.getDate_debutm());
-            Label scoreLabel = new Label("Score: " + m.getScore());
-            Label statusLabel = new Label("Statut: " + m.getStatus());
+                Label team1Label = new Label("Equipe 1: " + m.getEquipe1());
+                Label team2Label = new Label("Equipe 2: " + m.getEquipe2());
+                Label dateLabel = new Label("Date: " + m.getDate_debutm());
+                Label scoreLabel = new Label("Score: " + m.getScore());
+                Label statusLabel = new Label("Statut: " + m.getStatus());
 
-            card.getChildren().addAll(team1Label, team2Label, dateLabel, scoreLabel, statusLabel);
-            card.setOnMouseClicked(event -> {
-                selectedMatch = m;
-                remplirChamps(m);
-            });
+                card.getChildren().addAll(team1Label, team2Label, dateLabel, scoreLabel, statusLabel);
+                card.setOnMouseClicked(event -> {
+                    selectedMatch = m;
+                    remplirChamps(m); // Remplir les champs avec les détails du match sélectionné
+                });
 
-            currentRow.getChildren().add(card);
-            cardCount++;
+                currentRow.getChildren().add(card); // Ajoute la carte à la ligne actuelle
+                cardCount++;
 
-            if (cardCount >= 4) {
-                cardContainer.getChildren().add(currentRow);
-                currentRow = new HBox(10);
-                currentRow.setAlignment(Pos.TOP_LEFT);
-                cardCount = 0;
+                // Si 4 cartes sont ajoutées, commence une nouvelle ligne
+                if (cardCount >= 4) {
+                    cardContainer.getChildren().add(currentRow);
+                    currentRow = new HBox(10);
+                    currentRow.setAlignment(Pos.TOP_LEFT);
+                    cardCount = 0;
+                }
             }
         }
 
+        // Ajouter la dernière ligne s'il y a des cartes restantes
         if (cardCount > 0) {
             cardContainer.getChildren().add(currentRow);
-        }
+        }});
     }
 
     public void remplirChamps(Match m) {

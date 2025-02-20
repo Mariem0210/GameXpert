@@ -22,8 +22,8 @@
         </ScrollPane>
 
         <!-- TextFields for Match Input -->
-        <TextField fx:id="tfIdm" layoutX="114.0" layoutY="60.0" promptText="ID Match" styleClass="shadow" />
-        <TextField fx:id="tfIdt" layoutX="114.0" layoutY="90.0" promptText="ID Équipe" styleClass="shadow" />
+        <TextField fx:id="tfIdm" layoutX="114.0" layoutY="46.0" promptText="ID Match" styleClass="shadow" visible="false" managed="false"/>
+        <TextField fx:id="tfIdt" layoutX="114.0" layoutY="90.0" promptText="ID Tournoi" styleClass="shadow" visible="false" managed="false"/>
         <TextField fx:id="tfEquipe1" layoutX="114.0" layoutY="120.0" promptText="Équipe 1" styleClass="shadow" />
         <TextField fx:id="tfEquipe2" layoutX="114.0" layoutY="174.0" promptText="Équipe 2" styleClass="shadow" />
         <DatePicker fx:id="dpDateDebutm" layoutX="87.0" layoutY="226.0" promptText="Date Début" styleClass="shadow" />
@@ -59,7 +59,7 @@
         </Button>
 
         <!-- Title Label -->
-        <HBox alignment="CENTER" prefHeight="110.0" prefWidth="227.0">
+        <HBox alignment="CENTER" layoutX="-21.0" layoutY="-24.0" prefHeight="110.0" prefWidth="227.0">
             <children>
                 <Label text="MATCH" textFill="#878787">
                     <font><Font name="Cambria Bold" size="30.0" /></font>
