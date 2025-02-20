@@ -2,15 +2,22 @@ package tn.esprit.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
+import javafx.stage.Stage;
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Tournoi;
 import tn.esprit.services.ServiceTournoi;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
+
 
 public class GestionTournoi {
 
@@ -118,17 +125,17 @@ public class GestionTournoi {
     public void refreshTournoisList() {
         cardContainer.getChildren().clear();
 
-        HBox currentRow = new HBox(10);  // Crée une ligne avec un espacement de 10px entre les cartes
-        currentRow.setAlignment(Pos.TOP_LEFT); // Alignement des cartes dans la ligne
+        HBox currentRow = new HBox(10);  // Create a row with 10px spacing between cards
+        currentRow.setAlignment(Pos.TOP_LEFT); // Align cards to the top left
 
         int cardCount = 0;
 
         for (Tournoi t : st.getAll()) {
-            // Créer un VBox pour chaque carte
+            // Create a VBox for each card
             VBox card = new VBox(10);
             card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
 
-            // Ajouter des informations à l'intérieur de la carte
+            // Add tournament details inside the card
             Label nameLabel = new Label("Nom: " + t.getNomt());
             nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Cambria', serif; -fx-font-weight: bold;");
 
@@ -150,31 +157,57 @@ public class GestionTournoi {
             Label statusLabel = new Label("Statut: " + t.getStatutt());
             statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Arial', sans-serif;");
 
-            // Ajouter les étiquettes à la carte
+            // Add labels to the card
             card.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
 
-            // Définir l'action lors du clic sur la carte
+            // Handle single-click to select the tournament
             card.setOnMouseClicked(event -> {
-                selectedTournoi = t; // Définir le tournoi sélectionné
+                selectedTournoi = t;
                 remplirChamps(t);
             });
 
-            // Ajouter la carte à la ligne actuelle
+            // Handle double-click to navigate to GestionMatch interface
+            card.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) { // Double click
+                    ouvrirGestionMatch(t);
+                }
+            });
+
+            // Add the card to the current row
             currentRow.getChildren().add(card);
             cardCount++;
 
-            // Si la ligne contient 4 cartes, commencer une nouvelle ligne
+            // If the row contains 4 cards, start a new row
             if (cardCount >= 4) {
-                cardContainer.getChildren().add(currentRow);  // Ajouter la ligne complète au conteneur principal
-                currentRow = new HBox(10);  // Créer une nouvelle ligne
+                cardContainer.getChildren().add(currentRow);
+                currentRow = new HBox(10); // Create a new row
                 currentRow.setAlignment(Pos.TOP_LEFT);
-                cardCount = 0;  // Réinitialiser le compteur de cartes dans la ligne
+                cardCount = 0; // Reset the card count
             }
         }
 
-        // Ajouter la dernière ligne si elle contient moins de 4 cartes
+        // Add the last row if it contains fewer than 4 cards
         if (cardCount > 0) {
             cardContainer.getChildren().add(currentRow);
+        }
+    }
+    private void ouvrirGestionMatch(Tournoi tournoi) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionMatch.fxml"));
+            Parent root = loader.load();
+
+            // Récupérer le contrôleur de GestionMatch et lui passer le tournoi sélectionné
+            GestionMatch controller = loader.getController();
+            controller.setTournoi(tournoi); // Assurez-vous que GestionMatch a une méthode setTournoi()
+
+            // Ouvrir la nouvelle fenêtre
+            Stage stage = new Stage();
+            stage.setTitle("Gestion des Matchs - " + tournoi.getNomt());
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ouvrir l'interface GestionMatch.", Alert.AlertType.ERROR);
         }
     }
 

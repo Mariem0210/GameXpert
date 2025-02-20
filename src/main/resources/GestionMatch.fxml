@@ -1,14 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.esprit.controllers.GestionMatch"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionMatch">
+    <children>
+        <!-- Scrollable container for cards -->
+        <ScrollPane layoutX="351.0" layoutY="131.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
+            <content>
+                <VBox fx:id="cardContainer" prefHeight="481.0" prefWidth="714.0" spacing="10">
+                    <!-- Dynamically added cards will go here -->
+                </VBox>
+            </content>
+        </ScrollPane>
 
+        <!-- TextFields for Match Input -->
+        <TextField fx:id="tfIdm" layoutX="114.0" layoutY="60.0" promptText="ID Match" styleClass="shadow" />
+        <TextField fx:id="tfIdt" layoutX="114.0" layoutY="90.0" promptText="ID Équipe" styleClass="shadow" />
+        <TextField fx:id="tfEquipe1" layoutX="114.0" layoutY="120.0" promptText="Équipe 1" styleClass="shadow" />
+        <TextField fx:id="tfEquipe2" layoutX="114.0" layoutY="174.0" promptText="Équipe 2" styleClass="shadow" />
+        <DatePicker fx:id="dpDateDebutm" layoutX="87.0" layoutY="226.0" promptText="Date Début" styleClass="shadow" />
+        <TextField fx:id="tfScore" layoutX="113.0" layoutY="369.0" promptText="Score" styleClass="shadow" />
+        <TextField fx:id="tfStatus" layoutX="112.0" layoutY="421.0" promptText="Statut" styleClass="shadow" />
+
+        <!-- Labels for the fields -->
+        <Label layoutX="31.0" layoutY="127.0" styleClass="label" text="Équipe 1">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Label>
+        <Label layoutX="17.0" layoutY="181.0" styleClass="label" text="Équipe 2">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Label>
+        <Label layoutX="15.0" layoutY="243.0" styleClass="label" text="Date Début">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Label>
+        <Label layoutX="24.0" layoutY="310.0" styleClass="label" text="Score">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Label>
+        <Label layoutX="46.0" layoutY="429.0" styleClass="label" text="Statut">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Label>
+
+        <!-- Buttons for adding, modifying, and deleting matches -->
+        <Button id="ajouterMatch" layoutX="77.0" layoutY="553.0" mnemonicParsing="false" onAction="#ajouterMatch" styleClass="button button-ajouter" text="Ajouter">
+            <font><Font name="Cambria" size="18.0" /></font>
+        </Button>
+        <Button fx:id="btnModifier" layoutX="197.0" layoutY="558.0" onAction="#modifierMatch" styleClass="edit-button" text="Modifier">
+            <font><Font name="Cambria" size="10.0" /></font>
+        </Button>
+        <Button fx:id="btnSupprimer" layoutX="278.0" layoutY="558.0" onAction="#supprimerMatch" styleClass="delete-button" text="Supprimer">
+            <font><Font name="Cambria" size="10.0" /></font>
+        </Button>
+
+        <!-- Title Label -->
+        <HBox alignment="CENTER" prefHeight="110.0" prefWidth="227.0">
+            <children>
+                <Label text="MATCH" textFill="#878787">
+                    <font><Font name="Cambria Bold" size="30.0" /></font>
+                </Label>
+            </children>
+        </HBox>
+    </children>
 </AnchorPane>
