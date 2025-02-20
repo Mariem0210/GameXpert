@@ -21,7 +21,7 @@ public class MainFX extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("---- Gestion Formation -----");
+            primaryStage.setTitle("---- GAMEXPERT -----");
             primaryStage.show();
 
         } catch (IOException e) {

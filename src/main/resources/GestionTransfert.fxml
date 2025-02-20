@@ -26,7 +26,6 @@
     <Button fx:id="btnAjouter" layoutX="124.0" layoutY="420.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-ajouter" text="Ajouter" onAction="#ajouterTransfert"/>
     <Button fx:id="btnModifier" layoutX="214.0" layoutY="420.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-modifier" text="Modifier" onAction="#modifierTransfert"/>
     <Button fx:id="btnSupprimer" layoutX="304.0" layoutY="420.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-supprimer" text="Supprimer" onAction="#supprimerTransfert"/>
-    <Button fx:id="btnAfficher" layoutX="394.0" layoutY="420.0" mnemonicParsing="false" styleClass="button button-afficher" text="Afficher" onAction="#refreshTransfertsList" />
 
     <!-- Section Transferts Disponibles -->
     <Label layoutX="614.0" layoutY="83.0" text="Liste des Transferts Disponibles" />
@@ -37,8 +36,8 @@
             <TableColumn text="Utilisateur" fx:id="colIdu" prefWidth="80"/>
             <TableColumn text="Ancienne Équipe" fx:id="colAncienneEquipe" prefWidth="100"/>
             <TableColumn text="Nouvelle Équipe" fx:id="colNouvelleEquipe" prefWidth="100"/>
-            <TableColumn text="Montant" fx:id="colMontantt" prefWidth="80"/>
-            <TableColumn text="Date" fx:id="colDateT" prefWidth="80"/>
+            <TableColumn text="Montant" fx:id="colMontantt" prefWidth="80" />
+            <TableColumn text="Date" fx:id="colDateT" prefWidth="80" />
         </columns>
     </TableView>
 

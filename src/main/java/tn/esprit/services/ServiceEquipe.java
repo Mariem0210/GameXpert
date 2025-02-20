@@ -44,12 +44,10 @@ public class ServiceEquipe implements IService<Equipe> {
 
             while (rs.next()) {
                 Equipe e = new Equipe();
-                e.setIdeq(rs.getInt("idequipe"));
+                e.setIdeq(rs.getInt("ideq"));
                 e.setNom_equipe(rs.getString("nom_equipe"));
                 e.setDate_creation(rs.getDate("date_creation"));
-
-
-
+                e.setIdu(rs.getInt("idu"));
 
                 equipes.add(e);
             }

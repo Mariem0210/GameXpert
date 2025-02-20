@@ -48,9 +48,10 @@ public class ServiceTransfert implements IService<Transfert> {
             while (rs.next()) {
                 Transfert t = new Transfert();
                 t.setIdtr(rs.getInt("idtr"));
+                t.setIdu(rs.getInt("idu"));
                 t.setAncienne_equipe(rs.getString("ancienne_equipe"));
                 t.setNouvelle_equipe(rs.getString("nouvelle_equipe"));
-                t.setMontantt(rs.getInt("Montantt"));
+                t.setMontantt(rs.getInt("montantt"));
                 t.setDatet(rs.getDate("datet"));
 
 
