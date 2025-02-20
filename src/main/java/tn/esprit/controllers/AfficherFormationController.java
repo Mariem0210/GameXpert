@@ -1,15 +1,12 @@
 package tn.esprit.controllers;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -19,6 +16,7 @@ import tn.esprit.interfaces.FormationService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class AfficherFormationController {
     @FXML
@@ -46,7 +44,7 @@ public class AfficherFormationController {
                 formationCard.setPrefSize(200, 250);
 
                 // Éléments de la carte
-                Label idLabel = new Label("ID: " + formation.getIdf());
+
                 Label nomLabel = new Label("Nom: " + formation.getNomf());
                 Label descriptionLabel = new Label("Description: " + formation.getDescriptionf());
                 Label niveauLabel = new Label("Niveau: " + formation.getNiveauf());
@@ -54,34 +52,62 @@ public class AfficherFormationController {
                 Label dateFinLabel = new Label("Date Fin: " + formation.getDateFinf());
                 Label capaciteLabel = new Label("Capacité: " + formation.getCapacitef());
                 Label prixLabel = new Label("Prix: " + formation.getPrixf());
-                Label iduLabel = new Label("ID: " + formation.getIdu());
-
+                Label iduLabel = new Label("ID Utilisateur: " + formation.getIdu());
 
                 // Boutons
                 Button deleteButton = new Button("Supprimer");
                 deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-                deleteButton.setOnAction(event -> deleteFormation( formation)); // Passer l'ID de la formation
+                deleteButton.setOnAction(event -> deleteFormation(formation));
 
+                Button modifButton = new Button("Modifier");
+                modifButton.setStyle("-fx-background-color: #6999d0; -fx-text-fill: white;");
 
-                Button modifierButton = new Button("Modifier");
-                modifierButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-                modifierButton.setOnAction(event -> modifierFormation(formation));
+                modifButton.setOnAction(event -> {
+                    if (formation.getNomf() == null || formation.getNomf().isEmpty()) {
+                        showAlert(Alert.AlertType.ERROR, "Erreur", "Le nom de la formation est vide.");
+                        return;
+                    }
 
-                // Conteneur pour les boutons
-                HBox buttonContainer = new HBox(10);
-                buttonContainer.getChildren().addAll(deleteButton, modifierButton);
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation de modification");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Voulez-vous vraiment modifier cette formation ?");
 
-                // Ajout des éléments à la carte
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFormation.fxml"));
+                            Scene scene = new Scene(loader.load());
+
+                            ModifierFormationController controller = loader.getController();
+                            controller.initData(formation);
+
+                            controller.setOnUpdateSuccess(() -> loadFormations());
+
+                            Stage stage = new Stage();
+                            stage.setTitle("Modifier Formation");
+                            stage.setScene(scene);
+                            stage.show();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le formulaire de modification.");
+                        }
+                    }
+                });
+
+                // Ajouter les éléments à la carte
                 formationCard.getChildren().addAll(
-                        idLabel, nomLabel, descriptionLabel, niveauLabel,
-                        dateDebutLabel, dateFinLabel, capaciteLabel, prixLabel,
-                        buttonContainer
+                         nomLabel, descriptionLabel, niveauLabel, dateDebutLabel,
+                        dateFinLabel, capaciteLabel, prixLabel, iduLabel,
+                        deleteButton, modifButton
                 );
 
                 formationTilePane.getChildren().add(formationCard);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger les formations.");
         }
     }
 
@@ -94,8 +120,8 @@ public class AfficherFormationController {
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    formationService.supprimerFormation(formation, formation.getNomf()); // Passer le nom de la formation
-                    loadFormations(); // Rafraîchir après suppression
+                    formationService.supprimerFormation(formation, formation.getNomf());
+                    loadFormations();
                 } catch (SQLException e) {
                     e.printStackTrace();
                     showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer la formation.");
@@ -104,47 +130,11 @@ public class AfficherFormationController {
         });
     }
 
-
-
-
-    private void modifierFormation(Formation formation) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de modification");
-        alert.setHeaderText("Êtes-vous sûr de vouloir modifier cette formation ?");
-        alert.setContentText("Assurez-vous que toutes les informations sont correctes.");
-
-        // Action lorsque l'utilisateur clique sur le bouton "OK"
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/ModifierFormation.fxml"));
-                    Parent root = loader.load();
-
-                    ModifierFormationController controller = loader.getController();
-                    controller.initData(formation);
-
-                    // Définir le callback de rafraîchissement
-                    controller.setOnUpdateSuccess(() -> {
-                        loadFormations(); // Rafraîchir après modification
-                    });
-
-                    Stage stage = new Stage();
-                    stage.setScene(new Scene(root));
-                    stage.setTitle("Modifier Formation");
-                    stage.show();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
-        alert.setHeaderText(null); // Pas d'en-tête
+        alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.showAndWait(); // Afficher l'alerte et attendre la fermeture
+        alert.showAndWait();
     }
-
 }

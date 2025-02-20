@@ -48,29 +48,33 @@ public class FormationService implements IServiceFormation<Formation> {
 
 
     @Override
-    public void modifierFormation(Formation formation, int idf) throws SQLException {
-        String sql = "UPDATE formation SET nomf=?, dateDebutf=?, dateFinf=?, capacitef=?, prixf=?, niveauf=?, descriptionf=?, idu=? WHERE idf=?";
-        PreparedStatement statement = cnx.prepareStatement(sql);
+    public void modifierFormation(Formation formation) {
+        String qry = "UPDATE formation SET nomf=?, descriptionf=?, niveauf=?, dateDebutf=?, dateFinf=?, capacitef=?, prixf=?, idu=? WHERE idf=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, formation.getNomf());
+            pstm.setString(2, formation.getDescriptionf());
+            pstm.setString(3, formation.getNiveauf());
+            pstm.setDate(4, Date.valueOf(formation.getDateDebutf()));
+            pstm.setDate(5, Date.valueOf(formation.getDateFinf()));
+            pstm.setInt(6, formation.getCapacitef());
+            pstm.setFloat(7, formation.getPrixf());
+            pstm.setInt(8, formation.getIdu());
+            pstm.setInt(9, formation.getIdf());
 
-        // Correction des indices des paramètres SQL
-        statement.setString(1, formation.getNomf());
-        statement.setDate(2, Date.valueOf(formation.getDateDebutf())); // Conversion LocalDate -> Date SQL
-        statement.setDate(2, Date.valueOf(formation.getDateFinf()));  // Assure-toi que 'formation.getDateFinf()' renvoie un java.sql.Date
-        statement.setInt(4, formation.getCapacitef());
-        statement.setFloat(5, formation.getPrixf());
-        statement.setString(6, formation.getNiveauf());
-        statement.setString(7, formation.getDescriptionf());
-        statement.setInt(8, formation.getIdu());
-        statement.setInt(9, idf);  // Utilisation correcte du paramètre 'idf' pour WHERE
-
-        int rowsUpdated = statement.executeUpdate();
-        if (rowsUpdated > 0) {
-            System.out.println("Compagne mise à jour avec succès !");
-        } else {
-            System.out.println("Aucune compagne mise à jour. Vérifiez l'ID.");
+            int rowsUpdated = pstm.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Formation mise à jour avec succès !");
+            } else {
+                System.out.println("Aucune formation mise à jour. Vérifiez l'ID.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la mise à jour de la formation : " + e.getMessage());
         }
-
     }
+
+
+
 
 
 
@@ -107,7 +111,7 @@ public class FormationService implements IServiceFormation<Formation> {
 
                 f.setCapacitef(rs.getInt("capacitef"));
                 f.setPrixf(rs.getFloat("prixf"));
-                f.setIdf(rs.getInt("idu"));
+                f.setIdu(rs.getInt("idu"));
 
 
 

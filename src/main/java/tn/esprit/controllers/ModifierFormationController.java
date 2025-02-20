@@ -67,8 +67,8 @@ public class ModifierFormationController {
 
             // Mise à jour des valeurs de la formation
             formation.setNomf(nomFormationField.getText());
-            formation.setDateDebutf(dateDebutPicker.getValue()); // Conversion en Date SQL
-            formation.setDateFinf(dateFinPicker.getValue()); // Conversion en Date SQL
+            formation.setDateDebutf(dateDebutPicker.getValue());
+            formation.setDateFinf(dateFinPicker.getValue());
             formation.setCapacitef(Integer.parseInt(capaciteField.getText()));
             formation.setPrixf(Float.parseFloat(prixField.getText()));
             formation.setNiveauf(niveauField.getText());
@@ -76,7 +76,7 @@ public class ModifierFormationController {
             formation.setIdu(Integer.parseInt(iduField.getText()));
 
             // Appel du service pour modifier la formation
-            formationService.modifierFormation(formation, formation.getIdf());
+            formationService.modifierFormation(formation);
 
             showAlert(Alert.AlertType.INFORMATION, "Succès", "La formation a été modifiée !");
             fermerFenetre();
@@ -86,14 +86,15 @@ public class ModifierFormationController {
                 onUpdateSuccess.run();
             }
 
-        } catch (SQLException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de la modification !");
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur de format", "Veuillez entrer des valeurs numériques valides pour la capacité, le prix et l'ID utilisateur.");
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue lors de la modification.");
             e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur", "Format de données incorrect !");
         }
+    }
 
-}
+
     @FXML
     private void fermerFenetre() {
         Stage stage = (Stage) modifierButton.getScene().getWindow();
@@ -109,4 +110,5 @@ public class ModifierFormationController {
     }
 
     }
+
 
