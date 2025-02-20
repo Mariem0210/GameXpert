@@ -86,26 +86,24 @@ public class AfficherFormationController {
     }
 
     private void deleteFormation(Formation formation) {
-        // Création de la fenêtre de confirmation
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation de suppression");
         alert.setHeaderText("Êtes-vous sûr de vouloir supprimer cette formation ?");
         alert.setContentText("Cette action est irréversible.");
 
-        // Action lorsque l'utilisateur clique sur le bouton "OK"
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    // Appel au service de suppression avec l'ID de la formation
-                    formationService.supprimerFormation( formation , formation.getIdf()) ;
-                    // Rafraîchir la liste des formations après la suppression
-                    loadFormations();
+                    formationService.supprimerFormation(formation, formation.getNomf()); // Passer le nom de la formation
+                    loadFormations(); // Rafraîchir après suppression
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de supprimer la formation.");
                 }
             }
         });
     }
+
 
 
 
@@ -141,4 +139,12 @@ public class AfficherFormationController {
             }
         });
     }
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null); // Pas d'en-tête
+        alert.setContentText(message);
+        alert.showAndWait(); // Afficher l'alerte et attendre la fermeture
+    }
+
 }

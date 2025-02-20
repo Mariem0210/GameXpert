@@ -1,25 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 
-<VBox spacing="10" alignment="CENTER" xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.controllers.ModifierFormationController">
+<AnchorPane prefHeight="499.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ModifierFormationController">
 
-    <Label text="Modifier Formation" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <!-- Champ pour le nom de la formation -->
+    <TextField fx:id="nomFormationField" layoutX="50" layoutY="50" promptText="Nom de la Formation" />
 
-    <TextField fx:id="nomfField" promptText="Nom de la Formation"/>
-    <TextField fx:id="descriptionfField" promptText="Description de la Formation"/>
-    <TextField fx:id="niveaufField" promptText="Niveau de la Formation"/>
-    <TextField fx:id="dateDebutfField" promptText="Date Début (YYYY-MM-DD)"/>
-    <TextField fx:id="dateFinfField" promptText="Date Fin (YYYY-MM-DD)"/>
-    <TextField fx:id="capacitefField" promptText="Capacité de la Formation"/>
-    <TextField fx:id="prixField" promptText="Prix de la Formation"/>
-    <TextField fx:id="idUserField" promptText="ID Utilisateur"/>
+    <!-- Champ pour la description -->
+    <TextField fx:id="descriptionField" layoutX="50" layoutY="100" promptText="Description" />
 
-    <HBox spacing="10">
-        <Button fx:id="modifierButton" text="Modifier" onAction="#validerModification"/>
-        <Button fx:id="annulerButton" text="Annuler" onAction="#annulerModification"/>
-    </HBox>
+    <!-- Champ pour le niveau -->
+    <TextField fx:id="niveauField" layoutX="50" layoutY="150" promptText="Niveau" />
 
-</VBox>
+    <!-- Champ pour la capacité -->
+    <TextField fx:id="capaciteField" layoutX="50" layoutY="200" promptText="Capacité" />
+
+    <!-- Champ pour le prix -->
+    <TextField fx:id="prixField" layoutX="228.0" layoutY="200.0" promptText="Prix" />
+
+    <!-- Champ pour l'ID utilisateur -->
+    <TextField fx:id="iduField" layoutX="50.0" layoutY="250.0" promptText="ID Utilisateur" />
+
+    <!-- DatePicker pour la date de début -->
+    <DatePicker fx:id="dateDebutPicker" layoutX="228.0" layoutY="50.0" promptText="Date Début"/>
+
+    <!-- DatePicker pour la date de fin -->
+    <DatePicker fx:id="dateFinPicker" layoutX="228.0" layoutY="100.0" promptText="Date Fin"/>
+
+    <!-- Bouton pour valider les modifications -->
+    <Button fx:id="modifierButton" text="Valider" onAction="#modifieFormation" layoutX="415.0" layoutY="336.0"/>
+
+    <!-- Bouton pour annuler la modification -->
+    <Button fx:id="annulerButton" text="Annuler" onAction="#fermerFenetre" layoutX="315.0" layoutY="336.0"/>
+
+    <!-- Titre de la fenêtre -->
+    <Text layoutX="185.0" layoutY="27.0" text="Modifier Formation" />
+
+</AnchorPane>

@@ -1,55 +1,48 @@
 package tn.esprit.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import tn.esprit.interfaces.FormationService;
 import tn.esprit.models.Formation;
-import javafx.scene.control.TextArea;
+import tn.esprit.interfaces.FormationService;
 
+import java.sql.Date;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 public class ModifierFormationController {
 
     @FXML
-    private TextField nomfField;
-    @FXML
-    private TextField descriptionfField;
-    @FXML
-    private TextField niveaufField;
-    @FXML
-    private TextField dateDebutfField;
-    @FXML
-    private TextField dateFinfField;
-    @FXML
-    private TextField capacitefField;
-    @FXML
-    private TextField prixField;
-    @FXML
-    private TextField idUserField;
-    @FXML
-    private Button modifierButton;
-    @FXML
-    private Button annulerButton;
+    private TextField nomFormationField, capaciteField, prixField, niveauField, descriptionField, iduField;
 
-    private Formation formation;
+    @FXML
+    private DatePicker dateDebutPicker, dateFinPicker;
+
+    @FXML
+    private Button modifierButton, annulerButton;
+
     private FormationService formationService = new FormationService();
-    private Runnable onUpdateSuccess; // Callback pour rafraîchir l'affichage après modification
+    private Formation formation;  // Formation sélectionnée
+    private Runnable onUpdateSuccess; // Callback
 
+    // Méthode d'initialisation pour charger les données de la formation
+    @FXML
     public void initData(Formation formation) {
         this.formation = formation;
-        nomfField.setText(formation.getNomf());
-        descriptionfField.setText(formation.getDescriptionf());
-        niveaufField.setText(formation.getNiveauf());
-        dateDebutfField.setText(String.valueOf(formation.getDateDebutf()));
-        dateFinfField.setText(String.valueOf(formation.getDateFinf()));
-        capacitefField.setText(String.valueOf(formation.getCapacitef()));
+        nomFormationField.setText(formation.getNomf());
+        capaciteField.setText(String.valueOf(formation.getCapacitef()));
         prixField.setText(String.valueOf(formation.getPrixf()));
-        idUserField.setText(String.valueOf(formation.getIdu()));
+        niveauField.setText(formation.getNiveauf());
+        descriptionField.setText(formation.getDescriptionf());
+        iduField.setText(String.valueOf(formation.getIdu()));
+
+        // Initialisation des DatePicker
+        dateDebutPicker.setValue(formation.getDateDebutf());
+        dateFinPicker.setValue(formation.getDateFinf());
     }
 
     public void setOnUpdateSuccess(Runnable runnable) {
@@ -57,39 +50,63 @@ public class ModifierFormationController {
     }
 
     @FXML
-    private void validerModification() {
+    private void initialize() {
+        modifierButton.setOnAction(event -> modifieFormation());
+        annulerButton.setOnAction(event -> fermerFenetre());
+    }
+
+
+    @FXML
+    private void modifieFormation() {
         try {
-            // Mettre à jour l'objet Formation
-            formation.setNomf(nomfField.getText());
-            formation.setDescriptionf(descriptionfField.getText());
-            formation.setNiveauf(niveaufField.getText());
-            formation.setDateDebutf(LocalDate.parse(dateDebutfField.getText()));
-            formation.setDateFinf(LocalDate.parse(dateFinfField.getText()));
-            formation.setCapacitef(Integer.parseInt(capacitefField.getText()));
+            // Vérification des champs DatePicker
+            if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Les dates ne peuvent pas être vides !");
+                return;
+            }
+
+            // Mise à jour des valeurs de la formation
+            formation.setNomf(nomFormationField.getText());
+            formation.setDateDebutf(dateDebutPicker.getValue()); // Conversion en Date SQL
+            formation.setDateFinf(dateFinPicker.getValue()); // Conversion en Date SQL
+            formation.setCapacitef(Integer.parseInt(capaciteField.getText()));
             formation.setPrixf(Float.parseFloat(prixField.getText()));
-            formation.setIdu(Integer.parseInt(idUserField.getText()));
+            formation.setNiveauf(niveauField.getText());
+            formation.setDescriptionf(descriptionField.getText());
+            formation.setIdu(Integer.parseInt(iduField.getText()));
 
-            // Appeler le service pour modifier la formation
-            formationService.modifier(formation, formation.getIdf());
+            // Appel du service pour modifier la formation
+            formationService.modifierFormation(formation, formation.getIdf());
 
-            // Fermer la fenêtre après modification
-            Stage stage = (Stage) modifierButton.getScene().getWindow();
-            stage.close();
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "La formation a été modifiée !");
+            fermerFenetre();
 
-            // Déclencher le callback pour mettre à jour la liste
+            // Déclenchement du callback après modification
             if (onUpdateSuccess != null) {
                 onUpdateSuccess.run();
             }
 
-        } catch (NumberFormatException | SQLException e) {
+        } catch (SQLException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de la modification !");
             e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Format de données incorrect !");
         }
-    }
 
+}
     @FXML
-    private void annulerModification() {
-        // Fermer la fenêtre sans enregistrer les modifications
-        Stage stage = (Stage) annulerButton.getScene().getWindow();
+    private void fermerFenetre() {
+        Stage stage = (Stage) modifierButton.getScene().getWindow();
         stage.close();
     }
-}
+    @FXML
+    private void showAlert(Alert.AlertType type, String titre, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(titre);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    }
+

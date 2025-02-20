@@ -47,41 +47,48 @@ public class FormationService implements IServiceFormation<Formation> {
     }
 
 
-
     @Override
-    public void modifier(Formation f, int idf) throws SQLException {
-        String sql = "UPDATE formation SET nomf=?, descriptionf=?, niveauf=?, dateDebutf=?, dateFinf=?, capacitef=?, prixf=? WHERE idf=?";
-        PreparedStatement st = cnx.prepareStatement(sql);
-        st.setString(1, f.getNomf());
-        st.setString(2, f.getDescriptionf());
-        st.setString(3, f.getNiveauf());
-        st.setDate(4, java.sql.Date.valueOf(f.getDateDebutf()));
-        st.setDate(5, java.sql.Date.valueOf(f.getDateFinf()));
-        st.setInt(6, f.getCapacitef());
-        st.setFloat(7, f.getPrixf());
-        st.setInt(8, idf);  // ID de la formation à mettre à jour
+    public void modifierFormation(Formation formation, int idf) throws SQLException {
+        String sql = "UPDATE formation SET nomf=?, dateDebutf=?, dateFinf=?, capacitef=?, prixf=?, niveauf=?, descriptionf=?, idu=? WHERE idf=?";
+        PreparedStatement statement = cnx.prepareStatement(sql);
 
-        int rowsUpdated = st.executeUpdate();
+        // Correction des indices des paramètres SQL
+        statement.setString(1, formation.getNomf());
+        statement.setDate(2, Date.valueOf(formation.getDateDebutf())); // Conversion LocalDate -> Date SQL
+        statement.setDate(2, Date.valueOf(formation.getDateFinf()));  // Assure-toi que 'formation.getDateFinf()' renvoie un java.sql.Date
+        statement.setInt(4, formation.getCapacitef());
+        statement.setFloat(5, formation.getPrixf());
+        statement.setString(6, formation.getNiveauf());
+        statement.setString(7, formation.getDescriptionf());
+        statement.setInt(8, formation.getIdu());
+        statement.setInt(9, idf);  // Utilisation correcte du paramètre 'idf' pour WHERE
+
+        int rowsUpdated = statement.executeUpdate();
         if (rowsUpdated > 0) {
-            System.out.println("Formation mise à jour avec succès !");
+            System.out.println("Compagne mise à jour avec succès !");
         } else {
-            System.out.println("Aucune formation mise à jour. Vérifiez l'ID.");
+            System.out.println("Aucune compagne mise à jour. Vérifiez l'ID.");
+        }
+
+    }
+
+
+
+
+    @Override
+    public void supprimerFormation(Formation formation, String nomFormation) throws SQLException {
+        String sql = "DELETE FROM formation WHERE nomf=?";
+        PreparedStatement st = cnx.prepareStatement(sql);
+        st.setString(1, nomFormation);
+
+        int rowsDeleted = st.executeUpdate();
+        if (rowsDeleted > 0) {
+            System.out.println("Formation supprimée avec succès !");
+        } else {
+            System.out.println("Aucune formation supprimée. Vérifiez le nom de la formation.");
         }
     }
 
-    @Override
-    public void supprimerFormation(Formation formation ,int idf) throws SQLException {
-        String sql = "DELETE FROM formation WHERE idf = ?";
-        try (PreparedStatement st = cnx.prepareStatement(sql)) {
-            st.setInt(1, idf);  // Passer l'ID de la formation
-            int rowsDeleted = st.executeUpdate();
-            if (rowsDeleted > 0) {
-                System.out.println("Formation supprimée avec succès !");
-            } else {
-                System.out.println("Aucune formation supprimée. Vérifiez l'ID.");
-            }
-        }
-    }
 
     @Override
     public List<Formation> recupererFormations() throws SQLException {
