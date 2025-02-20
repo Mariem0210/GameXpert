@@ -1,5 +1,6 @@
 package tn.esprit.controllers;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import tn.esprit.services.ServiceTournoi;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import javafx.scene.layout.StackPane;
 
 public class GestionTournoi {
 
@@ -155,6 +157,7 @@ public class GestionTournoi {
             return;
         }
         try {
+            selectedTournoi.setNomt(tfNomt.getText());
             selectedTournoi.setDescriptiont(tfDescriptiont.getText());
             selectedTournoi.setDate_debutt(dpDateDebutt.getValue());
             selectedTournoi.setDate_fint(dpDateFint.getValue());
@@ -175,17 +178,31 @@ public class GestionTournoi {
     public void refreshTournoisList() {
         cardContainer.getChildren().clear();
 
-        HBox currentRow = new HBox(10);  // Crée une ligne avec un espacement de 10px entre les cartes
-        currentRow.setAlignment(Pos.TOP_LEFT); // Alignement des cartes dans la ligne
+        HBox currentRow = new HBox(10);  // Create a row with 10px spacing between cards
+        currentRow.setAlignment(Pos.TOP_LEFT); // Align the cards in the row
 
         int cardCount = 0;
 
         for (Tournoi t : st.getAll()) {
-            // Créer un VBox pour chaque carte
-            VBox card = new VBox(10);
+
+            StackPane card = new StackPane();
             card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
 
-            // Ajouter des informations à l'intérieur de la carte
+            // Create the background image
+            ImageView backgroundImage = new ImageView();
+            backgroundImage.setFitWidth(200); // Set the width to cover the card
+            backgroundImage.setFitHeight(400); // Set the height to cover the card
+            Image image = new Image("file:C:/Users/amine debbich/IdeaProjects/gameXpert/src/main/resources/lol.jpg"); // Specify the correct path
+            backgroundImage.setImage(image);
+            backgroundImage.setOpacity(0.3); // Set the opacity to make it subtle
+
+            // Add ImageView to the StackPane (this will place it behind the content)
+            card.getChildren().add(backgroundImage);
+
+            // Create content (labels) to be displayed on top of the image
+            VBox content = new VBox(10);
+            content.setAlignment(Pos.CENTER); // Center the content in the StackPane
+
             Label nameLabel = new Label("Nom: " + t.getNomt());
             nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Cambria', serif; -fx-font-weight: bold;");
 
@@ -207,10 +224,13 @@ public class GestionTournoi {
             Label statusLabel = new Label("Statut: " + t.getStatutt());
             statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Arial', sans-serif;");
 
-            // Ajouter les étiquettes à la carte
-            card.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
+            // Add labels to the VBox (content)
+            content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
 
-            // Définir l'action lors du clic sur la carte
+            // Add VBox with labels on top of the background image in the StackPane
+            card.getChildren().add(content);
+
+            // Define the action on clicking the card
             card.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2) { // Double click
                     ouvrirGestionMatch(t);
@@ -219,24 +239,26 @@ public class GestionTournoi {
                     remplirChamps(t);
                 }
             });
-            // Ajouter la carte à la ligne actuelle
+
+            // Add the card to the current row
             currentRow.getChildren().add(card);
             cardCount++;
 
-            // Si la ligne contient 4 cartes, commencer une nouvelle ligne
+            // If the row contains 4 cards, start a new row
             if (cardCount >= 4) {
-                cardContainer.getChildren().add(currentRow);  // Ajouter la ligne complète au conteneur principal
-                currentRow = new HBox(10);  // Créer une nouvelle ligne
+                cardContainer.getChildren().add(currentRow); // Add the complete row to the main container
+                currentRow = new HBox(10);  // Create a new row
                 currentRow.setAlignment(Pos.TOP_LEFT);
-                cardCount = 0;  // Réinitialiser le compteur de cartes dans la ligne
+                cardCount = 0;  // Reset the card count in the row
             }
         }
 
-        // Ajouter la dernière ligne si elle contient moins de 4 cartes
+        // Add the last row if it contains less than 4 cards
         if (cardCount > 0) {
             cardContainer.getChildren().add(currentRow);
         }
     }
+
     private void ouvrirGestionMatch(Tournoi tournoi) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionMatch.fxml"));

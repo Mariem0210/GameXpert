@@ -3,7 +3,10 @@ package tn.esprit.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import tn.esprit.interfaces.IService;
@@ -185,52 +188,75 @@ public class GestionMatch {
             }
 
             int tournoiId = tournoiActuel.getIdt();
-            System.out.println("✅ Tournoi sélectionné IDT: " + tournoiId);
+            System.out.println("tourni selectionner: " + tournoiId);
 
             for (Match m : sm.getAll()) {
+                StackPane card = new StackPane();
+
                 if (m.getIdt() == tournoiId) { // Vérifie que le match appartient au tournoi sélectionné
-                    VBox card = new VBox(10);
+                    // Set the style for the card
                     card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
 
-                    Label team1Label = new Label("Equipe 1: " + m.getEquipe1());
-                    team1Label.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Cambria', serif; -fx-font-weight: bold;");
+                    // Add the background image (you can modify the image path or make it dynamic)
+                    ImageView backgroundImage = new ImageView();
+                    backgroundImage.setFitWidth(200); // Set the width to cover the card
+                    backgroundImage.setFitHeight(400); // Set the height to cover the card
+                    Image image = new Image("file:C:/Users/amine debbich/IdeaProjects/gameXpert/src/main/resources/lol1.jpg"); // Specify the correct path
+                    backgroundImage.setImage(image);
+                    backgroundImage.setOpacity(0.3); // Set the opacity to make it subtle
+                    card.getChildren().add(backgroundImage); // Add the image to the card
 
-                    Label team2Label = new Label("Equipe 2: " + m.getEquipe2());
-                    team2Label.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 14px; -fx-font-family: 'Arial', sans-serif;");
+                    // Create a VBox to hold the labels
+                    VBox content = new VBox(10);
+                    content.setAlignment(Pos.CENTER);
 
+                    // Create and style the label for both teams combined (Equipe1 vs Equipe2)
+                    Label teamsLabel = new Label(m.getEquipe1() + " vs " + m.getEquipe2());
+                    teamsLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-family: 'Courier New', monospace; -fx-font-size: 24px; -fx-font-weight: bold;");
+
+                    // Create the other labels (date, score, status)
                     Label dateLabel = new Label("Date: " + m.getDate_debutm());
-                    dateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Arial', sans-serif;");
+                    dateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
 
                     Label scoreLabel = new Label("Score: " + m.getScore());
-                    scoreLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Arial', sans-serif;");
+                    scoreLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
 
                     Label statusLabel = new Label("Statut: " + m.getStatus());
-                    statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Arial', sans-serif;");
+                    statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
 
-                    card.getChildren().addAll(team1Label, team2Label, dateLabel, scoreLabel, statusLabel);
+                    // Add the labels to the VBox
+                    content.getChildren().addAll(teamsLabel, dateLabel, scoreLabel, statusLabel);
 
+                    // Add the VBox to the StackPane (which contains the image and the content)
+                    card.getChildren().add(content);
+
+                    // Handle the click event on the card
                     card.setOnMouseClicked(event -> {
                         selectedMatch = m;
-                        remplirChamps(m);
+                        remplirChamps(m); // Populate the fields with the selected match's data
                     });
 
+                    // Add the card to the current row
                     currentRow.getChildren().add(card);
                     cardCount++;
 
+                    // If the row contains 4 cards, start a new row
                     if (cardCount >= 4) {
                         cardContainer.getChildren().add(currentRow);
-                        currentRow = new HBox(10);
+                        currentRow = new HBox(10); // Create a new row
                         currentRow.setAlignment(Pos.TOP_LEFT);
-                        cardCount = 0;
+                        cardCount = 0; // Reset the card count
                     }
                 }
             }
 
+            // Add the last row if it contains less than 4 cards
             if (cardCount > 0) {
                 cardContainer.getChildren().add(currentRow);
             }
         });
     }
+
 
     public void remplirChamps(Match m) {
         tfIdm.setText(String.valueOf(m.getIdm()));
