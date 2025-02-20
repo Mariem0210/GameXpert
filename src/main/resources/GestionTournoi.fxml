@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -13,8 +15,13 @@
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionTournoi">
 
     <children>
+      <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
+         <image>
+            <Image url="@game.jpg" />
+         </image>
+      </ImageView>
         <!-- Scrollable container for cards -->
-        <ScrollPane layoutX="351.0" layoutY="131.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
+        <ScrollPane layoutX="407.0" layoutY="72.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
             <content>
                 <VBox fx:id="cardContainer" prefHeight="481.0" prefWidth="714.0" spacing="10">
                     <!-- Dynamically added cards will go here -->
@@ -23,55 +30,55 @@
         </ScrollPane>
 
         <!-- Other UI components -->
-        <TextField fx:id="tfNomt" layoutX="114.0" layoutY="120.0" promptText="Nom Tournoi" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfDescriptiont" layoutX="114.0" layoutY="174.0" promptText="Description" styleClass="shadow" stylesheets="@styles.css" />
-        <DatePicker fx:id="dpDateDebutt" layoutX="87.0" layoutY="226.0" promptText="Date Début" styleClass="shadow" stylesheets="@styles.css" />
-        <DatePicker fx:id="dpDateFint" layoutX="85.0" layoutY="292.0" promptText="Date Fin" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfNbrEquipes" layoutX="113.0" layoutY="369.0" promptText="Nombre d'équipes" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfPrixt" layoutX="112.0" layoutY="421.0" promptText="Prix" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfStatutt" layoutX="111.0" layoutY="474.0" promptText="Statut" styleClass="shadow" stylesheets="@styles.css" />
+        <TextField fx:id="tfNomt" layoutX="165.0" layoutY="83.0" prefHeight="34.0" prefWidth="160.0" promptText="Nom Tournoi" styleClass="shadow" stylesheets="@styles.css" />
+        <TextField fx:id="tfDescriptiont" layoutX="120.0" layoutY="459.0" prefHeight="125.0" prefWidth="250.0" promptText="Description" styleClass="shadow" stylesheets="@styles.css" />
+        <DatePicker fx:id="dpDateDebutt" layoutX="166.0" layoutY="130.0" prefHeight="50.0" prefWidth="160.0" promptText="Date Début" styleClass="shadow" stylesheets="@styles.css" />
+        <DatePicker fx:id="dpDateFint" layoutX="163.0" layoutY="206.0" prefHeight="50.0" prefWidth="160.0" promptText="Date Fin" styleClass="shadow" stylesheets="@styles.css" />
+        <TextField fx:id="tfNbrEquipes" layoutX="165.0" layoutY="275.0" prefHeight="38.0" prefWidth="160.0" promptText="Nombre d'équipes" styleClass="shadow" stylesheets="@styles.css" />
+        <TextField fx:id="tfPrixt" layoutX="164.0" layoutY="335.0" prefHeight="39.0" prefWidth="160.0" promptText="Prix" styleClass="shadow" stylesheets="@styles.css" />
+        <TextField fx:id="tfStatutt" layoutX="165.0" layoutY="400.0" prefHeight="38.0" prefWidth="160.0" promptText="Statut" styleClass="shadow" stylesheets="@styles.css" />
 
-        <Label layoutX="31.0" layoutY="127.0" styleClass="label" text="Nom">
-            <font><Font name="Cambria" size="14.0" /></font>
+        <Label layoutX="54.0" layoutY="90.0" styleClass="label" text="Nom" textFill="#948080">
+            <font><Font name="Cambria Bold" size="18.0" /></font>
         </Label>
-        <Label layoutX="17.0" layoutY="181.0" styleClass="label" text="Description">
-            <font><Font name="Cambria" size="14.0" /></font>
+        <Label layoutX="10.0" layoutY="510.0" styleClass="label" text="Description" textFill="#948080">
+            <font><Font name="Cambria Bold" size="18.0" /></font>
         </Label>
-        <Label layoutX="15.0" layoutY="243.0" styleClass="label" text="Date Debut">
-            <font><Font name="Cambria" size="14.0" /></font>
+        <Label layoutX="39.0" layoutY="144.0" styleClass="label" text="Date Debut" textFill="#948080">
+            <font><Font name="Cambria Bold" size="18.0" /></font>
         </Label>
-        <Label layoutX="24.0" layoutY="310.0" styleClass="label" text="Date Fin">
-            <font><Font name="Cambria" size="14.0" /></font>
+        <Label layoutX="38.0" layoutY="220.0" styleClass="label" text="Date Fin" textFill="#948080">
+            <font><Font name="Cambria Bold" size="18.0" /></font>
         </Label>
-        <Label layoutY="376.0" prefHeight="18.0" prefWidth="119.0" styleClass="label" text="Nombre d'équipes">
-            <font><Font name="Cambria" size="14.0" /></font>
+        <Label layoutX="5.0" layoutY="283.0" prefHeight="22.0" prefWidth="160.0" styleClass="label" text="Nombre d'équipes" textFill="#948080">
+            <font><Font name="Cambria Bold" size="18.0" /></font>
         </Label>
-        <Label layoutX="51.0" layoutY="429.0" styleClass="label" text="Prix">
-            <font><Font name="Cambria" size="14.0" /></font>
+        <Label layoutX="38.0" layoutY="339.0" prefHeight="22.0" prefWidth="70.0" styleClass="label" text="Prix" textFill="#948080">
+            <font><Font name="Cambria" size="24.0" /></font>
         </Label>
-        <Label layoutX="46.0" layoutY="485.0" styleClass="label" text="Statut">
-            <font><Font name="Cambria" size="14.0" /></font>
+        <Label layoutX="28.0" layoutY="404.0" styleClass="label" text="Statut" textFill="#948080">
+            <font><Font name="Cambria" size="24.0" /></font>
         </Label>
 
-        <Button id="ajouterTournoi" layoutX="77.0" layoutY="553.0" mnemonicParsing="false" onAction="#ajouterTournoi" styleClass="button button-ajouter" text="Ajouter">
-            <font><Font name="Cambria" size="18.0" /></font>
+        <Button id="ajouterTournoi" layoutX="59.0" layoutY="634.0" mnemonicParsing="false" onAction="#ajouterTournoi" prefHeight="39.0" prefWidth="84.0" styleClass="button button-ajouter" text="Ajouter">
+            <font><Font name="Cambria" size="14.0" /></font>
         </Button>
 
         <HBox layoutX="664.0" layoutY="474.0" spacing="10" />
 
         <HBox alignment="CENTER" prefHeight="110.0" prefWidth="227.0">
             <children>
-                <Label text="TOURNAMENT" textFill="#878787">
+                <Label text="TOURNAMENT" textFill="#433c3c">
                     <font><Font name="Cambria Bold" size="30.0" /></font>
                 </Label>
             </children>
         </HBox>
 
-        <Button fx:id="btnModifier" layoutX="197.0" layoutY="558.0" onAction="#modifierTournoi" styleClass="edit-button" text="Modifier">
-            <font><Font name="Cambria" size="10.0" /></font>
+        <Button fx:id="btnModifier" layoutX="170.0" layoutY="634.0" onAction="#modifierTournoi" prefHeight="39.0" prefWidth="84.0" styleClass="edit-button" text="Modifier">
+            <font><Font name="Cambria" size="14.0" /></font>
         </Button>
-        <Button fx:id="btnSupprimer" layoutX="278.0" layoutY="558.0" onAction="#supprimerTournoi" styleClass="delete-button" text="Supprimer">
-            <font><Font name="Cambria" size="10.0" /></font>
+        <Button fx:id="btnSupprimer" layoutX="278.0" layoutY="634.0" onAction="#supprimerTournoi" prefHeight="39.0" prefWidth="93.0" styleClass="delete-button" text="Supprimer">
+            <font><Font name="Cambria" size="14.0" /></font>
         </Button>
 
     </children>
