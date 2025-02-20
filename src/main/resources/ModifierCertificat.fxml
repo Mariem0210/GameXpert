@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+
+<AnchorPane prefHeight="499.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ModifierCertificatController">
+    <stylesheets>
+        <URL value="@style.css" /> <!-- Lien vers le fichier CSS -->
+    </stylesheets>
+
+    <!-- Titre de la fenêtre -->
+    <Text layoutX="152.0" layoutY="56.0" styleClass="title" text="Modifier Certificat" />
+
+    <!-- Label et champ pour le nom du certificat -->
+    <Label layoutX="60.0" layoutY="79.0" styleClass="form-label" text="Nom du Certificat:" />
+    <TextField fx:id="nomCertificatField" layoutX="56.0" layoutY="112.0" prefHeight="28.0" prefWidth="194.0" promptText="Nom du Certificat" />
+
+    <!-- Label et ComboBox pour le type de certificat -->
+    <Label layoutX="60.0" layoutY="150.0" styleClass="form-label" text="Type de Certificat:" />
+    <ComboBox fx:id="typeCertificatComboBox" layoutX="56.0" layoutY="176.0" prefHeight="28.0" prefWidth="194.0" promptText="Type de Certificat">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Type 1" />
+                <String fx:value="Type 2" />
+                <String fx:value="Type 3" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <!-- Label et champ pour le score du certificat -->
+    <Label layoutX="60.0" layoutY="215.0" styleClass="form-label" text="Score:" />
+    <TextField fx:id="scoreCertificatField" layoutX="56.0" layoutY="238.0" prefHeight="28.0" prefWidth="194.0" promptText="Score" />
+
+    <!-- Label et DatePicker pour la date d'expiration -->
+    <Label layoutX="60.0" layoutY="275.0" styleClass="form-label" text="Date Expiration:" />
+    <DatePicker fx:id="dateExpirationPicker" layoutX="56.0" layoutY="295.0" prefHeight="41.0" prefWidth="194.0" promptText="Date Expiration" />
+
+    <!-- Label et ComboBox pour l'état -->
+    <Label layoutX="60.0" layoutY="345.0" styleClass="form-label" text="État:" />
+    <ComboBox fx:id="etatComboBox" layoutX="56.0" layoutY="365.0" prefHeight="28.0" prefWidth="194.0" promptText="État">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Actif" />
+                <String fx:value="Terminé" />
+                <String fx:value="Annulé" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <!-- Label et ComboBox pour la formation -->
+    <Label layoutX="300.0" layoutY="79.0" styleClass="form-label" text="Formation:" />
+    <ComboBox fx:id="formationComboBox" layoutX="296.0" layoutY="112.0" prefHeight="28.0" prefWidth="194.0" promptText="Formation">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Formation 1" />
+                <String fx:value="Formation 2" />
+                <String fx:value="Formation 3" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <!-- Label et ComboBox pour l'utilisateur -->
+    <Label layoutX="300.0" layoutY="150.0" styleClass="form-label" text="Utilisateur:" />
+    <ComboBox fx:id="utilisateurComboBox" layoutX="296.0" layoutY="176.0" prefHeight="28.0" prefWidth="194.0" promptText="Utilisateur">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Utilisateur 1" />
+                <String fx:value="Utilisateur 2" />
+                <String fx:value="Utilisateur 3" />
+            </FXCollections>
+        </items>
+    </ComboBox>
+
+    <!-- Boutons -->
+    <Button fx:id="modifierButton" layoutX="51.0" layoutY="432.0" onAction="#modifieCertificat" styleClass="button-validate" text="Valider" />
+    <Button fx:id="annulerButton" layoutX="159.0" layoutY="432.0" onAction="#fermerFenetre" styleClass="button-cancel" text="Annuler" />
+</AnchorPane>

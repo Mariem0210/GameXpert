@@ -16,4 +16,3 @@ public interface IServiceFormation<Formation> {
     //void getFormationById(int id) throws SQLException;
 }
 
-;

@@ -15,7 +15,8 @@ public class MainFX extends Application {
         try {
             // Charger le fichier FXML
            // FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFormation.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterGiveaway.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterGiveaway.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterCertificat.fxml"));
             Parent root = loader.load();
 
             // Configurer la scène
