@@ -55,29 +55,56 @@ public class AjouterGiveawayController {
     // Méthode pour ajouter un giveaway
     @FXML
     public void ajouterGiveaway(ActionEvent event) {
-        Giveaway giveaway = new Giveaway();
-        giveaway.setTitreg(titregField.getText());
-        giveaway.setDescg(descgField.getText());
+        // Vérification du titre
+        if (titregField.getText().isEmpty()) {
+            showAlert("Erreur", "Le titre ne peut pas être vide.");
+            return;
+        }
+
+        // Vérification de la description
+        if (descgField.getText().isEmpty()) {
+            showAlert("Erreur", "La description ne peut pas être vide.");
+            return;
+        }
+
+        if (descgField.getText().length() > 500) { // Exemple de limite de longueur
+            showAlert("Erreur", "La description ne peut pas dépasser 500 caractères.");
+            return;
+        }
 
         // Récupérer les dates du DatePicker
         LocalDate datedg = datedgField.getValue();
         LocalDate datefg = datefgField.getValue();
+        LocalDate today = LocalDate.now();
 
-        if (datedg != null && datefg != null) {
-            giveaway.setDatedg(datedg);
-            giveaway.setDatefg(datefg);
-        } else {
+        // Vérification des dates
+        if (datedg == null || datefg == null) {
             showAlert("Erreur", "Veuillez sélectionner les dates de début et de fin.");
             return;
         }
 
-        /*try {
-            giveaway.setIdu(Integer.parseInt(iduField.getText()));
-        } catch (NumberFormatException e) {
-            showAlert("Erreur", "L'ID utilisateur doit être un nombre valide.");
+        if (datedg.isBefore(today)) {
+            showAlert("Erreur", "La date de début ne peut pas être antérieure à aujourd'hui.");
             return;
-        }*/
+        }
 
+        if (datefg.isBefore(datedg)) {
+            showAlert("Erreur", "La date de fin ne peut pas être antérieure à la date de début.");
+            return;
+        }
+
+        // Vérification du statut
+        if (statusgComboBox.getValue() == null) {
+            showAlert("Erreur", "Veuillez sélectionner un statut.");
+            return;
+        }
+
+        // Création du giveaway avec les données validées
+        Giveaway giveaway = new Giveaway();
+        giveaway.setTitreg(titregField.getText());
+        giveaway.setDescg(descgField.getText());
+        giveaway.setDatedg(datedg);
+        giveaway.setDatefg(datefg);
         giveaway.setStatusg(statusgComboBox.getValue());
 
         // Ajouter le giveaway à la base de données

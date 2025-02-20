@@ -40,7 +40,7 @@ public class AfficherFormationController {
 
             for (Formation formation : formations) {
                 VBox formationCard = new VBox(5);
-                formationCard.setStyle("-fx-border-color: black; -fx-padding: 10px; -fx-background-color: #f4f4f4;");
+                formationCard.setStyle("-fx-border-color: black; -fx-padding: 10px; -fx-background-color: #1e1e2e;");
                 formationCard.setPrefSize(200, 250);
 
                 // Éléments de la carte
@@ -54,13 +54,65 @@ public class AfficherFormationController {
                 Label prixLabel = new Label("Prix: " + formation.getPrixf());
                 Label iduLabel = new Label("ID Utilisateur: " + formation.getIdu());
 
-                // Boutons
+                // Bouton Supprimer (effet rouge néon)
                 Button deleteButton = new Button("Supprimer");
-                deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                deleteButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #ff4e50, #c0392b);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                );
+                deleteButton.setOnMouseEntered(e -> deleteButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 1), 15, 0.7, 0, 0);" +
+                                "-fx-cursor: hand;" +
+                                "-fx-scale-x: 1.1;" +
+                                "-fx-scale-y: 1.1;"
+                ));
+                deleteButton.setOnMouseExited(e -> deleteButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #ff4e50, #c0392b);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                ));
                 deleteButton.setOnAction(event -> deleteFormation(formation));
 
+// Bouton Modifier (effet bleu néon)
                 Button modifButton = new Button("Modifier");
-                modifButton.setStyle("-fx-background-color: #6999d0; -fx-text-fill: white;");
+                modifButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #74ebd5, #6999d0);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                );
+                modifButton.setOnMouseEntered(e -> modifButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #56ccf2, #2f80ed);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 1), 15, 0.7, 0, 0);" +
+                                "-fx-cursor: hand;" +
+                                "-fx-scale-x: 1.1;" +
+                                "-fx-scale-y: 1.1;"
+                ));
+                modifButton.setOnMouseExited(e -> modifButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #74ebd5, #6999d0);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                ));
+
 
                 modifButton.setOnAction(event -> {
                     if (formation.getNomf() == null || formation.getNomf().isEmpty()) {

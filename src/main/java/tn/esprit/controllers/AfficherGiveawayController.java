@@ -42,7 +42,7 @@ public class AfficherGiveawayController {
 
             for (Giveaway giveaway : giveaways) {
                 VBox giveawayCard = new VBox(5);
-                giveawayCard.setStyle("-fx-border-color: black; -fx-padding: 10px; -fx-background-color: #f4f4f4;");
+                giveawayCard.setStyle("-fx-border-color: black; -fx-padding: 10px; -fx-background-color: #1e1e2e;");
                 giveawayCard.setPrefSize(200, 250);
 
                 // Éléments de la carte
@@ -52,18 +52,69 @@ public class AfficherGiveawayController {
                 Label dateFinLabel = new Label("Date Fin: " + giveaway.getDatefg());
                 Label statusLabel = new Label("Statut: " + giveaway.getStatusg());
 
-                // Boutons
+                // Bouton Supprimer (Effet Rouge Néon)
                 Button deleteButton = new Button("Supprimer");
-                deleteButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-                deleteButton.setOnAction(event -> deleteGiveaway(giveaway));
+                deleteButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #ff4e50, #c0392b);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                );
+                deleteButton.setOnMouseEntered(e -> deleteButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 1), 15, 0.7, 0, 0);" +
+                                "-fx-cursor: hand;" +
+                                "-fx-scale-x: 1.1;" +
+                                "-fx-scale-y: 1.1;"
+                ));
+                deleteButton.setOnMouseExited(e -> deleteButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #ff4e50, #c0392b);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(255, 0, 0, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                ));
+                deleteButton.setOnAction(event -> deleteGiveaway(giveaway)); // Méthode pour supprimer le giveaway
 
+// Bouton Modifier (Effet Bleu Néon)
                 Button modifButton = new Button("Modifier");
-                modifButton.setStyle("-fx-background-color: #6999d0; -fx-text-fill: white;");
+                modifButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #74ebd5, #6999d0);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                );
+                modifButton.setOnMouseEntered(e -> modifButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #56ccf2, #2f80ed);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 1), 15, 0.7, 0, 0);" +
+                                "-fx-cursor: hand;" +
+                                "-fx-scale-x: 1.1;" +
+                                "-fx-scale-y: 1.1;"
+                ));
+                modifButton.setOnMouseExited(e -> modifButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #74ebd5, #6999d0);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                ));
                 modifButton.setOnAction(event -> {
-                    if (giveaway.getTitreg() == null || giveaway.getTitreg().isEmpty()) {
-                        showAlert(Alert.AlertType.ERROR, "Erreur", "Le titre du giveaway est vide.");
-                        return;
-                    }
+                            if (giveaway.getTitreg() == null || giveaway.getTitreg().isEmpty()) {
+                                showAlert(Alert.AlertType.ERROR, "Erreur", "Le titre du giveaway est vide.");
+                                return;
+                            }
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Confirmation de modification");

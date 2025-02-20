@@ -1,24 +1,21 @@
 package tn.esprit.controllers;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.Giveaway;
 import tn.esprit.interfaces.GiveawayService;
 
-import java.sql.Date;
-import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class ModifierGiveawayController {
 
     @FXML
-    private TextField titreGiveawayField, descriptionGiveawayField;
+    private TextField titreGiveawayField;
+
+    @FXML
+    private TextArea descriptionGiveawayArea; // Changement ici
 
     @FXML
     private DatePicker dateDebutPicker, dateFinPicker;
@@ -38,7 +35,7 @@ public class ModifierGiveawayController {
     public void initData(Giveaway giveaway) {
         this.giveaway = giveaway;
         titreGiveawayField.setText(giveaway.getTitreg());
-        descriptionGiveawayField.setText(giveaway.getDescg());
+        descriptionGiveawayArea.setText(giveaway.getDescg()); // Utilise le TextArea
 
         // Initialisation des DatePicker
         dateDebutPicker.setValue(giveaway.getDatedg());
@@ -62,23 +59,60 @@ public class ModifierGiveawayController {
     @FXML
     private void modifieGiveaway() {
         try {
-            // Vérification des champs DatePicker et ComboBox
-            if (dateDebutPicker.getValue() == null || dateFinPicker.getValue() == null || statusComboBox.getValue() == null) {
-                showAlert(Alert.AlertType.ERROR, "Erreur", "Les dates et le statut ne peuvent pas être vides !");
+            // Vérification du titre
+            if (titreGiveawayField.getText().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Le titre ne peut pas être vide !");
+                return;
+            }
+
+            // Vérification de la description
+            if (descriptionGiveawayArea.getText().isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "La description ne peut pas être vide !");
+                return;
+            }
+
+            if (descriptionGiveawayArea.getText().length() > 500) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "La description ne peut pas dépasser 500 caractères !");
+                return;
+            }
+
+            // Vérification des dates
+            LocalDate today = LocalDate.now();
+            LocalDate dateDebut = dateDebutPicker.getValue();
+            LocalDate dateFin = dateFinPicker.getValue();
+
+            if (dateDebut == null || dateFin == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Les dates de début et de fin doivent être sélectionnées !");
+                return;
+            }
+
+            if (dateDebut.isBefore(today)) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "La date de début ne peut pas être antérieure à aujourd'hui !");
+                return;
+            }
+
+            if (dateFin.isBefore(dateDebut)) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "La date de fin ne peut pas être antérieure à la date de début !");
+                return;
+            }
+
+            // Vérification du statut
+            if (statusComboBox.getValue() == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Veuillez sélectionner un statut !");
                 return;
             }
 
             // Mise à jour des valeurs du giveaway
             giveaway.setTitreg(titreGiveawayField.getText());
-            giveaway.setDescg(descriptionGiveawayField.getText());
-            giveaway.setDatedg(dateDebutPicker.getValue());
-            giveaway.setDatefg(dateFinPicker.getValue());
+            giveaway.setDescg(descriptionGiveawayArea.getText());
+            giveaway.setDatedg(dateDebut);
+            giveaway.setDatefg(dateFin);
             giveaway.setStatusg(statusComboBox.getValue());
 
             // Appel du service pour modifier le giveaway
             giveawayService.modifierGiveaway(giveaway);
 
-            showAlert(Alert.AlertType.INFORMATION, "Succès", "Le giveaway a été modifié !");
+            showAlert(Alert.AlertType.INFORMATION, "Succès", "Le giveaway a été modifié avec succès !");
             fermerFenetre();
 
             // Déclenchement du callback après modification

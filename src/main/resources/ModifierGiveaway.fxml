@@ -1,55 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
-<?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextArea?>
 
 <AnchorPane prefHeight="499.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ModifierGiveawayController">
+    <stylesheets>
+        <URL value="@style.css" /> <!-- Lien vers le fichier CSS -->
+    </stylesheets>
 
-    <!-- Champ pour le titre du giveaway -->
-    <TextField fx:id="titreGiveawayField" layoutX="50" layoutY="50" promptText="Titre du Giveaway" />
+    <!-- Titre de la fenêtre -->
+    <Text layoutX="152.0" layoutY="56.0" styleClass="title" text="Modifier Giveaway" />
 
-    <!-- Champ pour la description -->
-    <TextField fx:id="descriptionGiveawayField" layoutX="50" layoutY="100" promptText="Description" />
+    <!-- Label et champ pour le titre du giveaway -->
+    <Label layoutX="60.0" layoutY="79.0" styleClass="form-label" text="Titre du Giveaway:" />
+    <TextField fx:id="titreGiveawayField" layoutX="56.0" layoutY="112.0" prefHeight="28.0" prefWidth="194.0" promptText="Titre du Giveaway" />
 
-    <!-- DatePicker pour la date de début -->
-    <DatePicker fx:id="dateDebutPicker" layoutX="228.0" layoutY="50.0" promptText="Date Début"/>
+    <!-- Label et champ pour la description -->
+    <Label layoutX="56.0" layoutY="150.0" styleClass="form-label" text="Description:" />
+    <TextArea fx:id="descriptionGiveawayArea" layoutX="56.0" layoutY="176.0" prefHeight="28.0" prefWidth="194.0" promptText="Description" />
 
-    <!-- DatePicker pour la date de fin -->
-    <DatePicker fx:id="dateFinPicker" layoutX="228.0" layoutY="100.0" promptText="Date Fin"/>
+    <!-- Label et DatePicker pour la date de début -->
+    <Label layoutX="55.0" layoutY="275.0" styleClass="form-label" text="Date Début:" />
+    <DatePicker fx:id="dateDebutPicker" layoutX="55.0" layoutY="295.0" prefHeight="41.0" prefWidth="194.0" promptText="Date Début" />
 
-    <!-- ComboBox pour le statut -->
-    <ComboBox fx:id="statusComboBox" layoutX="50.0" layoutY="150.0" promptText="Statut">
+    <!-- Label et DatePicker pour la date de fin -->
+    <Label layoutX="57.0" layoutY="345.0" styleClass="form-label" text="Date Fin:" />
+    <DatePicker fx:id="dateFinPicker" layoutX="57.0" layoutY="365.0" prefHeight="41.0" prefWidth="194.0" promptText="Date Fin" />
+
+    <!-- Label et ComboBox pour le statut -->
+    <Label layoutX="57.0" layoutY="215.0" styleClass="form-label" text="Statut:" />
+    <ComboBox fx:id="statusComboBox" layoutX="57.0" layoutY="238.0" prefHeight="23.0" prefWidth="194.0" promptText="Statut">
         <items>
             <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Actif"/>
-                <String fx:value="Terminé"/>
-                <String fx:value="Annulé"/>
+                <String fx:value="Actif" />
+                <String fx:value="Terminé" />
+                <String fx:value="Annulé" />
             </FXCollections>
         </items>
     </ComboBox>
 
-    <!-- Bouton pour valider les modifications -->
-    <Button fx:id="modifierButton" text="Valider" onAction="#modifieGiveaway" layoutX="415.0" layoutY="336.0"/>
-
-    <!-- Bouton pour annuler la modification -->
-    <Button fx:id="annulerButton" text="Annuler" onAction="#fermerFenetre" layoutX="315.0" layoutY="336.0"/>
-
-    <!-- Titre de la fenêtre -->
-    <Text layoutX="185.0" layoutY="27.0" text="Modifier Giveaway" />
-
+    <!-- Boutons -->
+    <Button fx:id="modifierButton" layoutX="51.0" layoutY="432.0" onAction="#modifieGiveaway" styleClass="button-validate" text="Valider" />
+    <Button fx:id="annulerButton" layoutX="159.0" layoutY="432.0" onAction="#fermerFenetre" styleClass="button-cancel" text="Annuler" />
+    <ImageView fx:id="imgpa" fitHeight="321.0" fitWidth="362.0" layoutX="275.0" layoutY="89.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@giv1.png" /> <!-- Correction ici -->
+        </image>
+    </ImageView>
 </AnchorPane>
-
