@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1000.0" styleClass="Box"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.AjouterGiveawayController">
+
+    <stylesheets>
+        <URL value="@style.css"/> <!-- Lien vers le fichier CSS -->
+    </stylesheets>
+
+    <children>
+        <!-- Titre -->
+        <Text fill="#3949da" layoutX="330.0" layoutY="60.0"
+              style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-fill: #333333;"
+              text="Gestion des Giveaways" />
+
+        <!-- Titre du Giveaway -->
+        <Label layoutX="136.0" layoutY="100.0" text="Titre du Giveaway:" />
+        <TextField fx:id="titregField" layoutX="136.0" layoutY="125.0"
+                   prefHeight="30.0" prefWidth="400.0"
+                   promptText="Entrez le titre du giveaway" />
+
+        <!-- Description -->
+        <Label layoutX="136.0" layoutY="170.0" text="Description:" />
+        <TextArea fx:id="descgField" layoutX="136.0" layoutY="195.0"
+                  prefHeight="80.0" prefWidth="400.0"
+                  promptText="Entrez une description du giveaway" />
+
+        <!-- Date de début -->
+        <Label layoutX="136.0" layoutY="290.0" text="Date de début:" />
+        <DatePicker fx:id="datedgField" layoutX="136.0" layoutY="315.0"
+                    prefHeight="30.0" prefWidth="400.0"
+                    promptText="Choisir la date de début" />
+
+        <!-- Date de fin -->
+        <Label layoutX="136.0" layoutY="360.0" text="Date de fin:" />
+        <DatePicker fx:id="datefgField" layoutX="136.0" layoutY="385.0"
+                    prefHeight="30.0" prefWidth="400.0"
+                    promptText="Choisir la date de fin" />
+
+        <!-- ID Utilisateur
+        <Label layoutX="136.0" layoutY="430.0" text="ID Utilisateur:" />
+        <TextField fx:id="iduField" layoutX="136.0" layoutY="455.0"
+                   prefHeight="30.0" prefWidth="400.0"
+                   promptText="Entrez l'ID de l'utilisateur" /> -->
+
+        <!-- Statut -->
+        <Label layoutX="136.0" layoutY="500.0" text="Statut:" />
+        <ComboBox fx:id="statusgComboBox" layoutX="136.0" layoutY="525.0"
+                  prefHeight="30.0" prefWidth="400.0"
+                  promptText="Sélectionner le statut">
+
+        </ComboBox>
+
+
+        <!-- Bouton Ajouter -->
+        <Button fx:id="addBtn" layoutX="600.0" layoutY="675.0"
+                mnemonicParsing="false" onAction="#ajouterGiveaway"
+                prefHeight="40" prefWidth="150.0"
+                styleClass="GeneralButton" text="Ajouter" />
+
+        <!-- Bouton Afficher-->
+        <Button fx:id="afficherBtn" layoutX="780.0" layoutY="675.0"
+                mnemonicParsing="false" onAction="#afficherBtn"
+                prefHeight="40" prefWidth="180.0"
+                styleClass="GeneralButton" text="Afficher la liste" />
+    </children>
+</AnchorPane>

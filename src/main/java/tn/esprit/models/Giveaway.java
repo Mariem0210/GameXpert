@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Giveaway {
     private int idg;
-    private int idu;
+    //private int idu;
     private String titreg;
     private String descg;
     private LocalDate datedg;
@@ -15,9 +15,9 @@ public class Giveaway {
     public Giveaway() {
     }
 
-    public Giveaway(int idg, int idu, String titreg, String descg, LocalDate datedg, LocalDate datefg, String statusg) {
+    public Giveaway(int idg, String titreg, String descg, LocalDate datedg, LocalDate datefg, String statusg) {
         this.idg = idg;
-        this.idu = idu;
+       // this.idu = idu;
         this.titreg = titreg;
         this.descg = descg;
         this.datedg = datedg;
@@ -25,8 +25,8 @@ public class Giveaway {
         this.statusg = statusg;
     }
 
-    public Giveaway(int idu, String titreg, String descg, LocalDate datedg, LocalDate datefg, String statusg) {
-        this.idu = idu;
+    public Giveaway( String titreg, String descg, LocalDate datedg, LocalDate datefg, String statusg) {
+        //this.idu = idu;
         this.titreg = titreg;
         this.descg = descg;
         this.datedg = datedg;
@@ -43,13 +43,13 @@ public class Giveaway {
         this.idg = idg;
     }
 
-    public int getIdu() {
+   /* public int getIdu() {
         return idu;
     }
 
     public void setIdu(int idu) {
         this.idu = idu;
-    }
+    }*/
 
     public String getTitreg() {
         return titreg;
@@ -95,7 +95,7 @@ public class Giveaway {
     public String toString() {
         return "Giveaway{" +
                 "idg=" + idg +
-                ", idu=" + idu +
+               // ", idu=" + idu +
                 ", titreg='" + titreg + '\'' +
                 ", descg='" + descg + '\'' +
                 ", datedg=" + datedg +
