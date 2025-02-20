@@ -1,16 +1,12 @@
 package tn.esprit.services;
-
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import tn.esprit.interfaces.IService;
-import tn.esprit.models.Admin;
-import tn.esprit.models.Coach;
-import tn.esprit.models.Joueur;
 import tn.esprit.models.Utilisateur;
 import tn.esprit.utils.MyDatabase;
-import java.time.LocalDate;
 
-
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +28,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
     public void add(Utilisateur utilisateur) {
         //create Qry SQL
         //execute Qry
-        String qry = "INSERT INTO utilisateur (nomu, prenomu, typeu,  mailu, mdpu, datenaissanceu, dateinscriu,numtelu) VALUES (?, ?, ?, ?, ?, ?,NOW(), ?)";
+        String qry = "INSERT INTO utilisateur (nomu, prenomu, typeu,  mailu, mdpu, datenaissanceu, dateinscriu,numtelu,photo_profilu) VALUES (?, ?, ?, ?, ?, ?,NOW(), ?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, utilisateur.getNomu());
@@ -42,6 +38,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             pstm.setString(5, utilisateur.getMdpu());
             pstm.setDate(6, java.sql.Date.valueOf(utilisateur.getDatenaissanceu()));
             pstm.setInt(7, utilisateur.getNumtelu());
+            pstm.setString(8, utilisateur.getPhoto_de_profile());
 
 
 
@@ -62,7 +59,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
 
     @Override
     public void update(Utilisateur utilisateur) {
-        String qry = "UPDATE `utilisateur` SET `nomu`=?, `prenomu`=?, `numtelu`=?, `mailu`=?, `mdpu`=?, `typeu`=?, `datenaissanceu`=?, `dateinscriu`=? WHERE `idu`=?";
+        String qry = "UPDATE `utilisateur` SET `nomu`=?, `prenomu`=?, `numtelu`=?, `mailu`=?, `mdpu`=? WHERE `idu`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, utilisateur.getNomu());
@@ -70,10 +67,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             pstm.setInt(3, utilisateur.getNumtelu());
             pstm.setString(4, utilisateur.getMailu());
             pstm.setString(5, utilisateur.getMdpu());
-            pstm.setString(6, utilisateur.getTypeu());
-            pstm.setDate(7, Date.valueOf(utilisateur.getDatenaissanceu()));
-            pstm.setDate(8, Date.valueOf(utilisateur.getDateinscriu()));
-            pstm.setInt(9, utilisateur.getIdu());
+            pstm.setInt(6, utilisateur.getIdu());
 
             pstm.executeUpdate();
         } catch (SQLException e) {
@@ -134,13 +128,20 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 Utilisateur user = new Utilisateur();
-                user.setIdu(rs.getInt("idu")); // Ensure you are using the correct column name
+                user.setIdu(rs.getInt("idu"));
+                user.setNomu(rs.getString("nomu"));
+                user.setPrenomu(rs.getString("prenomu"));
+                user.setNumtelu(rs.getInt("numtelu"));
                 user.setMailu(rs.getString("mailu"));
+                user.setMdpu(rs.getString("mdpu"));
                 user.setTypeu(rs.getString("typeu"));
-            // Assuming you have this method
-                // Set other attributes as necessary
+                user.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
+                user.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
+                user.setPhoto_de_profile(rs.getString("photo_de_profile")); // Vérifiez si c'est un chemin d'accès valide
+
                 return user;
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -222,6 +223,47 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         }
         return false;
     }
+    public List<Utilisateur> afficher() {
+        List<Utilisateur> utilisateurs = new ArrayList<>();
+        String qry = "SELECT * FROM `utilisateur` WHERE `typeu` = 'COACH' OR `typeu` = 'JOUEUR'";
+
+        try {
+            Statement stm = cnx.createStatement();
+            ResultSet rs = stm.executeQuery(qry);
+
+            while (rs.next()) {
+                Utilisateur utilisateur = new Utilisateur();
+                utilisateur.setIdu(rs.getInt("idu"));
+                utilisateur.setNomu(rs.getString("nomu"));
+                utilisateur.setPrenomu(rs.getString("prenomu"));
+                utilisateur.setNumtelu(rs.getInt("numtelu"));
+                utilisateur.setMailu(rs.getString("mailu"));
+                utilisateur.setMdpu(rs.getString("mdpu"));
+                utilisateur.setTypeu(rs.getString("typeu"));
+                utilisateur.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
+                utilisateur.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
+
+                utilisateurs.add(utilisateur);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des utilisateurs : " + e.getMessage());
+        }
+
+        return utilisateurs;
+    }
+    public Image loadImage(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            return new Image("/default-profile.png"); // Image par défaut si aucune image n'est définie
+        }
+        File file = new File(imagePath);
+        if (file.exists()) {
+            return new Image(file.toURI().toString()); // Charge l'image depuis le chemin du fichier
+        } else {
+            return new Image("/default-profile.png"); // Charge une image par défaut si le fichier n'existe pas
+        }
+    }
+
 
 }
 

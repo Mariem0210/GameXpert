@@ -1,5 +1,8 @@
 package tn.esprit.controllers;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import tn.esprit.models.Coach;
 import tn.esprit.models.Joueur;
 import tn.esprit.models.Utilisateur;
@@ -12,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -23,7 +28,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class CreateAccController implements Initializable {
-
+    @FXML
+    private TextField urlimage;
     @FXML
     private TextField nom, prenom_tf, num_telephone, email;
     @FXML
@@ -32,11 +38,22 @@ public class CreateAccController implements Initializable {
     private DatePicker birthdate;
     @FXML
     private ChoiceBox<String> Choicebox;
+    @FXML
+    private ImageView eyeclosed;
 
+    @FXML
+    private ImageView eyeclosed1;
+
+    @FXML
+    private ImageView eyeopen;
+
+    @FXML
+    private ImageView eyeopen1;
     // Champs d'erreur
     @FXML
     private TextField fieldserr, phone_err, emailinv, Emailused, passerr, weakPassword, alphabeticalErr;
-
+    @FXML
+    private ImageView Photo_de_profil;
     private final ServiceUtilisateur us = new ServiceUtilisateur();
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -51,6 +68,7 @@ public class CreateAccController implements Initializable {
         String confirmMdp = confirmPassword.getText().trim();
         LocalDate datenaissanceu = birthdate.getValue();
         String typeu = Choicebox.getValue();
+        String path = urlimage.getText();
 
         // Vérification du numéro de téléphone
         int numtelu;
@@ -62,12 +80,28 @@ public class CreateAccController implements Initializable {
         }
 
         // Vérification des champs obligatoires
-        List<String> fields = Arrays.asList(nomu, prenomu, num, mailu, mdpu, confirmMdp);
+        List<String> fields = Arrays.asList(nomu, prenomu, num, mailu, mdpu, confirmMdp,path);
         if (fields.stream().anyMatch(String::isEmpty) || datenaissanceu == null || typeu == null) {
             fieldserr.setVisible(true);
             return;
         } else {
             fieldserr.setVisible(false);
+        }
+
+        // Vérification si l'email existe déjà
+        try {
+            if (us.emailExists(mailu)) {
+                emailinv.setVisible(true);
+                emailinv.setText("Cet email est déjà utilisé !");
+                return;
+            } else {
+                emailinv.setVisible(false);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            emailinv.setVisible(true);
+            emailinv.setText("Erreur lors de la vérification de l'email.");
+            return;
         }
 
         // Vérification des erreurs
@@ -79,17 +113,14 @@ public class CreateAccController implements Initializable {
 
         // Si toutes les validations sont OK
         if (us.isValidPhoneNumber(num) && us.validateEmail(mailu) &&
-                  mdpu.equals(confirmMdp) &&
+                mdpu.equals(confirmMdp) &&
                 us.isMdp(mdpu) && us.isAlpha(nomu) && us.isAlpha(prenomu)) {
 
-             if(typeu.equals("JOUEUR")) {
-                us.add(new Joueur( nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu));
+            if(typeu.equals("JOUEUR")) {
+                us.add(new Joueur(nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu,path));
             } else {
-                us.add(new Coach( nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu));
+                us.add(new Coach(nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu,path));
             }
-
-
-
 
             // Changer de scène
             Stage stage = (Stage) nom.getScene().getWindow();
@@ -98,8 +129,10 @@ public class CreateAccController implements Initializable {
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle("Bienvenue !");
+
         }
     }
+
 
     private boolean validateFields(List<String> fields, LocalDate dateNaissance, String typeu) {
         boolean valid = true;
@@ -176,5 +209,22 @@ public class CreateAccController implements Initializable {
     void goToLoginPage(ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/Login.fxml"))));
+    }
+    @FXML
+    void UploadImage(ActionEvent event) throws IOException {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        File selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+            urlimage.setText(selectedFile.getAbsolutePath());
+            Image image = new Image(selectedFile.toURI().toString());
+            Photo_de_profil.setImage(image);
+            Photo_de_profil.setVisible(true);
+        } else {
+            System.out.println("file is not valid");
+        }
+
+
     }
 }

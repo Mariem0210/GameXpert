@@ -11,8 +11,8 @@ public final class Coach extends Utilisateur {
                  String mailu,
                  String mdpu,
                  int numtelu,
-                 LocalDate datenaissanceu) {
-        super(idu, nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu);
+                 String userType, LocalDate datenaissanceu, LocalDate dateinscriu,String photo_de_profile) {
+        super(idu, nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu,photo_de_profile);
         this.setTypeu(UserType.COACH.toString());
     }
 
@@ -22,8 +22,9 @@ public final class Coach extends Utilisateur {
                  String mailu,
                  String mdpu,
                  int numtelu,
-                 LocalDate datenaissanceu) {
-        super(nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu);
+                 LocalDate datenaissanceu,
+                 String photo_de_profile) {
+        super(nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu,photo_de_profile);
         this.setTypeu(UserType.COACH.toString());
     }
 

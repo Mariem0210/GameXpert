@@ -10,6 +10,7 @@ public class Utilisateur {
     private String mdpu;
     private static String typeu;
     private LocalDate  dateinscriu,datenaissanceu;
+    protected String photo_de_profile;
 
 
 
@@ -17,7 +18,7 @@ public class Utilisateur {
     public Utilisateur(int idu, String text, String prenomuTfText, String mailuTfText, String mdpuTfText, String typeuTfText, int numTel, LocalDate dateNaissance, LocalDate dateInscription) {
 
     }
-    public Utilisateur(int idu, String nomu, String prenomu, String mailu, String mdpu, int numtelu, LocalDate datenaissanceu) {
+    public Utilisateur(int idu, String nomu, String prenomu, String mailu, String mdpu, int numtelu, LocalDate datenaissanceu,String photo_de_profile) {
         this.idu = idu;
         this.nomu = nomu;
         this.prenomu = prenomu;
@@ -26,10 +27,11 @@ public class Utilisateur {
         this.numtelu = numtelu;
         this.datenaissanceu = datenaissanceu;
         this.dateinscriu = LocalDate.now();
+        this.photo_de_profile = photo_de_profile;
     }
 
     // Constructeur sans ID
-    public Utilisateur(String nomu, String prenomu, String mailu, String mdpu,int numtelu, LocalDate datenaissanceu) {
+    public Utilisateur(String nomu, String prenomu, String mailu, String mdpu,int numtelu, LocalDate datenaissanceu,String photo_de_profile) {
         this.nomu = nomu;
         this.prenomu = prenomu;
         this.mailu = mailu;
@@ -37,6 +39,7 @@ public class Utilisateur {
         this.numtelu = numtelu;
         this.datenaissanceu = datenaissanceu;
         this.dateinscriu = LocalDate.now();
+        this.photo_de_profile = photo_de_profile;
     }
 
 
@@ -47,7 +50,7 @@ public class Utilisateur {
     }
 
     public Utilisateur() {
-
+        
     }
 
 
@@ -61,6 +64,7 @@ public class Utilisateur {
     public static String getTypeu() { return typeu; }
     public LocalDate getDatenaissanceu() { return datenaissanceu; }
     public LocalDate getDateinscriu() { return dateinscriu; }
+    public String getPhoto_de_profile() { return photo_de_profile; }
 
     // Setters
     public void setIdu(int idu) { this.idu = idu; }
@@ -72,6 +76,7 @@ public class Utilisateur {
     public void setTypeu(String typeu) { this.typeu = typeu; }
     public void setDatenaissanceu(LocalDate datenaissanceu) { this.datenaissanceu = datenaissanceu; }
     public void setDateinscriu(LocalDate dateinscriu) { this.dateinscriu = dateinscriu; }
+    public void setPhoto_de_profile(String Photo_de_profile) { this.photo_de_profile = Photo_de_profile; }
 
     // Affichage de l'utilisateur
     @Override

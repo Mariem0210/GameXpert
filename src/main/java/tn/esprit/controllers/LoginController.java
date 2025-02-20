@@ -67,6 +67,8 @@ public class LoginController {
             // Load dashboard based on user type
             Utilisateur user = us.getUser(userid);
             if (user != null && "ADMIN".equals(user.getTypeu())) {
+
+
                 Stage stage = (Stage) mail_tf.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashbord.fxml"));
                 Parent root = loader.load();
@@ -76,11 +78,11 @@ public class LoginController {
 
             } else {
                 Stage stage = (Stage) mail_tf.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashbord.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePage.fxml"));
                 Parent root = loader.load();
                 Scene scene = new Scene(root);
                 stage.setScene(scene);
-                stage.setTitle("AdminDashbord");
+                stage.setTitle("gameXpert");
 
             }
 

@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AdminDashboardController implements Initializable {
@@ -64,8 +65,8 @@ public class AdminDashboardController implements Initializable {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {UserType.setText(currentUser.getTypeu().toString());
-        usernameOld.setText(currentUser.getNomu());
+    public void initialize(URL url, ResourceBundle resourceBundle) {UserType.setText(currentUser.getTypeu());
+
 
     }
     @FXML
@@ -108,7 +109,7 @@ public class AdminDashboardController implements Initializable {
     @FXML
     void goToUsers(ActionEvent event) throws IOException {
         Stage stage = (Stage) UsersButton.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource("/AdminDashboardUsers.fxml"));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/AdminDashbordUsers.fxml")));
         Scene scene = new Scene(root);
         stage.setScene(scene);stage.setTitle("Users management");
     }
