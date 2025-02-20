@@ -35,7 +35,7 @@ public class GestionTournoi {
     @FXML
     public void initialize() {
         refreshTournoisList();
-
+        addInputRestrictions();
         // Add listener to detect selected card click
         cardContainer.setOnMouseClicked(event -> {
             if (selectedTournoi != null) {
@@ -43,9 +43,26 @@ public class GestionTournoi {
             }
         });
     }
+    private void addInputRestrictions() {
+        // Restrict tfNbrEquipes to positive integers only
+        tfNbrEquipes.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                tfNbrEquipes.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
 
+        // Restrict tfPrixt to positive decimal numbers
+        tfPrixt.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*\\.?\\d*")) {
+                tfPrixt.setText(oldValue);
+            }
+        });
+    }
     @FXML
     public void ajouterTournoi(ActionEvent actionEvent) {
+        if (!validateFields()) {
+            return;
+        }
         try {
             Tournoi t = new Tournoi();
             t.setNomt(tfNomt.getText());
@@ -64,7 +81,38 @@ public class GestionTournoi {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
+    private boolean validateFields() {
+        if (tfNomt.getText().isEmpty() || tfDescriptiont.getText().isEmpty() ||
+                dpDateDebutt.getValue() == null || dpDateFint.getValue() == null ||
+                tfNbrEquipes.getText().isEmpty() || tfPrixt.getText().isEmpty() || tfStatutt.getText().isEmpty()) {
+            showAlert("Erreur", "Tous les champs doivent être remplis.", Alert.AlertType.ERROR);
+            return false;
+        }
 
+        try {
+            int nbrEquipes = Integer.parseInt(tfNbrEquipes.getText());
+            if (nbrEquipes <= 0) {
+                showAlert("Erreur", "Le nombre d'équipes doit être un entier positif.", Alert.AlertType.ERROR);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le nombre d'équipes doit être un entier positif.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        try {
+            float prix = Float.parseFloat(tfPrixt.getText());
+            if (prix < 0) {
+                showAlert("Erreur", "Le prix doit être un nombre positif.", Alert.AlertType.ERROR);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le prix doit être un nombre valide.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        return true;
+    }
     @FXML
     private void supprimerTournoi(ActionEvent event) {
         String selectedTournoiInfo = selectedTournoi != null ? selectedTournoi.getNomt() : null;
@@ -102,7 +150,10 @@ public class GestionTournoi {
             showAlert("Erreur", "Veuillez sélectionner un tournoi à modifier.", Alert.AlertType.ERROR);
             return;
         }
-
+        if (!validateFields())
+        {
+            return;
+        }
         try {
             selectedTournoi.setDescriptiont(tfDescriptiont.getText());
             selectedTournoi.setDate_debutt(dpDateDebutt.getValue());
