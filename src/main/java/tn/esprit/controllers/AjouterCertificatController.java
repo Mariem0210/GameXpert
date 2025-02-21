@@ -8,10 +8,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.Certificat;
+import tn.esprit.models.Formation;
 import tn.esprit.interfaces.CertificatService;
+import tn.esprit.utils.MyDatabase;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 
 public class AjouterCertificatController {
@@ -34,6 +36,8 @@ public class AjouterCertificatController {
     private Button afficherBtn;
 
     private CertificatService certificatService = new CertificatService();
+    @FXML
+    private Formation formation; // Stocke la formation sélectionnée
 
     @FXML
     public void initialize() {
@@ -44,6 +48,7 @@ public class AjouterCertificatController {
     @FXML
     public void ajouterCertificat(ActionEvent event) {
         try {
+            // Vérification des champs
             if (nomcField.getText().isEmpty() || typecComboBox.getValue() == null || scorecField.getText().isEmpty()
                     || etatcComboBox.getValue() == null || dateExpirationcField.getValue() == null
                     || idfField.getText().isEmpty() || iduField.getText().isEmpty()) {
@@ -52,9 +57,9 @@ public class AjouterCertificatController {
             }
 
             int score;
-            int idf;
             int idu;
 
+            // Validation du score
             try {
                 score = Integer.parseInt(scorecField.getText());
                 if (score < 0 || score > 100) {
@@ -66,33 +71,53 @@ public class AjouterCertificatController {
                 return;
             }
 
+            // Conversion de l'ID de formation en int
+            int idf;
             try {
-                idf = Integer.parseInt(idfField.getText());
-                idu = Integer.parseInt(iduField.getText());
-                if (idf <= 0 || idu <= 0) {
-                    showAlert(Alert.AlertType.ERROR, "Erreur d'ID", "Les ID doivent être des nombres positifs.");
-                    return;
-                }
+                idf = Integer.parseInt(idfField.getText().trim());
             } catch (NumberFormatException e) {
-                showAlert(Alert.AlertType.ERROR, "Erreur de format", "Veuillez entrer des nombres valides pour les ID.");
+                showAlert(Alert.AlertType.ERROR, "Erreur d'ID", "L'ID de la formation doit être un nombre valide.");
                 return;
             }
 
+
+            // Validation de l'ID utilisateur
+            try {
+                idu = Integer.parseInt(iduField.getText());
+                if (idu <= 0) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur d'ID", "L'ID Utilisateur doit être un nombre positif.");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                showAlert(Alert.AlertType.ERROR, "Erreur de format", "Veuillez entrer un nombre valide pour l'ID User.");
+                return;
+            }
+
+            // Validation de la date d'expiration
             LocalDate dateExpirationc = dateExpirationcField.getValue();
             if (dateExpirationc.isBefore(LocalDate.now())) {
                 showAlert(Alert.AlertType.ERROR, "Erreur de date", "La date d'expiration ne peut pas être dans le passé.");
                 return;
             }
 
+            // Récupération du nom de la formation
+            String nomFormation = getNomFormationById(idf);
+            if (nomFormation == null) {
+                showAlert(Alert.AlertType.ERROR, "Erreur", "Aucune formation trouvée avec cet ID.");
+                return;
+            }
+
+            // Création du certificat
             Certificat certificat = new Certificat();
             certificat.setNomc(nomcField.getText());
             certificat.setTypec(typecComboBox.getValue());
             certificat.setScorec(score);
-            certificat.setEtatc(etatcComboBox.getValue()); // Utiliser la valeur sélectionnée dans le ComboBox
+            certificat.setEtatc(etatcComboBox.getValue());
             certificat.setDateExpirationc(dateExpirationc);
-            certificat.setIdf(idf);
+            certificat.setIdf(idf); // ID de formation en int
             certificat.setIdu(idu);
 
+            // Ajouter le certificat
             certificatService.add(certificat);
 
             showAlert(Alert.AlertType.INFORMATION, "Succès", "Certificat ajouté avec succès !");
@@ -102,6 +127,33 @@ public class AjouterCertificatController {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Une erreur est survenue : " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+
+
+    private String getNomFormationById(int idf) {
+        String nomFormation = null;
+        try {
+            // Connexion à la base de données
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/gamexpert", "root", "");
+            Statement stmt = cnx.createStatement();
+            // Requête SQL pour récupérer le nom de la formation
+            ResultSet rs = stmt.executeQuery("SELECT nomf FROM formation WHERE idf = " + idf);
+
+            // Vérifier si une formation avec l'ID donné existe
+            if (rs.next()) {
+                nomFormation = rs.getString("nomf"); // Récupérer le nom de la formation
+            }
+
+            // Fermer les ressources
+            rs.close();
+            stmt.close();
+            cnx.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur de base de données", "Impossible de charger le nom de la formation.");
+        }
+        return nomFormation;
     }
 
 
@@ -137,4 +189,16 @@ public class AjouterCertificatController {
             showAlert(Alert.AlertType.ERROR, "Erreur", "Erreur lors du chargement de l'interface AfficherCertificats.fxml : " + e.getMessage());
         }
     }
+
+    // Méthode pour recevoir la formation
+  /* public void setFormation(Formation formation) {
+        this.formation = formation;
+        idfField.setText(" " + formation.getNomf());
+    }*/
+    public void setFormation(Formation formation) {
+        this.formation = formation;
+        idfField.setText(String.valueOf(formation.getIdf())); // Passer l'ID de la formation
+    }
+
+
 }

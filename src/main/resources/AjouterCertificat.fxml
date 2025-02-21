@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -6,7 +8,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
-<?import java.net.URL?>
 
 <AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1000.0" styleClass="Box" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AjouterCertificatController">
 
@@ -24,7 +25,7 @@
 
         <!-- Type du Certificat -->
         <Label layoutX="75.0" layoutY="169.0" text="Type de Certificat:" />
-        <ComboBox fx:id="typecComboBox" layoutX="75.0" layoutY="194.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir le type du certificat"/>
+        <ComboBox fx:id="typecComboBox" layoutX="75.0" layoutY="194.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir le type du certificat" />
 
         <!-- Score -->
         <Label layoutX="75.0" layoutY="239.0" text="Score:" />
@@ -38,13 +39,20 @@
         <Label layoutX="75.0" layoutY="379.0" text="Date d'expiration:" />
         <DatePicker fx:id="dateExpirationcField" layoutX="75.0" layoutY="404.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date d'expiration" />
 
-        <!-- ID Formation -->
-        <Label layoutX="75.0" layoutY="449.0" text="ID Formation:" />
+
+        <Label layoutX="75.0" layoutY="449.0" text="Nom Formation" />
         <TextField fx:id="idfField" layoutX="75.0" layoutY="474.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez l'ID de la formation" />
 
-        <!-- ID Utilisateur -->
-        <Label layoutX="75.0" layoutY="519.0" text="ID Utilisateur:" />
-        <TextField fx:id="iduField" layoutX="75.0" layoutY="544.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez l'ID de l'utilisateur" />
+        <!-- ID Utilisateur-->
+        <Label layoutX="70.0" layoutY="518.0" text="Coach:" />
+        <TextField fx:id="iduField" layoutX="75.0" layoutY="544.0" prefHeight="30.0" prefWidth="400.0" />
+
+
+        <!-- <Label layoutX="75.0" layoutY="451.0" text="Nom Formation:" />
+         <TextField fx:id="nomFormationLabel" layoutX="75.0" layoutY="479.0" prefHeight="30.0" prefWidth="400.0" />-->
+
+         <!--<Label fx:id="nomFormationLabel" text="Formation: " style="-fx-font-size: 16px; -fx-font-weight: bold;" />-->
+
 
         <!-- Bouton Ajouter -->
         <Button fx:id="addBtn" layoutX="75.0" layoutY="594.0" mnemonicParsing="false" onAction="#ajouterCertificat" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Ajouter" />

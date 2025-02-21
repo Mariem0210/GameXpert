@@ -12,6 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tn.esprit.models.Formation;
 import tn.esprit.interfaces.FormationService;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,6 +24,8 @@ import java.util.Optional;
 public class AfficherFormationController {
     @FXML
     private TilePane formationTilePane;
+    @FXML
+    private Button certificatButton;
 
     private FormationService formationService = new FormationService();
 
@@ -55,6 +60,38 @@ public class AfficherFormationController {
                 Label iduLabel = new Label("ID Utilisateur: " + formation.getIdu());
 
                 // Bouton Supprimer (effet rouge néon)
+                // Bouton Certificat
+                Button certificatButton = new Button("Certificat");
+                certificatButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #8e44ad, #663399);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(138, 43, 226, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                );
+                certificatButton.setOnMouseEntered(e -> certificatButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #9b59b6, #8e44ad);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(138, 43, 226, 1), 15, 0.7, 0, 0);" +
+                                "-fx-cursor: hand;" +
+                                "-fx-scale-x: 1.1;" +
+                                "-fx-scale-y: 1.1;"
+                ));
+                certificatButton.setOnMouseExited(e -> certificatButton.setStyle(
+                        "-fx-background-color: linear-gradient(to bottom, #8e44ad, #663399);" +
+                                "-fx-text-fill: white;" +
+                                "-fx-background-radius: 8;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-effect: dropshadow(gaussian, rgba(138, 43, 226, 0.7), 10, 0.5, 0, 0);" +
+                                "-fx-cursor: hand;"
+                ));
+
+// Action lors du clic sur le bouton "Certificat"
+                certificatButton.setOnAction(event -> ouvrirFormulaireCertificat(formation));
+
                 Button deleteButton = new Button("Supprimer");
                 deleteButton.setStyle(
                         "-fx-background-color: linear-gradient(to bottom, #ff4e50, #c0392b);" +
@@ -150,9 +187,9 @@ public class AfficherFormationController {
 
                 // Ajouter les éléments à la carte
                 formationCard.getChildren().addAll(
-                         nomLabel, descriptionLabel, niveauLabel, dateDebutLabel,
+                        nomLabel, descriptionLabel, niveauLabel, dateDebutLabel,
                         dateFinLabel, capaciteLabel, prixLabel, iduLabel,
-                        deleteButton, modifButton
+                        deleteButton, modifButton , certificatButton
                 );
 
                 formationTilePane.getChildren().add(formationCard);
@@ -189,4 +226,27 @@ public class AfficherFormationController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    private void ouvrirFormulaireCertificat(Formation formation) {
+        try {
+            // Charger l'interface AjouterCertificat.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterCertificat.fxml"));
+            Parent root = loader.load();
+
+            // Passer les données de la formation au contrôleur du certificat
+            AjouterCertificatController controller = loader.getController();
+            controller.setFormation(formation); // Méthode à créer dans AjouterCertificatController
+
+            // Créer une nouvelle scène
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Ajout Certificat - " + formation.getNomf());
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible d'ouvrir le formulaire de certificat.");
+        }
+    }
+
 }
