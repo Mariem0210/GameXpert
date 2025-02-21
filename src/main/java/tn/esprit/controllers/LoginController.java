@@ -34,68 +34,84 @@ public class LoginController {
 
     ServiceUtilisateur us = new ServiceUtilisateur();
 
+
     @FXML
     void Checklogin(ActionEvent event) throws SQLException, IOException {
         String mailu = mail_tf.getText().trim();
-        String mdpu = mdp_tf.getText().trim(); // Assuming mdp_tf is your PasswordField
+        String mdpu = mdp_tf.getText().trim();
 
-        // List of fields to check for emptiness
-        List<String> fields = new ArrayList<>(Arrays.asList(mailu, mdpu));
-        if (!us.areFieldsNotEmpty(fields)) {
+        if (mailu.isEmpty() || mdpu.isEmpty()) {
             fieldserr.setVisible(true);
-            return; // Exit the method if fields are empty
+            return;
         } else {
             fieldserr.setVisible(false);
         }
 
-        // Retrieve the user ID based on the email
+        // Récupérer l'ID de l'utilisateur
         int userid = us.getUserId(mailu);
+        System.out.println("UserID récupéré: " + userid);
+
         if (userid == -1) {
-            System.out.println("Email not found");
-            errorField.setText("Email not found");
+            System.out.println("Email non trouvé !");
+            errorField.setText("Email non trouvé");
             errorField.setVisible(true);
             return;
         }
 
-        // Verify login credentials
+        // Vérifier le mot de passe
         if (us.verifierLogin(mailu, mdpu)) {
-            System.out.println("Login successful");
+            System.out.println("Connexion réussie");
 
-            // User is logged in, proceed to load the appropriate dashboard
+            // Récupérer les infos de l'utilisateur
             UserDataManager.getInstance().setIdu(userid);
-
-            // Load dashboard based on user type
             Utilisateur user = us.getUser(userid);
-            if (user != null && "ADMIN".equals(user.getTypeu())) {
+            System.out.println("Utilisateur récupéré: " + user);
 
-
-                Stage stage = (Stage) mail_tf.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashbord.fxml"));
-                Parent root = loader.load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setTitle("AdminDashbord");
-
-            } else {
-                Stage stage = (Stage) mail_tf.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/HomePage.fxml"));
-                Parent root = loader.load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.setTitle("gameXpert");
-
+            if (user == null) {
+                System.out.println("Erreur : utilisateur introuvable !");
+                errorField.setText("Erreur interne");
+                errorField.setVisible(true);
+                return;
             }
 
-            // Hide any error fields and show logged in message
+            // Vérifier le type de l'utilisateur
+            String userType = user.getTypeu();
+            System.out.println("Type utilisateur: " + userType);
+
+            String fxmlFile;
+            String title;
+
+            if ("ADMIN".equals(userType)) {
+                fxmlFile = "/AdminDashbord.fxml";
+                title = "Admin Dashboard";
+            } else if ("JOUEUR".equals(userType) || "COACH".equals(userType)) {
+                fxmlFile = "/HomePage.fxml";
+                title = "GameXpert";
+            } else {
+                System.out.println("Type d'utilisateur inconnu !");
+                errorField.setText("Accès refusé");
+                errorField.setVisible(true);
+                return;
+            }
+
+            // Changer de page
+            Stage stage = (Stage) mail_tf.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle(title);
+
             errorField.setVisible(false);
             loggedinfield.setVisible(true);
         } else {
-            System.out.println("Invalid login");
-            errorField.setText("Invalid email or password");
+            System.out.println("Login invalide !");
+            errorField.setText("Email ou mot de passe incorrect");
             errorField.setVisible(true);
             loggedinfield.setVisible(false);
         }
     }
+
 
     // Method to load a new scene
     private void loadScene(String fxmlPath, String title) throws IOException {

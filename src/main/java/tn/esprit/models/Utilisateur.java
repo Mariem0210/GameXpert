@@ -3,6 +3,7 @@ package tn.esprit.models;
 import java.time.LocalDate;
 
 public class Utilisateur {
+
     private int idu, numtelu;
     private String nomu;
     private String prenomu;
@@ -93,4 +94,6 @@ public class Utilisateur {
                 ", dateinscriu=" + dateinscriu +
                 '}';
     }
+
+
 }

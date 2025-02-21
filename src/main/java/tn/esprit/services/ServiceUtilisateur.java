@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 public class ServiceUtilisateur implements IService<Utilisateur> {
     private Connection cnx;
+    private String imagePath;
 
 
     public ServiceUtilisateur() {
@@ -137,7 +138,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
                 user.setTypeu(rs.getString("typeu"));
                 user.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
                 user.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
-                user.setPhoto_de_profile(rs.getString("photo_de_profile")); // Vérifiez si c'est un chemin d'accès valide
+
 
                 return user;
             }
@@ -252,17 +253,15 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
 
         return utilisateurs;
     }
-    public Image loadImage(String imagePath) {
-        if (imagePath == null || imagePath.isEmpty()) {
-            return new Image("/default-profile.png"); // Image par défaut si aucune image n'est définie
-        }
-        File file = new File(imagePath);
-        if (file.exists()) {
-            return new Image(file.toURI().toString()); // Charge l'image depuis le chemin du fichier
-        } else {
-            return new Image("/default-profile.png"); // Charge une image par défaut si le fichier n'existe pas
-        }
-    }
+    public  Image loadImage(String filePath) {
+        try {
+            File file = new File(filePath);
+            return new Image(file.toURI().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }}
+
 
 
 }

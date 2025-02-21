@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -55,20 +56,29 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private Label usernameOld;
-    private UserDataManager userDataManager = UserDataManager.getInstance();
+    private final UserDataManager userDataManager = UserDataManager.getInstance();
     private int CurrentUserId = userDataManager.getIdu();
     ServiceUtilisateur us=new ServiceUtilisateur();
 
     Utilisateur currentUser = us.getUser(CurrentUserId);
+    private String imagePath;
 
     public AdminDashboardController() throws SQLException {
     }
 
+
+
+
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {UserType.setText(currentUser.getTypeu());
-
-
+    public void initialize(URL url, ResourceBundle resourceBundle) {UserType.setText(currentUser.getTypeu().toString());
+        usernameOld.setText(currentUser.getMailu());
+        Image photo_profile=us.loadImage(currentUser.getPhoto_de_profile());
+        photoProfile.setImage(photo_profile);
     }
+
+
+
+
     @FXML
     void LogOut(ActionEvent event) throws IOException {
         userDataManager.logout();
