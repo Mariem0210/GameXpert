@@ -1,23 +1,87 @@
-/* Style général */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+.transparent{
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.text-field, .date-picker {
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+.right-bar{
+    -fx-background-color: #D3D3D3;
+}
+.shadow{
+    -fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+.text-field, .date-picker {
+    -fx-border-radius: 5px;
+    -fx-padding: 8px;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 5px;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-padding: 15px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
 .root {
     -fx-background-color: #1e1e2e;
-    -fx-font-family: "Arial";
+    -fx-padding: 20px;
 }
-
-/* Style des labels */
-.label {
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
+.card {
+    -fx-background-color: #2a2a3d;
+    -fx-border-color: #ffcc00;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-min-width: 220px;
+    -fx-max-width: 250px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
+    -fx-transition: all 0.3s ease-in-out;
 }
-
-/* Style du titre */
-.title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #ffcc00;
+#cardContainer {
+    -fx-background-color: #252538;
+    -fx-padding: 15px;
+    -fx-border-color: #ffcc00;
+    -fx-border-radius: 10px;
 }
-
-/* Style des champs de texte */
+.card:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
+}
 .text-field, .date-picker {
     -fx-background-color: #2a2a3d;
     -fx-text-fill: white;
@@ -25,110 +89,12 @@
     -fx-border-radius: 5px;
     -fx-padding: 5px;
 }
-
-/* Style des boutons */
-.button {
-    -fx-background-radius: 5px;
-    -fx-font-size: 14px;
-    -fx-padding: 8px 16px;
-}
-
-.button-ajouter {
+#btnAjouter {
     -fx-background-color: #ff5722;
-    -fx-text-fill: white;
 }
-
-.button-afficher {
+#btnAfficher {
     -fx-background-color: #03a9f4;
-    -fx-text-fill: white;
 }
-
-/* Style du FlowPane contenant les cartes */
-#cardContainer {
-    -fx-background-color: #252538;
-    -fx-padding: 15px;
-    -fx-border-radius: 10px;
-    -fx-border-color: #ffcc00;
-}
-
-
-/*.card {
-    -fx-background-color: #0073e6;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-min-width: 200px;
-    -fx-max-width: 250px;
-}
-
-
-.card Label, .card Text {
-    -fx-text-fill: black !important;
-}*/
-.card {
-    -fx-background-color: #1e1e2e;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-min-width: 200px;
-    -fx-max-width: 250px;
-}
-
-.card Label {
-    -fx-text-fill: white; /* Texte en blanc */
-    -fx-font-size: 14px;
-}
-
-.product-card {
-    -fx-padding: 10px;
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d1d1d1;
-    -fx-border-radius: 10px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 0);
-    -fx-alignment: center;
-}
-
-.product-title {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}
-
-.product-description {
-    -fx-font-size: 12px;
-    -fx-text-fill: gray;
-}
-
-.product-price {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #27ae60;
-}
-
-.delete-button {
-    -fx-background-color: #e74c3c;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-}
-.table-view {
-    -fx-background-color: #1e1e2e;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 5px;
-}
-
-.table-column {
-    -fx-alignment: CENTER;
-    -fx-font-size: 14px;
-    -fx-text-fill: white;
-    -fx-background-color: #252538;
-}
-
-.table-row-cell {
-    -fx-background-color: #2a2a3d;
-    -fx-text-fill: white;
-}
-
-.table-row-cell:selected {
-    -fx-background-color: #ffcc00;
-    -fx-text-fill: black;
-    -fx-font-weight: bold;
+.button:hover {
+    -fx-opacity: 0.8;
 }

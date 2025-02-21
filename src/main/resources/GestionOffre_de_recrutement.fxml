@@ -30,7 +30,6 @@
     <Button fx:id="btnAjouter" layoutX="124.0" layoutY="480.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-ajouter" text="Ajouter" onAction="#ajouterOffre"/>
     <Button fx:id="btnModifier" layoutX="214.0" layoutY="480.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-modifier" text="Modifier" onAction="#modifierOffre"/>
     <Button fx:id="btnSupprimer" layoutX="304.0" layoutY="480.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-supprimer" text="Supprimer" onAction="#supprimerOffre"/>
-    <Button fx:id="btnAfficher" layoutX="394.0" layoutY="480.0" mnemonicParsing="false" styleClass="button button-afficher" text="Afficher" onAction="#refreshOffresList" />
 
     <!-- Section Offres Disponibles -->
     <Label layoutX="614.0" layoutY="83.0" text="Liste des Offres Disponibles" />
