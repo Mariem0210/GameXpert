@@ -28,7 +28,6 @@
             </content>
         </ScrollPane>
 
-        <!-- TextFields for Match Input -->
         <TextField fx:id="tfIdm" layoutX="114.0" layoutY="46.0" managed="false" promptText="ID Match" styleClass="shadow" visible="false" />
         <TextField fx:id="tfIdt" layoutX="114.0" layoutY="90.0" managed="false" promptText="ID Tournoi" styleClass="shadow" visible="false" />
         <TextField fx:id="tfEquipe1" layoutX="114.0" layoutY="120.0" prefHeight="30.0" prefWidth="155.0" promptText="Équipe 1" styleClass="shadow" />
@@ -54,7 +53,6 @@
             <font><Font name="Cambria" size="24.0" /></font>
         </Label>
 
-        <!-- Buttons for adding, modifying, and deleting matches -->
         <Button id="ajouterMatch" layoutX="40.0" layoutY="526.0" mnemonicParsing="false" onAction="#ajouterMatch" prefHeight="39.0" prefWidth="86.0" styleClass="button button-ajouter" text="Ajouter">
             <font><Font name="Cambria" size="14.0" /></font>
         </Button>
