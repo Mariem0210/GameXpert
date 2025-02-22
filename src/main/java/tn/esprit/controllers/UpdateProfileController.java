@@ -37,6 +37,8 @@ public class UpdateProfileController implements Initializable {
 
     public TextField passer;
     @FXML
+    public ImageView photoProfile;
+    @FXML
     private Button CoursesButton;
 
     @FXML
@@ -175,6 +177,8 @@ public class UpdateProfileController implements Initializable {
             email.setText(currentUser.getMailu() != null ? currentUser.getMailu() : "");
             UserType.setText(currentUser.getTypeu() != null ? currentUser.getTypeu().toString() : "");
             old_email = currentUser.getMailu();
+            Image photo_profile=us.loadImage(currentUser.getPhoto_de_profile());
+            photoProfile.setImage(photo_profile);
         }
     }
 

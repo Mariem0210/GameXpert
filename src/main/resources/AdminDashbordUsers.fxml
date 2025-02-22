@@ -10,6 +10,7 @@
 
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
 <AnchorPane prefHeight="780.0" prefWidth="1430.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AdminDashbordUsersController">
     <children>
         <ScrollPane layoutX="351.0" layoutY="131.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
@@ -59,6 +60,11 @@
         </AnchorPane>
         <AnchorPane layoutX="1.0" layoutY="-1.0" prefHeight="90.0" prefWidth="1435.0" style="-fx-border-color: #ffffff;">
             <children>
+                <AnchorPane layoutX="1166.0" layoutY="7.0" prefHeight="75.0" prefWidth="83.0" style="-fx-border-color: Black;">
+                    <children>
+                        <ImageView fx:id="photoProfile" fitHeight="59.0" fitWidth="68.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true" />
+                    </children>
+                </AnchorPane>
                 <AnchorPane layoutX="1166.0" layoutY="7.0" prefHeight="75.0" prefWidth="83.0" style="-fx-border-color: Black;" />
                 <Label fx:id="usernameOld" layoutX="1257.0" layoutY="14.0" prefHeight="26.0" prefWidth="94.0">
                     <font>

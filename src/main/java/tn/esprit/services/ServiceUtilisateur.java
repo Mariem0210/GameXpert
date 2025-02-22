@@ -138,6 +138,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
                 user.setTypeu(rs.getString("typeu"));
                 user.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
                 user.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
+                user.setPhoto_de_profile(rs.getString("photo_profilu"));
 
 
                 return user;
@@ -244,6 +245,9 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
                 utilisateur.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
                 utilisateur.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
 
+                // Affichage dans la console pour vérifier les données récupérées
+                System.out.println("Utilisateur : " + utilisateur.getNomu() + " | Type : " + utilisateur.getTypeu());
+
                 utilisateurs.add(utilisateur);
             }
 
@@ -253,6 +257,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
 
         return utilisateurs;
     }
+
     public  Image loadImage(String filePath) {
         try {
             File file = new File(filePath);

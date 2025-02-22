@@ -1,6 +1,8 @@
 package tn.esprit.controllers;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import tn.esprit.services.UserDataManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -30,15 +32,24 @@ public class AdminDashbordUsersController implements Initializable {
     @FXML
     public Button logoutButton;
     @FXML
+    public Label usernameOld;
+    @FXML
+    public Label UserType;
+    @FXML
+    public ImageView photoProfile;
+    @FXML
     private VBox cardContainers;
     @FXML
-    private UserDataManager userDataManager = UserDataManager.getInstance();
+    private final UserDataManager userDataManager = UserDataManager.getInstance();
     @FXML
     private Button btnSupprimer; // Assure-toi que le bouton est bien lié à ton fichier FXML
     @FXML
     private int CurrentUserId = userDataManager.getIdu();
     Utilisateur currentUser = su.getUser(CurrentUserId);
-    private Utilisateur selectedUtilisateur = null;
+    ServiceUtilisateur us=new ServiceUtilisateur();
+    private final Utilisateur selectedUtilisateur = null;
+
+
 
 
     @FXML
@@ -49,7 +60,12 @@ public class AdminDashbordUsersController implements Initializable {
         currentRow.setAlignment(Pos.TOP_LEFT);
         int cardCount = 0;
 
-        for (Utilisateur u : su.afficher()) {
+        for (Utilisateur u : su.afficher()) {  // Afficher TOUS les utilisateurs (Coach & Joueur)
+            System.out.println("Ajout dans UI - Nom: " + u.getNomu() + " | Type: " + u.getTypeu()); // Vérification
+
+
+
+
             VBox card = new VBox(10);
             card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; "
                     + "-fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; "
@@ -68,7 +84,7 @@ public class AdminDashbordUsersController implements Initializable {
             Label numTelLabel = new Label("Téléphone: " + u.getNumtelu());
             numTelLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px;");
 
-            Label typeLabel = new Label("Type: " + u.getTypeu());
+            Label typeLabel = new Label("Type: " + Utilisateur.getTypeu()); // Affiche le type utilisateur
             typeLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px;");
 
             Label dateInscriptionLabel = new Label("Date d'inscription: " + u.getDateinscriu());
@@ -76,9 +92,6 @@ public class AdminDashbordUsersController implements Initializable {
 
             Label dateNaissanceLabel = new Label("Date de naissance: " + u.getDatenaissanceu());
             dateNaissanceLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px;");
-
-
-
 
             card.getChildren().addAll(nameLabel, prenomLabel, emailLabel, numTelLabel, typeLabel, dateInscriptionLabel, dateNaissanceLabel);
 
@@ -96,7 +109,11 @@ public class AdminDashbordUsersController implements Initializable {
         if (cardCount > 0) {
             cardContainers.getChildren().add(currentRow);
         }
+
+        // Forcer une mise à jour de l'affichage
+        cardContainers.requestLayout();
     }
+
     @FXML
     void LogOut(ActionEvent event) throws IOException {
         userDataManager.logout();
@@ -136,8 +153,14 @@ public class AdminDashbordUsersController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        refreshUtilisateursList(); // Charger la liste des utilisateurs dès le démarrage
+    public void initialize(URL url, ResourceBundle resourceBundle) {UserType.setText(Utilisateur.getTypeu());
+        usernameOld.setText(currentUser.getMailu());
+        Image photo_profile=us.loadImage(currentUser.getPhoto_de_profile());
+        photoProfile.setImage(photo_profile);
+        refreshUtilisateursList();
+
+
+
     }
 
 }

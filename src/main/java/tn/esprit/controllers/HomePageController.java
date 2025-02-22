@@ -24,7 +24,13 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
-public class HomePageController {
+public class HomePageController implements Initializable {
+    @FXML
+    public Label usernameOld;
+    @FXML
+    public Label UserType;
+    @FXML
+    public ImageView photoProfile;
     @FXML
     private Button logoutButton;
     @FXML
@@ -53,5 +59,13 @@ public class HomePageController {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("Profile Management");
+    }
+    public void initialize(URL url, ResourceBundle resourceBundle) {UserType.setText(currentUser.getTypeu().toString());
+        usernameOld.setText(currentUser.getMailu());
+        Image photo_profile=us.loadImage(currentUser.getPhoto_de_profile());
+        photoProfile.setImage(photo_profile);
+
+
+
     }
 }
