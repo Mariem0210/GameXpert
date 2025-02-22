@@ -1,4 +1,5 @@
 package tn.esprit.controllers;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import tn.esprit.services.UserDataManager;
 import javafx.event.ActionEvent;
@@ -16,11 +17,12 @@ import javafx.geometry.Pos;
 
 import javax.print.DocFlavor;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 
-public class AdminDashbordUsersController {
+public class AdminDashbordUsersController implements Initializable {
 
     private final IService<Utilisateur> su = new ServiceUtilisateur();
     @FXML
@@ -37,6 +39,7 @@ public class AdminDashbordUsersController {
     private int CurrentUserId = userDataManager.getIdu();
     Utilisateur currentUser = su.getUser(CurrentUserId);
     private Utilisateur selectedUtilisateur = null;
+
 
     @FXML
     public void refreshUtilisateursList() {
@@ -130,6 +133,11 @@ public class AdminDashbordUsersController {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        refreshUtilisateursList(); // Charger la liste des utilisateurs dès le démarrage
     }
 
 }
