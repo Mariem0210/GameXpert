@@ -22,7 +22,7 @@ public final class Joueur extends Utilisateur {
                   String mailu,
                   String mdpu,
                   int numtelu,
-                 LocalDate datenaissanceu,
+                  LocalDate datenaissanceu,
                   String photo_de_profile) {
         super(nomu, prenomu, mailu, mdpu, numtelu, datenaissanceu,photo_de_profile);
         this.setTypeu(UserType.JOUEUR.toString());

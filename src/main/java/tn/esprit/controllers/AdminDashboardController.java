@@ -72,8 +72,8 @@ public class AdminDashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {UserType.setText(currentUser.getTypeu().toString());
         usernameOld.setText(currentUser.getMailu());
-        Image photo_profile=us.loadImage(currentUser.getPhoto_de_profile());
-        photoProfile.setImage(photo_profile);
+      ;
+
     }
 
 

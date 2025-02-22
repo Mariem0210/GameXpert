@@ -14,22 +14,17 @@
             <children>
                 <VBox layoutX="7.0" layoutY="92.0" prefHeight="476.0" prefWidth="206.0">
                     <children>
-                        <Button fx:id="ForumButton" alignment="CENTER" mnemonicParsing="false"  prefHeight="100.0" prefWidth="318.0"  text="Forum" textAlignment="CENTER">
+                        <Button fx:id="EventsButton" alignment="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="318.0"  text="Tournois">
                             <font>
                                 <Font size="24.0" />
                             </font>
                         </Button>
-                        <Button fx:id="EventsButton" alignment="CENTER" mnemonicParsing="false" prefHeight="100.0" prefWidth="318.0"  text="Events">
+                        <Button fx:id="JobsButton" alignment="CENTER" mnemonicParsing="false"  prefHeight="100.0" prefWidth="318.0"  text="Formation">
                             <font>
                                 <Font size="24.0" />
                             </font>
                         </Button>
-                        <Button fx:id="JobsButton" alignment="CENTER" mnemonicParsing="false"  prefHeight="100.0" prefWidth="318.0"  text="Jobs">
-                            <font>
-                                <Font size="24.0" />
-                            </font>
-                        </Button>
-                        <Button fx:id="CoursesButton" alignment="CENTER" mnemonicParsing="false"  prefHeight="100.0" prefWidth="318.0" text="Courses" textAlignment="CENTER">
+                        <Button fx:id="CoursesButton" alignment="CENTER" mnemonicParsing="false"  prefHeight="100.0" prefWidth="318.0" text="Offre de recrutement" textAlignment="CENTER">
                             <font>
                                 <Font size="24.0" />
                             </font>
