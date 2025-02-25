@@ -11,14 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Properties;
 
 public class LoginController {
 
+    public CheckBox rememberMeCheckbox;
     @FXML
     private Button Button_Login;
     @FXML
@@ -32,8 +31,19 @@ public class LoginController {
     @FXML
     private TextField fieldserr;
 
+    private static final String CREDENTIALS_FILE = "credentials.properties";
+
     ServiceUtilisateur us = new ServiceUtilisateur();
 
+    @FXML
+    public void initialize() {
+        loadRememberedCredentials();
+
+        // Auto-login si les identifiants sont enregistrés et la case est cochée
+        if (!mail_tf.getText().isEmpty() && !mdp_tf.getText().isEmpty() && rememberMeCheckbox.isSelected()) {
+            autoLogin();
+        }
+    }
 
     @FXML
     void Checklogin(ActionEvent event) throws SQLException, IOException {
@@ -47,37 +57,24 @@ public class LoginController {
             fieldserr.setVisible(false);
         }
 
-        // Récupérer l'ID de l'utilisateur
         int userid = us.getUserId(mailu);
-        System.out.println("UserID récupéré: " + userid);
-
         if (userid == -1) {
-            System.out.println("Email non trouvé !");
             errorField.setText("Email non trouvé");
             errorField.setVisible(true);
             return;
         }
 
-        // Vérifier le mot de passe
         if (us.verifierLogin(mailu, mdpu)) {
-            System.out.println("Connexion réussie");
-
-            // Récupérer les infos de l'utilisateur
             UserDataManager.getInstance().setIdu(userid);
             Utilisateur user = us.getUser(userid);
-            System.out.println("Utilisateur récupéré: " + user);
 
             if (user == null) {
-                System.out.println("Erreur : utilisateur introuvable !");
                 errorField.setText("Erreur interne");
                 errorField.setVisible(true);
                 return;
             }
 
-            // Vérifier le type de l'utilisateur
             String userType = user.getTypeu();
-            System.out.println("Type utilisateur: " + userType);
-
             String fxmlFile;
             String title;
 
@@ -88,42 +85,88 @@ public class LoginController {
                 fxmlFile = "/HomePage.fxml";
                 title = "GameXpert";
             } else {
-                System.out.println("Type d'utilisateur inconnu !");
                 errorField.setText("Accès refusé");
                 errorField.setVisible(true);
                 return;
             }
 
-            // Changer de page
-            Stage stage = (Stage) mail_tf.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle(title);
+            if (rememberMeCheckbox.isSelected()) {
+                saveCredentials(mailu, mdpu);
+            } else {
+                clearSavedCredentials();
+            }
+
+            loadScene(fxmlFile, title);
 
             errorField.setVisible(false);
             loggedinfield.setVisible(true);
         } else {
-            System.out.println("Login invalide !");
             errorField.setText("Email ou mot de passe incorrect");
             errorField.setVisible(true);
             loggedinfield.setVisible(false);
         }
     }
 
+    private void autoLogin() {
+        String mailu = mail_tf.getText();
+        String mdpu = mdp_tf.getText();
 
-    // Method to load a new scene
+        try {
+            int userid = us.getUserId(mailu);
+            if (userid == -1 || !us.verifierLogin(mailu, mdpu)) {
+                return;
+            }
+
+            // Si les identifiants sont valides, déclencher l'événement de clic
+            Button_Login.fire();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void saveCredentials(String email, String password) {
+        try (FileOutputStream output = new FileOutputStream(CREDENTIALS_FILE)) {
+            Properties prop = new Properties();
+            prop.setProperty("email", email);
+            prop.setProperty("password", password);
+            prop.setProperty("rememberMe", "true");
+            prop.store(output, null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadRememberedCredentials() {
+        try (FileInputStream input = new FileInputStream(CREDENTIALS_FILE)) {
+            Properties prop = new Properties();
+            prop.load(input);
+            mail_tf.setText(prop.getProperty("email", ""));
+            mdp_tf.setText(prop.getProperty("password", ""));
+            rememberMeCheckbox.setSelected("true".equals(prop.getProperty("rememberMe")));
+        } catch (IOException e) {
+            System.out.println("Aucune information de connexion enregistrée.");
+        }
+    }
+
+    private void clearSavedCredentials() {
+        File file = new File(CREDENTIALS_FILE);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    @FXML
+    void CreateAccount(ActionEvent event) throws IOException {
+        loadScene("/CreateAccount.fxml", "Create Account");
+    }
+
     private void loadScene(String fxmlPath, String title) throws IOException {
         Stage stage = (Stage) Button_Login.getScene().getWindow();
         Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
         stage.setScene(new Scene(root));
         stage.setTitle(title);
         stage.show();
-    }
-
-    @FXML
-    void CreateAccount(ActionEvent event) throws IOException {
-        loadScene("/CreateAccount.fxml", "Create Account");
     }
 }
