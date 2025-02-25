@@ -1,4 +1,5 @@
 package tn.esprit.services;
+
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -6,57 +7,51 @@ import tn.esprit.interfaces.IService;
 import tn.esprit.models.Utilisateur;
 import tn.esprit.utils.MyDatabase;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.management.openmbean.InvalidKeyException;
 import java.io.File;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class ServiceUtilisateur implements IService<Utilisateur> {
     private Connection cnx;
     private String imagePath;
 
+    Encryptor encryptor = new Encryptor();
+
+    byte[] encryptionKey = {65, 12, 12, 12, 12, 12, 12, 12, 12,
+            12, 12, 12, 12, 12, 12, 12 };
 
     public ServiceUtilisateur() {
         cnx = MyDatabase.getInstance().getCnx();
-
     }
-
 
     @Override
     public void add(Utilisateur utilisateur) {
-        //create Qry SQL
-        //execute Qry
-        String qry = "INSERT INTO utilisateur (nomu, prenomu, typeu,  mailu, mdpu, datenaissanceu, dateinscriu,numtelu,photo_profilu) VALUES (?, ?, ?, ?, ?, ?,NOW(), ?,?)";
+        String qry = "INSERT INTO utilisateur (nomu, prenomu, typeu, mailu, mdpu, datenaissanceu, dateinscriu, numtelu, photo_profilu) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?, ?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, utilisateur.getNomu());
             pstm.setString(2, utilisateur.getPrenomu());
             pstm.setString(3, utilisateur.getTypeu());
             pstm.setString(4, utilisateur.getMailu());
-            pstm.setString(5, utilisateur.getMdpu());
+            pstm.setString(5, encryptor.encrypt(utilisateur.getMdpu(), encryptionKey));
             pstm.setDate(6, java.sql.Date.valueOf(utilisateur.getDatenaissanceu()));
             pstm.setInt(7, utilisateur.getNumtelu());
             pstm.setString(8, utilisateur.getPhoto_de_profile());
-
-
-
-
-
-            // Problème possible ici !
-
-
-
             pstm.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException |
+                 NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | java.security.InvalidKeyException e) {
             System.out.println(e.getMessage());
         }
-
-
     }
-
 
     @Override
     public void update(Utilisateur utilisateur) {
@@ -69,7 +64,6 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             pstm.setString(4, utilisateur.getMailu());
             pstm.setString(5, utilisateur.getMdpu());
             pstm.setInt(6, utilisateur.getIdu());
-
             pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -82,27 +76,25 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, utilisateur.getIdu());
-
             pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-    public boolean verifierLogin(String mailu, String mdpu) throws SQLException {
 
-        String req = "SELECT * FROM utilisateur WHERE mailu=? AND mdpu=? ;";
+    public boolean verifierLogin(String mailu, String mdpu) throws SQLException {
+        String req = "SELECT * FROM utilisateur WHERE mailu=? AND mdpu=?;";
         int id = -1;
         try {
             PreparedStatement pst = cnx.prepareStatement(req);
             pst.setString(1, mailu);
-            pst.setString(2,mdpu);
+            pst.setString(2, mdpu);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-
         }
         return id != -1;
     }
@@ -114,6 +106,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             return Hiddenpassword.getText();
         }
     }
+
     public boolean areFieldsNotEmpty(List<String> fields) {
         for (String field : fields) {
             if (field == null || field.isEmpty()) {
@@ -122,6 +115,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         }
         return true;
     }
+
     public Utilisateur getUser(int userId) {
         String query = "SELECT * FROM utilisateur WHERE idu = ?";
         try (PreparedStatement pstmt = cnx.prepareStatement(query)) {
@@ -139,16 +133,14 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
                 user.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
                 user.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
                 user.setPhoto_de_profile(rs.getString("photo_profilu"));
-
-
                 return user;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null; // Return null if user is not found
     }
+
     public int getUserId(String mailu) {
         String query = "SELECT idu FROM utilisateur WHERE mailu = ?";
         try (PreparedStatement pstmt = cnx.prepareStatement(query)) {
@@ -163,55 +155,57 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         return -1; // Return -1 if email is not found
     }
 
-
-
-
-
-    public  boolean isEmailAvailable(String mailu) throws SQLException {
-        int id=-1;
+    public boolean isEmailAvailable(String mailu) throws SQLException {
+        int id = -1;
         String req = "SELECT * FROM utilisateur WHERE mailu = ?";
-        try{
-            PreparedStatement pst = cnx.prepareStatement(req) ;
+        try {
+            PreparedStatement pst = cnx.prepareStatement(req);
             pst.setString(1, mailu);
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(1);
-
-            } } catch (SQLException e) {
+            }
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return id== -1;
-
-
+        return id == -1;
     }
-    public  boolean isValidPhoneNumber(String numtelu) {
+
+    public boolean isValidPhoneNumber(String numtelu) {
         return numtelu.matches("[2459]\\d{7}");
     }
+
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,6}$";
 
     private static final Pattern EMAIL_PATTERN =
             Pattern.compile(EMAIL_REGEX);
-    public  boolean validateEmail(String mailu) {
+
+    public boolean validateEmail(String mailu) {
         Matcher matcher = EMAIL_PATTERN.matcher(mailu);
         return matcher.matches();
     }
+
     public boolean isAlpha(String chaine) {
         return chaine.matches("[a-zA-Z- -]+");
     }
+
     public boolean isMdp(String chaine) {
         return chaine.length() < 6 ? false : chaine.matches("[a-zA-Z-0-9]+");
     }
-    public  boolean isValidBirthDate(String datenaissanceu) {
+
+    public boolean isValidBirthDate(String datenaissanceu) {
         return datenaissanceu.matches("^(\\d{4})-(\\d{2})-(\\d{2})$");
     }
-    public String getPassword(TextField Visiblepassword, PasswordField Hiddenpassword ){
-        if(Visiblepassword.isVisible()){
+
+    public String getPassword(TextField Visiblepassword, PasswordField Hiddenpassword) {
+        if (Visiblepassword.isVisible()) {
             return Visiblepassword.getText();
         } else {
             return Hiddenpassword.getText();
         }
     }
+
     public boolean emailExists(String email) throws SQLException {
         String query = "SELECT COUNT(*) FROM utilisateur WHERE mailu = ?";
 
@@ -225,6 +219,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         }
         return false;
     }
+
     public List<Utilisateur> afficher() {
         List<Utilisateur> utilisateurs = new ArrayList<>();
         String qry = "SELECT * FROM `utilisateur` WHERE `typeu` = 'COACH' OR `typeu` = 'JOUEUR'";
@@ -258,15 +253,13 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         return utilisateurs;
     }
 
-    public  Image loadImage(String filePath) {
+    public Image loadImage(String filePath) {
         try {
             File file = new File(filePath);
             return new Image(file.toURI().toString());
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }}
-
-
-
+        }
+    }
 }
