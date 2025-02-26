@@ -15,11 +15,15 @@ import javafx.stage.Stage;
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Tournoi;
 import tn.esprit.services.ServiceTournoi;
-
+import javafx.scene.chart.PieChart;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import javafx.scene.layout.StackPane;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import java.util.stream.Collectors;
 
 public class GestionTournoi {
 
@@ -39,6 +43,7 @@ public class GestionTournoi {
     public void initialize() {
         refreshTournoisList();
         addInputRestrictions();
+
         cardContainer.setOnMouseClicked(event -> {
             if (selectedTournoi != null) {
                 remplirChamps(selectedTournoi);
@@ -266,6 +271,116 @@ public class GestionTournoi {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Erreur", "Impossible d'ouvrir l'interface GestionMatch.", Alert.AlertType.ERROR);
+        }
+    }
+    @FXML
+    private void afficherStatistiques(ActionEvent event) {
+        List<Tournoi> tournois = st.getAll();
+
+        if (tournois.isEmpty()) {
+            showAlert("Information", "Aucun tournoi trouvé.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        // Création du PieChart
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+
+        for (Tournoi t : tournois) {
+            data.add(new PieChart.Data(t.getNomt(), t.getNbr_equipes()));
+        }
+
+        PieChart pieChart = new PieChart(data);
+        pieChart.setTitle("Nombre d'équipes par tournoi");
+
+        // Affichage dans une nouvelle fenêtre
+        Stage stage = new Stage();
+        VBox vbox = new VBox(pieChart);
+        vbox.setPadding(new Insets(10));
+
+        Scene scene = new Scene(vbox, 500, 500);
+        stage.setTitle("Statistiques des Tournois");
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
+    public void searchTournoi(ActionEvent event) {
+        String searchQuery = tfNomt.getText().toLowerCase();  // Assuming you want to search by the tournament name
+
+        if (searchQuery.isEmpty()) {
+            showAlert("Erreur", "Veuillez entrer un terme de recherche.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        List<Tournoi> filteredTournois = st.getAll().stream()
+                .filter(t -> t.getNomt().toLowerCase().contains(searchQuery) || t.getDescriptiont().toLowerCase().contains(searchQuery))
+                .collect(Collectors.toList());
+
+        // If no results are found
+        if (filteredTournois.isEmpty()) {
+            showAlert("Aucun résultat", "Aucun tournoi trouvé pour ce critère.", Alert.AlertType.INFORMATION);
+        }
+
+        // Refresh the list with the filtered tournaments
+        cardContainer.getChildren().clear();
+        HBox currentRow = new HBox(10);
+        currentRow.setAlignment(Pos.TOP_LEFT);
+
+        int cardCount = 0;
+
+        for (Tournoi t : filteredTournois) {
+            StackPane card = new StackPane();
+            card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
+
+            ImageView backgroundImage = new ImageView();
+            backgroundImage.setFitWidth(200);
+            backgroundImage.setFitHeight(400);
+            Image image = new Image("file:C:/Users/amine debbich/IdeaProjects/gameXpert/src/main/resources/lol.jpg");
+            backgroundImage.setImage(image);
+            backgroundImage.setOpacity(0.3);
+
+            card.getChildren().add(backgroundImage);
+
+            VBox content = new VBox(10);
+            content.setAlignment(Pos.CENTER);
+
+            Label nameLabel = new Label("Nom: " + t.getNomt());
+            nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Courier New', monospace; -fx-font-weight: bold;");
+
+            Label descriptionLabel = new Label("Description: " + t.getDescriptiont());
+            descriptionLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace; -fx-line-spacing: 4px;");
+
+            Label startDateLabel = new Label("Début: " + t.getDate_debutt());
+            startDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label endDateLabel = new Label("Fin: " + t.getDate_fint());
+            endDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label teamsLabel = new Label("Équipes: " + t.getNbr_equipes());
+            teamsLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label priceLabel = new Label("Prix: " + t.getPrixt());
+            priceLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label statusLabel = new Label("Statut: " + t.getStatutt());
+            statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
+
+            card.getChildren().add(content);
+
+            currentRow.getChildren().add(card);
+            cardCount++;
+
+            if (cardCount >= 4) {
+                cardContainer.getChildren().add(currentRow);
+                currentRow = new HBox(10);
+                currentRow.setAlignment(Pos.TOP_LEFT);
+                cardCount = 0;
+            }
+        }
+
+        if (cardCount > 0) {
+            cardContainer.getChildren().add(currentRow);
         }
     }
 
