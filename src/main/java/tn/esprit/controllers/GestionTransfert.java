@@ -15,6 +15,7 @@ import tn.esprit.services.ServiceTransfert;
 
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,85 @@ public class GestionTransfert {
 
     private Transfert selectedTransfert = null;
     private final ServiceTransfert serviceTransfert = new ServiceTransfert();
+
+
+    @FXML
+    private void trierTransfertsAscendant() {
+        List<Transfert> transferts = serviceTransfert.getAll();
+        transferts.sort(Comparator.comparing(Transfert::getDatet));
+        afficherTransfertsTries(transferts);
+    }
+
+    @FXML
+    private void trierTransfertsDescendant() {
+        List<Transfert> transferts = serviceTransfert.getAll();
+        transferts.sort(Comparator.comparing(Transfert::getDatet).reversed());
+        afficherTransfertsTries(transferts);
+    }
+
+    private void afficherTransfertsTries(List<Transfert> transferts) {
+        Platform.runLater(() -> {
+            transfertContainer.getChildren().clear();
+            HBox currentRow = new HBox(10);
+            currentRow.setAlignment(Pos.TOP_LEFT);
+            int cardCount = 0;
+
+            for (Transfert t : transferts) {
+                StackPane card = new StackPane();
+                card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-radius: 20px; -fx-padding: 20px;");
+
+                try {
+                    ImageView backgroundImage = new ImageView(new Image(getClass().getResource("/transfer.jpg").toExternalForm()));
+                    backgroundImage.setFitWidth(200);
+                    backgroundImage.setFitHeight(300);
+                    backgroundImage.setOpacity(0.3);
+                    card.getChildren().add(backgroundImage);
+                } catch (Exception ex) {
+                    System.out.println("Erreur de chargement de l'image : " + ex.getMessage());
+                }
+
+                VBox content = new VBox(10);
+                content.setAlignment(Pos.CENTER);
+
+                Label lblId = new Label("ID: " + t.getIdtr());
+                lblId.setStyle("-fx-text-fill: white;");
+
+                Label lblIdu = new Label("ID Joueur: " + t.getIdu());
+                lblIdu.setStyle("-fx-text-fill: white;");
+
+                Label lblAncienneEquipe = new Label("Ancienne Équipe: " + t.getAncienne_equipe());
+                lblAncienneEquipe.setStyle("-fx-text-fill: white;");
+
+                Label lblNouvelleEquipe = new Label("Nouvelle Équipe: " + t.getNouvelle_equipe());
+                lblNouvelleEquipe.setStyle("-fx-text-fill: white;");
+
+                Label lblMontantt = new Label("Montant: " + t.getMontantt() + " €");
+                lblMontantt.setStyle("-fx-text-fill: white;");
+
+                String dateString = Instant.ofEpochMilli(t.getDatet().getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                        .toString();
+                Label lblDate = new Label("Date: " + dateString);
+                lblDate.setStyle("-fx-text-fill: white;");
+
+                content.getChildren().addAll(lblId, lblIdu, lblAncienneEquipe, lblNouvelleEquipe, lblMontantt, lblDate);
+                card.getChildren().add(content);
+                card.setOnMouseClicked(event -> remplirChamps(t));
+
+                currentRow.getChildren().add(card);
+                cardCount++;
+
+                if (cardCount >= 4) {
+                    transfertContainer.getChildren().add(currentRow);
+                    currentRow = new HBox(10);
+                    cardCount = 0;
+                }
+            }
+            if (cardCount > 0) transfertContainer.getChildren().add(currentRow);
+        });
+    }
+
 
     @FXML
     public void initialize() {

@@ -31,5 +31,9 @@
         <Button layoutX="17.0" layoutY="633.0" onAction="#ajouterTransfert" prefHeight="39.0" prefWidth="84.0" text="Ajouter" />
         <Button fx:id="btnModifier" layoutX="114.0" layoutY="634.0" onAction="#modifierTransfert" prefHeight="39.0" prefWidth="84.0" text="Modifier" />
         <Button fx:id="btnSupprimer" layoutX="209.0" layoutY="634.0" onAction="#supprimerTransfert" prefHeight="39.0" prefWidth="93.0" text="Supprimer" />
+
+        <Button fx:id="btnTrierAsc" layoutX="650.0" layoutY="580.0" onAction="#trierTransfertsAscendant" prefHeight="39.0" prefWidth="93.0" text="Trier ↑" />
+        <Button fx:id="btnTrierDesc" layoutX="750.0" layoutY="580.0" onAction="#trierTransfertsDescendant" prefHeight="39.0" prefWidth="93.0" text="Trier ↓" />
+
     </children>
 </AnchorPane>
