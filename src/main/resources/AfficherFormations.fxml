@@ -9,4 +9,7 @@
         <URL value="@style.css" /> <!-- Lien vers le CSS -->
     </stylesheets>
     <TilePane fx:id="formationTilePane" hgap="50" prefColumns="3" prefRows="2" vgap="120" />
+
+
 </ScrollPane>
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.AfficherFormationView">
+    <stylesheets>
+        <URL value="@style.css" /> <!-- Lien vers le CSS -->
+    </stylesheets>
+    <!-- Conteneur Scrollable pour afficher les formations -->
+    <ScrollPane layoutX="20.0" layoutY="20.0" prefWidth="600.0" prefHeight="400.0">
+        <VBox fx:id="formationVBox" spacing="15.0" style="-fx-padding: 10;">
+            <!-- Les formations seront ajoutées dynamiquement ici -->
+        </VBox>
+    </ScrollPane>
+
+</AnchorPane>

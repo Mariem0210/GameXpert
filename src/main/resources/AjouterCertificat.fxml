@@ -6,6 +6,8 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
@@ -59,5 +61,11 @@
 
         <!-- Bouton Afficher -->
         <Button fx:id="afficherBtn" layoutX="275.0" layoutY="594.0" mnemonicParsing="false" onAction="#affichebtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
+
+        <ImageView fx:id="imgpa" fitHeight="254.0" fitWidth="400.0" layoutX="523.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@cer1.png" /> <!-- Correction ici -->
+            </image>
+        </ImageView>
     </children>
 </AnchorPane>
