@@ -29,6 +29,9 @@ public final class Coach extends Utilisateur {
         this.setTypeu(UserType.COACH.toString());
     }
 
+    public Coach(int idu, String photoDeProfile, String nomu, String prenomu, String mailu, String mdpu, int numtelu, LocalDate dateinscriu, LocalDate datenaissanceu) {
+    }
+
     @Override
     public String toString() {
         return "Coach{" +

@@ -16,8 +16,10 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class LoginController {
-
+    @FXML
     public CheckBox rememberMeCheckbox;
+    @FXML
+    public Hyperlink hlpassword;
     @FXML
     private Button Button_Login;
     @FXML
@@ -168,5 +170,14 @@ public class LoginController {
         stage.setScene(new Scene(root));
         stage.setTitle(title);
         stage.show();
+    }
+    @FXML
+    void mdpoublier(ActionEvent event) throws IOException {
+        Stage stage=(Stage) hlpassword.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MdpOublie.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Forgot Password");
     }
 }

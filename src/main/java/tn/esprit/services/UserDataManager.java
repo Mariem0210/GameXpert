@@ -22,6 +22,12 @@ public class UserDataManager {
     public void setIdu(int idu) { // Mise à jour du setter
         this.idu = idu;
     }
+    public void setUserId(int idu) {
+        this.idu = idu;
+    }
+    public int getUserId() {
+        return idu;
+    }
 
     public void logout() {
         idu = 0; // Mise à jour dans la méthode logout

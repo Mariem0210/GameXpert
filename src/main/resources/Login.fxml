@@ -41,6 +41,11 @@
                         <PasswordField fx:id="mdp_tf" prefHeight="25.0" prefWidth="42.0" promptText="Mot de passe" style="-fx-background-color: #16213E; -fx-text-fill: white;" />
                     </children>
                 </StackPane>
+                <Hyperlink fx:id="hlpassword" layoutX="47.0" layoutY="219.0" onAction="#mdpoublier" prefHeight="24.0" prefWidth="215.0" text="Forgot your password ?">
+                    <font>
+                        <Font size="10.0" />
+                    </font>
+                </Hyperlink>
 
                 <!-- Messages d'erreur et succès -->
                 <StackPane layoutX="99.0" layoutY="38.0" prefHeight="26.0" prefWidth="200.0">

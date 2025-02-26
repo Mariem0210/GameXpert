@@ -28,6 +28,9 @@ public final class Joueur extends Utilisateur {
         this.setTypeu(UserType.JOUEUR.toString());
     }
 
+    public Joueur(int idu, String photoDeProfile, String nomu, String prenomu, String mailu, String mdpu, int numtelu, LocalDate dateinscriu, LocalDate datenaissanceu) {
+    }
+
     @Override
     public String toString() {
         return "Joueur{" +

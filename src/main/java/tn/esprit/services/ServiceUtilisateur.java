@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -62,11 +63,23 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             pstm.setString(2, utilisateur.getPrenomu());
             pstm.setInt(3, utilisateur.getNumtelu());
             pstm.setString(4, utilisateur.getMailu());
-            pstm.setString(5, utilisateur.getMdpu());
+            pstm.setString(5, encryptor.encrypt(utilisateur.getMdpu(), encryptionKey));
             pstm.setInt(6, utilisateur.getIdu());
             pstm.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (java.security.InvalidKeyException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -88,24 +101,29 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         try {
             PreparedStatement pst = cnx.prepareStatement(req);
             pst.setString(1, mailu);
-            pst.setString(2, mdpu);
+            pst.setString(2, encryptor.encrypt(mdpu,encryptionKey));
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 id = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (java.security.InvalidKeyException e) {
+            throw new RuntimeException(e);
         }
         return id != -1;
     }
 
-    public String getMdpu(TextField Visiblepassword, PasswordField Hiddenpassword) {
-        if (Visiblepassword.isVisible()) {
-            return Visiblepassword.getText();
-        } else {
-            return Hiddenpassword.getText();
-        }
-    }
 
     public boolean areFieldsNotEmpty(List<String> fields) {
         for (String field : fields) {
@@ -128,7 +146,7 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
                 user.setPrenomu(rs.getString("prenomu"));
                 user.setNumtelu(rs.getInt("numtelu"));
                 user.setMailu(rs.getString("mailu"));
-                user.setMdpu(rs.getString("mdpu"));
+                user.setMdpu(encryptor.decrypt(rs.getString("mdpu"),encryptionKey));
                 user.setTypeu(rs.getString("typeu"));
                 user.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
                 user.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
@@ -137,6 +155,18 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (java.security.InvalidKeyException e) {
+            throw new RuntimeException(e);
         }
         return null; // Return null if user is not found
     }
@@ -261,5 +291,10 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
             e.printStackTrace();
             return null;
         }
+    }
+    public int generer(){
+        Random rand = new Random();
+        int code = rand.nextInt((9999 - 1000) + 1) + 1000;
+        return code;
     }
 }
