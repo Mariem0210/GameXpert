@@ -6,8 +6,6 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
@@ -19,35 +17,35 @@
 
     <children>
         <!-- Titre -->
-        <Text layoutX="282.0" layoutY="59.0" styleClass="title" text="Ajouter Certificat" />
+        <Text layoutX="472.0" layoutY="88.0" styleClass="title" text="Ajouter Certificat" wrappingWidth="259.322265625" />
 
         <!-- Nom du Certificat -->
-        <Label layoutX="75.0" layoutY="99.0" text="Nom du Certificat:" />
-        <TextField fx:id="nomcField" layoutX="75.0" layoutY="124.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le nom du certificat" />
+        <Label layoutX="351.0" layoutY="147.0" text="Nom du Certificat:" />
+        <TextField fx:id="nomcField" layoutX="351.0" layoutY="172.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le nom du certificat" />
 
         <!-- Type du Certificat -->
-        <Label layoutX="75.0" layoutY="169.0" text="Type de Certificat:" />
-        <ComboBox fx:id="typecComboBox" layoutX="75.0" layoutY="194.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir le type du certificat" />
+        <Label layoutX="351.0" layoutY="217.0" text="Type de Certificat:" />
+        <ComboBox fx:id="typecComboBox" layoutX="351.0" layoutY="242.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir le type du certificat" />
 
         <!-- Score -->
-        <Label layoutX="75.0" layoutY="239.0" text="Score:" />
-        <TextField fx:id="scorecField" layoutX="75.0" layoutY="264.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le score du certificat" />
+        <Label layoutX="351.0" layoutY="287.0" text="Score:" />
+        <TextField fx:id="scorecField" layoutX="351.0" layoutY="312.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le score du certificat" />
 
         <!-- État -->
-        <Label layoutX="75.0" layoutY="309.0" text="État du Certificat:" />
-        <ComboBox fx:id="etatcComboBox" layoutX="75.0" layoutY="334.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez l'état du certificat" />
+        <Label layoutX="351.0" layoutY="357.0" text="État du Certificat:" />
+        <ComboBox fx:id="etatcComboBox" layoutX="351.0" layoutY="382.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez l'état du certificat" />
 
         <!-- Date d'expiration -->
-        <Label layoutX="75.0" layoutY="379.0" text="Date d'expiration:" />
-        <DatePicker fx:id="dateExpirationcField" layoutX="75.0" layoutY="404.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date d'expiration" />
+        <Label layoutX="351.0" layoutY="427.0" text="Date d'expiration:" />
+        <DatePicker fx:id="dateExpirationcField" layoutX="351.0" layoutY="452.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date d'expiration" />
 
 
-        <Label layoutX="75.0" layoutY="449.0" text="Nom Formation" />
-        <TextField fx:id="idfField" layoutX="75.0" layoutY="474.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez l'ID de la formation" />
+        <Label layoutX="351.0" layoutY="497.0" text="Nom Formation" />
+        <TextField fx:id="idfField" layoutX="351.0" layoutY="522.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez l'ID de la formation" />
 
         <!-- ID Utilisateur-->
-        <Label layoutX="70.0" layoutY="518.0" text="Coach:" />
-        <TextField fx:id="iduField" layoutX="75.0" layoutY="544.0" prefHeight="30.0" prefWidth="400.0" />
+        <Label layoutX="346.0" layoutY="566.0" text="Coach:" />
+        <TextField fx:id="iduField" layoutX="351.0" layoutY="592.0" prefHeight="30.0" prefWidth="400.0" />
 
 
         <!-- <Label layoutX="75.0" layoutY="451.0" text="Nom Formation:" />
@@ -57,15 +55,9 @@
 
 
         <!-- Bouton Ajouter -->
-        <Button fx:id="addBtn" layoutX="75.0" layoutY="594.0" mnemonicParsing="false" onAction="#ajouterCertificat" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Ajouter" />
+        <Button fx:id="addBtn" layoutX="351.0" layoutY="642.0" mnemonicParsing="false" onAction="#ajouterCertificat" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Ajouter" />
 
         <!-- Bouton Afficher -->
-        <Button fx:id="afficherBtn" layoutX="275.0" layoutY="594.0" mnemonicParsing="false" onAction="#affichebtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
-
-        <ImageView fx:id="imgpa" fitHeight="254.0" fitWidth="400.0" layoutX="523.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@cer1.png" /> <!-- Correction ici -->
-            </image>
-        </ImageView>
+        <Button fx:id="afficherBtn" layoutX="551.0" layoutY="642.0" mnemonicParsing="false" onAction="#affichebtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
     </children>
 </AnchorPane>

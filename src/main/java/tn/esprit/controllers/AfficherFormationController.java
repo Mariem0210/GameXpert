@@ -1,5 +1,6 @@
 package tn.esprit.controllers;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,11 @@ import tn.esprit.interfaces.FormationService;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -44,9 +50,22 @@ public class AfficherFormationController {
             List<Formation> formations = formationService.recupererFormations();
 
             for (Formation formation : formations) {
-                VBox formationCard = new VBox(5);
-                formationCard.setStyle("-fx-border-color: black; -fx-padding: 10px; -fx-background-color: #1e1e2e;");
-                formationCard.setPrefSize(200, 250);
+                VBox formationCard = new VBox(10);
+
+                // Chargement de l'image depuis resources
+                Image backgroundImage = new Image(getClass().getResource("/ground.jpg").toExternalForm());
+                BackgroundImage background = new BackgroundImage(
+                        backgroundImage,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(100, 100, true, true, false, true)
+                );
+
+                formationCard.setBackground(new Background(background)); // Appliquer l'image de fond
+
+                formationCard.setStyle("-fx-border-radius: 10; -fx-border-color: #8a2be2; -fx-padding: 15px;");
+                formationCard.setPrefSize(280, 320);
 
                 // Éléments de la carte
 

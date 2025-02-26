@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -9,7 +10,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
-<?import java.net.URL?>
 
 <AnchorPane prefHeight="499.0" prefWidth="621.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ModifierCertificatController">
     <stylesheets>
@@ -17,15 +17,15 @@
     </stylesheets>
 
     <!-- Titre de la fenêtre -->
-    <Text layoutX="152.0" layoutY="56.0" styleClass="title" text="Modifier Certificat" />
+    <Text layoutX="179.0" layoutY="92.0" styleClass="title" text="Modifier Certificat" />
 
     <!-- Label et champ pour le nom du certificat -->
-    <Label layoutX="60.0" layoutY="79.0" styleClass="form-label" text="Nom du Certificat:" />
-    <TextField fx:id="nomCertificatField" layoutX="56.0" layoutY="112.0" prefHeight="28.0" prefWidth="194.0" promptText="Nom du Certificat" />
+    <Label layoutX="98.0" layoutY="124.0" styleClass="form-label" text="Nom du Certificat:" />
+    <TextField fx:id="nomCertificatField" layoutX="94.0" layoutY="157.0" prefHeight="28.0" prefWidth="194.0" promptText="Nom du Certificat" />
 
     <!-- Label et ComboBox pour le type de certificat -->
-    <Label layoutX="60.0" layoutY="150.0" styleClass="form-label" text="Type de Certificat:" />
-    <ComboBox fx:id="typeCertificatComboBox" layoutX="56.0" layoutY="176.0" prefHeight="28.0" prefWidth="194.0" promptText="Type de Certificat">
+    <Label layoutX="98.0" layoutY="195.0" styleClass="form-label" text="Type de Certificat:" />
+    <ComboBox fx:id="typeCertificatComboBox" layoutX="94.0" layoutY="221.0" prefHeight="28.0" prefWidth="194.0" promptText="Type de Certificat">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Type 1" />
@@ -36,16 +36,16 @@
     </ComboBox>
 
     <!-- Label et champ pour le score du certificat -->
-    <Label layoutX="60.0" layoutY="215.0" styleClass="form-label" text="Score:" />
-    <TextField fx:id="scoreCertificatField" layoutX="56.0" layoutY="238.0" prefHeight="28.0" prefWidth="194.0" promptText="Score" />
+    <Label layoutX="98.0" layoutY="260.0" styleClass="form-label" text="Score:" />
+    <TextField fx:id="scoreCertificatField" layoutX="94.0" layoutY="283.0" prefHeight="28.0" prefWidth="194.0" promptText="Score" />
 
     <!-- Label et DatePicker pour la date d'expiration -->
-    <Label layoutX="60.0" layoutY="275.0" styleClass="form-label" text="Date Expiration:" />
-    <DatePicker fx:id="dateExpirationPicker" layoutX="56.0" layoutY="295.0" prefHeight="41.0" prefWidth="194.0" promptText="Date Expiration" />
+    <Label layoutX="96.0" layoutY="334.0" styleClass="form-label" text="Date Expiration:" />
+    <DatePicker fx:id="dateExpirationPicker" layoutX="92.0" layoutY="354.0" prefHeight="41.0" prefWidth="194.0" promptText="Date Expiration" />
 
     <!-- Label et ComboBox pour l'état -->
-    <Label layoutX="60.0" layoutY="345.0" styleClass="form-label" text="État:" />
-    <ComboBox fx:id="etatComboBox" layoutX="56.0" layoutY="365.0" prefHeight="28.0" prefWidth="194.0" promptText="État">
+    <Label layoutX="339.0" layoutY="274.0" styleClass="form-label" text="État:" />
+    <ComboBox fx:id="etatComboBox" layoutX="335.0" layoutY="294.0" prefHeight="28.0" prefWidth="194.0" promptText="État">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Actif" />
@@ -56,8 +56,8 @@
     </ComboBox>
 
     <!-- Label et ComboBox pour la formation -->
-    <Label layoutX="300.0" layoutY="79.0" styleClass="form-label" text="Formation:" />
-    <ComboBox fx:id="formationComboBox" layoutX="296.0" layoutY="112.0" prefHeight="28.0" prefWidth="194.0" promptText="Formation">
+    <Label layoutX="338.0" layoutY="124.0" styleClass="form-label" text="Formation:" />
+    <ComboBox fx:id="formationComboBox" layoutX="334.0" layoutY="157.0" prefHeight="28.0" prefWidth="194.0" promptText="Formation">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Formation 1" />
@@ -68,8 +68,8 @@
     </ComboBox>
 
     <!-- Label et ComboBox pour l'utilisateur -->
-    <Label layoutX="300.0" layoutY="150.0" styleClass="form-label" text="Utilisateur:" />
-    <ComboBox fx:id="utilisateurComboBox" layoutX="296.0" layoutY="176.0" prefHeight="28.0" prefWidth="194.0" promptText="Utilisateur">
+    <Label layoutX="338.0" layoutY="195.0" styleClass="form-label" text="Utilisateur:" />
+    <ComboBox fx:id="utilisateurComboBox" layoutX="334.0" layoutY="221.0" prefHeight="28.0" prefWidth="194.0" promptText="Utilisateur">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Utilisateur 1" />
@@ -80,6 +80,6 @@
     </ComboBox>
 
     <!-- Boutons -->
-    <Button fx:id="modifierButton" layoutX="51.0" layoutY="432.0" onAction="#modifieCertificat" styleClass="button-validate" text="Valider" />
-    <Button fx:id="annulerButton" layoutX="159.0" layoutY="432.0" onAction="#fermerFenetre" styleClass="button-cancel" text="Annuler" />
+    <Button fx:id="modifierButton" layoutX="326.0" layoutY="368.0" onAction="#modifieCertificat" prefHeight="41.0" prefWidth="96.0" styleClass="button-validate" text="Valider" />
+    <Button fx:id="annulerButton" layoutX="443.0" layoutY="368.0" onAction="#fermerFenetre" prefHeight="41.0" prefWidth="96.0" styleClass="button-cancel" text="Annuler" />
 </AnchorPane>

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import java.net.URL?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.TilePane?>
+<?import java.net.URL?>
+<ScrollPane prefHeight="528.0" prefWidth="628.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.AfficherFormationController">
 
-<ScrollPane prefHeight="528.0" prefWidth="628.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.AfficherFormationController">
 
     <stylesheets>
-        <URL value="@style.css" /> <!-- Lien vers le CSS -->
+        <URL value="@style.css" />
     </stylesheets>
+
     <TilePane fx:id="formationTilePane" hgap="50" prefColumns="3" prefRows="2" vgap="120" />
 
-
 </ScrollPane>
-

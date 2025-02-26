@@ -1,4 +1,6 @@
 package tn.esprit.controllers;
+import javafx.scene.control.ComboBox;
+
 
 
 import javafx.event.ActionEvent;
@@ -28,7 +30,7 @@ public class AjouterFormationController {
     @FXML
     private TextArea descriptionfField;
     @FXML
-    private TextField niveaufField;
+    private ComboBox<String> niveaufComboBox;
     @FXML
     private DatePicker dateDebutfField;
     @FXML
@@ -46,14 +48,17 @@ public class AjouterFormationController {
 
     // Service pour interagir avec la base de données
     private FormationService formationService = new FormationService();
-
+    @FXML
+    public void initialize() {
+        niveaufComboBox.getItems().addAll("Débutant", "Intermédiaire", "Avancé", "Expert");
+    }
     // Méthode pour ajouter une formation avec contrôle de saisie
     @FXML
     public void ajouterFormation(ActionEvent event) {
 
             try {
                 // Vérification des champs obligatoires
-                if (nomfField.getText().isEmpty() || descriptionfField.getText().isEmpty() || niveaufField.getText().isEmpty()
+                if (nomfField.getText().isEmpty() || descriptionfField.getText().isEmpty() || (niveaufComboBox.getValue() == null)
                         || dateDebutfField.getValue() == null || dateFinfField.getValue() == null
                         || capacitefField.getText().isEmpty() || prixfField.getText().isEmpty() || iduField.getText().isEmpty()) {
                     showAlert(Alert.AlertType.ERROR, "Champs manquants", "Veuillez remplir tous les champs !");
@@ -116,7 +121,12 @@ public class AjouterFormationController {
                 Formation formation = new Formation();
                 formation.setNomf(nomfField.getText());
                 formation.setDescriptionf(descriptionfField.getText());
-                formation.setNiveauf(niveaufField.getText());
+                String selectedNiveau = niveaufComboBox.getValue();
+                if (selectedNiveau == null) {
+                    showAlert(Alert.AlertType.ERROR, "Erreur de niveau", "Veuillez sélectionner un niveau.");
+                    return;
+                }
+                formation.setNiveauf(selectedNiveau);
                 formation.setDateDebutf(dateDebutf);
                 formation.setDateFinf(dateFinf);
                 formation.setCapacitef(capacite);
@@ -149,7 +159,7 @@ public class AjouterFormationController {
     private void clearFields() {
         nomfField.clear();
         descriptionfField.clear();
-        niveaufField.clear();
+        niveaufComboBox.setValue(null);
         dateDebutfField.setValue(null);
         dateFinfField.setValue(null);
         capacitefField.clear();

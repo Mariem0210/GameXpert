@@ -7,8 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
@@ -20,23 +18,23 @@
 
     <children>
         <!-- Titre -->
-        <Text layoutX="282.0" layoutY="59.0" styleClass="title" text="Ajouter Giveaway" />
+        <Text layoutX="474.0" layoutY="115.0" styleClass="title" text="Ajouter Giveaway" />
 
         <!-- Titre du Giveaway -->
-        <Label layoutX="75.0" layoutY="99.0" text="Titre du Giveaway:" />
-        <TextField fx:id="titregField" layoutX="75.0" layoutY="124.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le titre du giveaway" />
+        <Label layoutX="345.0" layoutY="170.0" text="Titre du Giveaway:" />
+        <TextField fx:id="titregField" layoutX="345.0" layoutY="195.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le titre du giveaway" />
 
         <!-- Description -->
-        <Label layoutX="75.0" layoutY="169.0" text="Description:" />
-        <TextArea fx:id="descgField" layoutX="75.0" layoutY="194.0" prefHeight="80.0" prefWidth="400.0" promptText="Entrez une description du giveaway" />
+        <Label layoutX="345.0" layoutY="240.0" text="Description:" />
+        <TextArea fx:id="descgField" layoutX="345.0" layoutY="265.0" prefHeight="80.0" prefWidth="400.0" promptText="Entrez une description du giveaway" />
 
         <!-- Date de début -->
-        <Label layoutX="75.0" layoutY="289.0" text="Date de début:" />
-        <DatePicker fx:id="datedgField" layoutX="75.0" layoutY="314.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de début" />
+        <Label layoutX="345.0" layoutY="360.0" text="Date de début:" />
+        <DatePicker fx:id="datedgField" layoutX="345.0" layoutY="385.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de début" />
 
         <!-- Date de fin -->
-        <Label layoutX="75.0" layoutY="359.0" text="Date de fin:" />
-        <DatePicker fx:id="datefgField" layoutX="75.0" layoutY="384.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de fin" />
+        <Label layoutX="345.0" layoutY="430.0" text="Date de fin:" />
+        <DatePicker fx:id="datefgField" layoutX="345.0" layoutY="455.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de fin" />
 
         <!-- ID Utilisateur
         <Label layoutX="136.0" layoutY="430.0" text="ID Utilisateur:" />
@@ -45,22 +43,16 @@
                    promptText="Entrez l'ID de l'utilisateur" />-->
 
         <!-- Statut -->
-        <Label layoutX="75.0" layoutY="437.0" text="Statut:" />
-        <ComboBox fx:id="statusgComboBox" layoutX="75.0" layoutY="467.0" prefHeight="30.0" prefWidth="400.0" promptText="Sélectionner le statut">
+        <Label layoutX="345.0" layoutY="508.0" text="Statut:" />
+        <ComboBox fx:id="statusgComboBox" layoutX="345.0" layoutY="538.0" prefHeight="30.0" prefWidth="400.0" promptText="Sélectionner le statut">
 
         </ComboBox>
 
 
         <!-- Bouton Ajouter -->
-        <Button fx:id="addBtn" layoutX="75.0" layoutY="543.0" mnemonicParsing="false" onAction="#ajouterGiveaway" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Ajouter" />
+        <Button fx:id="addBtn" layoutX="345.0" layoutY="614.0" mnemonicParsing="false" onAction="#ajouterGiveaway" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Ajouter" />
 
         <!-- Bouton Afficher-->
-        <Button fx:id="afficherBtn" layoutX="275.0" layoutY="543.0" mnemonicParsing="false" onAction="#afficherBtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
-
-        <ImageView fx:id="imgpa" fitHeight="379.0" fitWidth="382.0" layoutX="484.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@g.png" /> <!-- Correction ici -->
-            </image>
-        </ImageView>
+        <Button fx:id="afficherBtn" layoutX="545.0" layoutY="614.0" mnemonicParsing="false" onAction="#afficherBtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
     </children>
 </AnchorPane>

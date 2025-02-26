@@ -3,28 +3,26 @@ package tn.esprit.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.Formation;
 import tn.esprit.interfaces.FormationService;
 
-import java.sql.Date;
 import java.sql.SQLException;
 
 public class ModifierFormationController {
 
     @FXML
-    private TextField nomFormationField, capaciteField, prixField, niveauField, iduField;
+    private TextField nomFormationField, capaciteField, prixField, iduField;
 
     @FXML
     private TextArea descriptionField;
 
     @FXML
     private DatePicker dateDebutPicker, dateFinPicker;
+
+    @FXML
+    private ComboBox<String> niveauComboBox; // ComboBox pour le niveau
 
     @FXML
     private Button modifierButton, annulerButton;
@@ -40,7 +38,7 @@ public class ModifierFormationController {
         nomFormationField.setText(formation.getNomf());
         capaciteField.setText(String.valueOf(formation.getCapacitef()));
         prixField.setText(String.valueOf(formation.getPrixf()));
-        niveauField.setText(formation.getNiveauf());
+        niveauComboBox.setValue(formation.getNiveauf()); // Sélectionner le niveau
         descriptionField.setText(formation.getDescriptionf());
         iduField.setText(String.valueOf(formation.getIdu()));
 
@@ -55,6 +53,7 @@ public class ModifierFormationController {
 
     @FXML
     private void initialize() {
+        niveauComboBox.getItems().addAll("Débutant", "Intermédiaire", "Avancé" , "Expert"); // Ajout des niveaux possibles
         modifierButton.setOnAction(event -> modifieFormation());
         annulerButton.setOnAction(event -> fermerFenetre());
     }
@@ -81,7 +80,7 @@ public class ModifierFormationController {
             }
 
             // Contrôle de saisie
-            if (nomFormationField.getText().isEmpty() || niveauField.getText().isEmpty() || descriptionField.getText().isEmpty() ||
+            if (nomFormationField.getText().isEmpty() || niveauComboBox.getValue() == null || descriptionField.getText().isEmpty() ||
                     capaciteField.getText().isEmpty() || prixField.getText().isEmpty() || iduField.getText().isEmpty()) {
                 showAlert(Alert.AlertType.ERROR, "Erreur", "Tous les champs doivent être remplis.");
                 return;
@@ -108,7 +107,7 @@ public class ModifierFormationController {
             formation.setDateFinf(dateFinPicker.getValue());
             formation.setCapacitef(Integer.parseInt(capaciteField.getText()));
             formation.setPrixf(Float.parseFloat(prixField.getText()));
-            formation.setNiveauf(niveauField.getText());
+            formation.setNiveauf(niveauComboBox.getValue()); // Récupération du niveau depuis la ComboBox
             formation.setDescriptionf(descriptionField.getText());
             formation.setIdu(Integer.parseInt(iduField.getText()));
 

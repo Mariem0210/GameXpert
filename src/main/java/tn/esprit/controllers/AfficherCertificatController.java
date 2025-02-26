@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -18,6 +19,12 @@ import java.util.Optional;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import javafx.stage.FileChooser;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+
 
 
 import java.io.FileOutputStream;
@@ -45,9 +52,23 @@ public class AfficherCertificatController {
             List<Certificat> certificats = certificatService.recupererCertificats();
 
             for (Certificat certificat : certificats) {
-                VBox certificatCard = new VBox(5);
-                certificatCard.setStyle("-fx-border-color: black; -fx-padding: 10px; -fx-background-color: #1e1e2e;");
-                certificatCard.setPrefSize(200, 300);
+                VBox certificatCard = new VBox(10);
+
+                // Chargement de l'image depuis resources
+                javafx.scene.image.Image backgroundImage = new Image(getClass().getResource("/ground.jpg").toExternalForm());
+                BackgroundImage background = new BackgroundImage(
+                        backgroundImage,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(100, 100, true, true, false, true)
+                );
+
+                certificatCard.setBackground(new Background(background)); // Appliquer l'image de fond
+
+                certificatCard.setStyle("-fx-border-radius: 10; -fx-border-color: #8a2be2; -fx-padding: 15px;");
+                certificatCard.setPrefSize(280, 320);
+
 
                 Label nomcLabel = new Label("Nom: " + certificat.getNomc());
                 Label typecLabel = new Label("Type: " + certificat.getTypec());
@@ -138,7 +159,7 @@ public class AfficherCertificatController {
 
                 // Titre principal
                 Font titleFont = new Font(Font.FontFamily.HELVETICA, 28, Font.BOLD, BaseColor.BLACK);
-                Paragraph title = new Paragraph("Certificat de Réussite", titleFont);
+                Paragraph title = new Paragraph("Certificat de Réussite" , titleFont);
                 title.setAlignment(Element.ALIGN_CENTER);
                 title.setSpacingBefore(50);
                 document.add(title);

@@ -8,12 +8,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tn.esprit.models.Giveaway;
 import tn.esprit.models.Giveaway;
 import tn.esprit.interfaces.GiveawayService;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -41,9 +47,22 @@ public class AfficherGiveawayController {
             List<Giveaway> giveaways = giveawayService.recupererGiveaways();
 
             for (Giveaway giveaway : giveaways) {
-                VBox giveawayCard = new VBox(5);
-                giveawayCard.setStyle("-fx-border-color: black; -fx-padding: 10px; -fx-background-color: #1e1e2e;");
-                giveawayCard.setPrefSize(200, 250);
+                VBox giveawayCard = new VBox(10);
+
+                // Chargement de l'image depuis resources
+                javafx.scene.image.Image backgroundImage = new Image(getClass().getResource("/ground.jpg").toExternalForm());
+                BackgroundImage background = new BackgroundImage(
+                        backgroundImage,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.CENTER,
+                        new BackgroundSize(100, 100, true, true, false, true)
+                );
+
+                giveawayCard.setBackground(new Background(background)); // Appliquer l'image de fond
+
+                giveawayCard.setStyle("-fx-border-radius: 10; -fx-border-color: #8a2be2; -fx-padding: 15px;");
+                giveawayCard.setPrefSize(280, 320);
 
                 // Éléments de la carte
                 Label titreLabel = new Label("Titre: " + giveaway.getTitreg());
