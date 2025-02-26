@@ -48,7 +48,7 @@ public class MdpOublieController {
     private TextField usernametext;
     ServiceUtilisateur us = new ServiceUtilisateur();
 
-  /*  private void send_SMS(int recipnum, int code){
+   private void send_SMS(int recipnum, int code){
         String ACCOUNT_SID = "AC69efe739a3ba6247ae6d72d9f48b9600";
         String AUTH_TOKEN = "aa1ff59b933917faac07cd2dc0ced175";
 
@@ -64,7 +64,7 @@ public class MdpOublieController {
                 new PhoneNumber("+16292586208"),message).create();
 
         System.out.println("SMS envoyé : " + twilioMessage.getSid());
-    }*/
+    }
     @FXML
     void Cancel(ActionEvent event) throws IOException {
         Stage stage=(Stage) Button_cancel.getScene().getWindow();
