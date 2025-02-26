@@ -22,6 +22,10 @@
             </content>
         </ScrollPane>
 
+        <!-- Champ pour rechercher l'équipe placé sous la Card View -->
+        <TextField fx:id="tfRecherche" layoutX="165.0" layoutY="400.0" prefHeight="34.0" prefWidth="160.0" promptText="Rechercher une équipe" onKeyReleased="#rechercherEquipe"/>
+
+        <!-- Champ pour saisir le nom de l'équipe -->
         <TextField fx:id="tfNomEquipe" layoutX="165.0" layoutY="83.0" prefHeight="34.0" prefWidth="160.0" promptText="Nom Equipe" />
 
         <Button layoutX="17.0" layoutY="633.0" onAction="#ajouterEquipe" prefHeight="39.0" prefWidth="84.0" text="Ajouter" />

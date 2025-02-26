@@ -17,11 +17,14 @@ import tn.esprit.services.ServiceEquipe;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class GestionEquipe {
 
     @FXML private TextField tfNomEquipe;
+    @FXML private TextField tfRecherche;  // Champ de recherche
     @FXML private DatePicker dpDateCreation;
     @FXML private VBox equipeContainer;
 
@@ -30,7 +33,7 @@ public class GestionEquipe {
 
     @FXML
     public void initialize() {
-        refreshEquipesList();
+        refreshEquipesList(se.getAll());  // Afficher toutes les équipes au début
     }
 
     private boolean validateInputs() {
@@ -49,7 +52,7 @@ public class GestionEquipe {
             e.setNom_equipe(tfNomEquipe.getText());
             e.setDate_creation(new Date());
             se.add(e);
-            refreshEquipesList();
+            refreshEquipesList(se.getAll());
             showAlert("Succès", "Équipe ajoutée avec succès!", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (Exception e) {
@@ -67,22 +70,22 @@ public class GestionEquipe {
         Optional<ButtonType> result = confirmDialog.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.YES) {
             se.delete(selectedEquipe);
-            refreshEquipesList();
+            refreshEquipesList(se.getAll());
             showAlert("Succès", "Équipe supprimée avec succès!", Alert.AlertType.INFORMATION);
             clearFields();
         }
     }
 
     @FXML
-    public void refreshEquipesList() {
+    public void refreshEquipesList(List<Equipe> equipes) {
         Platform.runLater(() -> {
-            equipeContainer.getChildren().clear(); // Nettoyage avant l'affichage
+            equipeContainer.getChildren().clear();
 
             HBox currentRow = new HBox(10);
             currentRow.setAlignment(Pos.TOP_LEFT);
             int cardCount = 0;
 
-            for (Equipe e : se.getAll()) {
+            for (Equipe e : equipes) {
                 StackPane card = new StackPane();
                 card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-radius: 20px; -fx-padding: 20px;");
 
@@ -158,7 +161,7 @@ public class GestionEquipe {
         try {
             selectedEquipe.setNom_equipe(tfNomEquipe.getText());
             se.update(selectedEquipe);
-            refreshEquipesList();
+            refreshEquipesList(se.getAll());
             showAlert("Succès", "Équipe modifiée avec succès!", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (Exception e) {
@@ -176,5 +179,15 @@ public class GestionEquipe {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    // Méthode de recherche dynamique
+    @FXML
+    private void rechercherEquipe() {
+        String rechercheText = tfRecherche.getText().toLowerCase();  // Récupère le texte de recherche et le convertit en minuscule
+        List<Equipe> equipesFiltered = se.getAll().stream()
+                .filter(e -> e.getNom_equipe().toLowerCase().contains(rechercheText)) // Filtrer les équipes par nom
+                .collect(Collectors.toList());
+        refreshEquipesList(equipesFiltered);  // Mettre à jour la liste avec les équipes filtrées
     }
 }
