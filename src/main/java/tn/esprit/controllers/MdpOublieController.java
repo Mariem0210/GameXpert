@@ -49,8 +49,7 @@ public class MdpOublieController {
     ServiceUtilisateur us = new ServiceUtilisateur();
 
     private void send_SMS(int recipnum, int code){
-        String ACCOUNT_SID = "AC69efe739a3ba6247ae6d72d9f48b9600";
-        String AUTH_TOKEN = "aa1ff59b933917faac07cd2dc0ced175";
+
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
