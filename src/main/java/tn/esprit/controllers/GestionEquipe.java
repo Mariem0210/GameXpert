@@ -3,7 +3,12 @@ package tn.esprit.controllers;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 import javafx.application.Platform;
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Equipe;
@@ -16,42 +21,21 @@ import java.util.Optional;
 
 public class GestionEquipe {
 
-    @FXML private TextField tfIdeq;
     @FXML private TextField tfNomEquipe;
     @FXML private DatePicker dpDateCreation;
-    @FXML private TextField tfIdu;
-    @FXML private VBox equipeContainer; // Correspond maintenant à "equipeContainer" dans le FXML
+    @FXML private VBox equipeContainer;
 
     private Equipe selectedEquipe = null;
     private final IService<Equipe> se = new ServiceEquipe();
 
     @FXML
     public void initialize() {
-        if (equipeContainer == null) {
-            System.err.println("ERREUR : equipeContainer est NULL. Vérifiez le fichier FXML.");
-        } else {
-            refreshEquipesList();
-        }
-        addInputRestrictions();
-    }
-
-    private void addInputRestrictions() {
-        tfIdeq.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                tfIdeq.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
-
-        tfIdu.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                tfIdu.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+        refreshEquipesList();
     }
 
     private boolean validateInputs() {
-        if (tfNomEquipe.getText().isEmpty() || dpDateCreation.getValue() == null) {
-            showAlert("Erreur", "Tous les champs doivent être remplis.", Alert.AlertType.ERROR);
+        if (tfNomEquipe.getText().isEmpty()) {
+            showAlert("Erreur", "Le nom de l'équipe est obligatoire.", Alert.AlertType.ERROR);
             return false;
         }
         return true;
@@ -59,20 +43,11 @@ public class GestionEquipe {
 
     @FXML
     public void ajouterEquipe(ActionEvent actionEvent) {
-        if (!validateInputs()) {
-            return;
-        }
+        if (!validateInputs()) return;
         try {
             Equipe e = new Equipe();
             e.setNom_equipe(tfNomEquipe.getText());
-
-            Date dateCreation = Date.from(dpDateCreation.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            e.setDate_creation(dateCreation);
-
-            if (!tfIdu.getText().isEmpty()) {
-                e.setIdu(Integer.parseInt(tfIdu.getText()));
-            }
-
+            e.setDate_creation(new Date());
             se.add(e);
             refreshEquipesList();
             showAlert("Succès", "Équipe ajoutée avec succès!", Alert.AlertType.INFORMATION);
@@ -88,44 +63,100 @@ public class GestionEquipe {
             showAlert("Erreur", "Veuillez sélectionner une équipe à supprimer.", Alert.AlertType.ERROR);
             return;
         }
-
-        Optional<Equipe> equipeASupprimer = se.getAll().stream()
-                .filter(e -> e.getIdeq() == selectedEquipe.getIdeq())
-                .findFirst();
-
-        if (equipeASupprimer.isPresent()) {
-            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmDialog.setTitle("Confirmation");
-            confirmDialog.setContentText("Êtes-vous sûr de vouloir supprimer cette équipe ?");
-            Optional<ButtonType> result = confirmDialog.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                se.delete(equipeASupprimer.get());
-                refreshEquipesList();
-                showAlert("Succès", "Équipe supprimée avec succès!", Alert.AlertType.INFORMATION);
-                clearFields();
-            }
-        } else {
-            showAlert("Erreur", "Équipe introuvable.", Alert.AlertType.ERROR);
+        Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION, "Êtes-vous sûr de vouloir supprimer cette équipe ?", ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = confirmDialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            se.delete(selectedEquipe);
+            refreshEquipesList();
+            showAlert("Succès", "Équipe supprimée avec succès!", Alert.AlertType.INFORMATION);
+            clearFields();
         }
+    }
+
+    @FXML
+    public void refreshEquipesList() {
+        Platform.runLater(() -> {
+            equipeContainer.getChildren().clear(); // Nettoyage avant l'affichage
+
+            HBox currentRow = new HBox(10);
+            currentRow.setAlignment(Pos.TOP_LEFT);
+            int cardCount = 0;
+
+            for (Equipe e : se.getAll()) {
+                StackPane card = new StackPane();
+                card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-radius: 20px; -fx-padding: 20px;");
+
+                // Ajout de l'image de fond
+                try {
+                    ImageView backgroundImage = new ImageView(new Image(getClass().getResource("/lol1.jpg").toExternalForm()));
+                    backgroundImage.setFitWidth(200);
+                    backgroundImage.setFitHeight(300);
+                    backgroundImage.setOpacity(0.3);
+                    card.getChildren().add(backgroundImage);
+                } catch (Exception ex) {
+                    System.out.println("Erreur de chargement de l'image : " + ex.getMessage());
+                }
+
+                // Créer le contenu de la carte
+                VBox content = new VBox(10);
+                content.setAlignment(Pos.CENTER);
+
+                // Affichage du nom de l'équipe
+                Label lblNom = new Label(e.getNom_equipe());
+                lblNom.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 18px;");
+
+                // Affichage de l'ID de l'équipe
+                Label lblId = new Label("ID: " + e.getIdeq());
+                lblId.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 14px;");
+
+                // Affichage de la date de création de l'équipe
+                String dateString = Instant.ofEpochMilli(e.getDate_creation().getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                        .toString();
+                Label lblDate = new Label("Créé le: " + dateString);
+                lblDate.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 14px;");
+
+                // Ajouter les informations à la VBox
+                content.getChildren().addAll(lblNom, lblId, lblDate);
+
+                // Ajouter le contenu dans la carte
+                card.getChildren().add(content);
+
+                // Lorsque l'utilisateur clique sur la carte, remplir les champs
+                card.setOnMouseClicked(event -> remplirChamps(e));
+
+                // Ajouter la carte à la ligne courante
+                currentRow.getChildren().add(card);
+                cardCount++;
+
+                // Si on a atteint 4 cartes, ajouter la ligne dans le conteneur
+                if (cardCount >= 4) {
+                    equipeContainer.getChildren().add(currentRow);
+                    currentRow = new HBox(10);
+                    cardCount = 0;
+                }
+            }
+
+            // Ajouter la dernière ligne si elle contient des cartes
+            if (cardCount > 0) equipeContainer.getChildren().add(currentRow);
+        });
+    }
+
+    public void remplirChamps(Equipe e) {
+        selectedEquipe = e;
+        tfNomEquipe.setText(e.getNom_equipe());
+        dpDateCreation.setValue(e.getDate_creation().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 
     @FXML
     private void modifierEquipe(ActionEvent event) {
         if (selectedEquipe == null || !validateInputs()) {
-            showAlert("Erreur", "Veuillez sélectionner une équipe à modifier et remplir les champs correctement.", Alert.AlertType.ERROR);
+            showAlert("Erreur", "Veuillez sélectionner une équipe à modifier.", Alert.AlertType.ERROR);
             return;
         }
         try {
             selectedEquipe.setNom_equipe(tfNomEquipe.getText());
-
-            Date dateCreation = Date.from(dpDateCreation.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            selectedEquipe.setDate_creation(dateCreation);
-
-            if (!tfIdu.getText().isEmpty()) {
-                selectedEquipe.setIdu(Integer.parseInt(tfIdu.getText()));
-            }
-
             se.update(selectedEquipe);
             refreshEquipesList();
             showAlert("Succès", "Équipe modifiée avec succès!", Alert.AlertType.INFORMATION);
@@ -135,42 +166,9 @@ public class GestionEquipe {
         }
     }
 
-    @FXML
-    public void refreshEquipesList() {
-        if (equipeContainer == null) {
-            System.err.println("ERREUR : equipeContainer est NULL. Impossible de rafraîchir la liste.");
-            return;
-        }
-
-        Platform.runLater(() -> {
-            equipeContainer.getChildren().clear();
-            for (Equipe e : se.getAll()) {
-                Label equipeLabel = new Label(e.getNom_equipe() + " - Créée le: " + e.getDate_creation());
-                equipeLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333;");
-                equipeLabel.setOnMouseClicked(event -> {
-                    selectedEquipe = e;
-                    remplirChamps(e);
-                });
-                equipeContainer.getChildren().add(equipeLabel);
-            }
-        });
-    }
-
-    public void remplirChamps(Equipe e) {
-        tfIdeq.setText(String.valueOf(e.getIdeq()));
-        tfNomEquipe.setText(e.getNom_equipe());
-
-        Instant instant = e.getDate_creation().toInstant();
-        dpDateCreation.setValue(instant.atZone(ZoneId.systemDefault()).toLocalDate());
-
-        tfIdu.setText(e.getIdu() > 0 ? String.valueOf(e.getIdu()) : "");
-    }
-
     private void clearFields() {
-        tfIdeq.clear();
         tfNomEquipe.clear();
         dpDateCreation.setValue(null);
-        tfIdu.clear();
     }
 
     private void showAlert(String title, String message, Alert.AlertType type) {

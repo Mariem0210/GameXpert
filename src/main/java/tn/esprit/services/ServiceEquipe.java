@@ -59,19 +59,23 @@ public class ServiceEquipe implements IService<Equipe> {
     }
     @Override
     public void update(Equipe equipe) {
-        String qry = "UPDATE equipe SET `nom_equipe`=?, `date_creation`=?, `idu`=? WHERE `ideq`=?";
+        String qry = "UPDATE equipe SET nom_equipe=? WHERE ideq=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setString(1, equipe.getNom_equipe());
-            pstm.setDate(2, new java.sql.Date(equipe.getDate_creation().getTime()));
-            pstm.setInt(3, equipe.getIdu());
-            pstm.setInt(4, equipe.getIdeq());
+            pstm.setString(1, equipe.getNom_equipe()); // Mettre à jour uniquement le nom
+            pstm.setInt(2, equipe.getIdeq()); // Condition sur l'ID de l'équipe
 
-            pstm.executeUpdate();
+            int rowsUpdated = pstm.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Nom de l'équipe modifié avec succès !");
+            } else {
+                System.out.println("Aucune équipe trouvée avec cet ID !");
+            }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur lors de la mise à jour : " + e.getMessage());
         }
     }
+
     @Override
     public void delete(Equipe equipe) {
         String qry = "DELETE FROM equipe WHERE `ideq`=?";
