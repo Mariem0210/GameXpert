@@ -1,49 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0"  xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionOffre_de_recrutement">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionOffre_de_recrutement">
 
-    <!-- Section Titre -->
-    <Label layoutX="320.0" layoutY="20.0" styleClass="title" text="Gestion des Offres de Recrutement" />
+    <children>
+        <!-- Image de fond -->
+        <ImageView fitHeight="720.0" fitWidth="1080.0" layoutX="0.0" layoutY="0.0">
+            <image>
+                <Image url="@game.jpg" />
+            </image>
+        </ImageView>
 
-    <!-- Section Formulaire -->
-    <Label layoutX="87.0" layoutY="80.0" text="Ajouter une nouvelle offre" />
+        <!-- Conteneur des offres -->
+        <ScrollPane layoutX="400.0" layoutY="72.0" prefHeight="481.0" prefWidth="680.0">
+            <content>
+                <VBox fx:id="offreContainer" prefHeight="481.0" prefWidth="680.0" spacing="10" />
+            </content>
+        </ScrollPane>
 
-    <!-- Champs pour l'offre de recrutement -->
-    <TextField fx:id="tfIdo" layoutX="124.0" layoutY="120.0" prefHeight="28.0" prefWidth="165.0" promptText="ID Offre" />
-    <TextField fx:id="tfIdu" layoutX="124.0" layoutY="170.0" prefHeight="28.0" prefWidth="165.0" promptText="ID Utilisateur" />
-    <TextField fx:id="tfPosteRecherche" layoutX="124.0" layoutY="220.0" prefHeight="28.0" prefWidth="165.0" promptText="Poste Recherché" />
-    <TextField fx:id="tfNiveauRequis" layoutX="124.0" layoutY="270.0" prefHeight="28.0" prefWidth="165.0" promptText="Niveau Requis" />
-    <TextField fx:id="tfSalairePropose" layoutX="124.0" layoutY="320.0" prefHeight="28.0" prefWidth="165.0" promptText="Salaire Proposé" />
-    <TextField fx:id="tfStatus" layoutX="124.0" layoutY="370.0" prefHeight="28.0" prefWidth="165.0" promptText="Statut" />
-    <TextField fx:id="tfContrat" layoutX="124.0" layoutY="420.0" prefHeight="28.0" prefWidth="165.0" promptText="Contrat" />
+        <!-- Labels pour afficher l'ID de l'offre et l'ID utilisateur -->
+        <Label fx:id="lblIdo" layoutX="50.0" layoutY="100.0" prefHeight="28.0" prefWidth="250.0" text="ID Offre" style="-fx-text-fill: white;" />
+        <Label fx:id="lblIdu" layoutX="50.0" layoutY="140.0" prefHeight="28.0" prefWidth="250.0" text="ID Utilisateur" style="-fx-text-fill: white;" />
 
-    <!-- Boutons avec événements -->
-    <Button fx:id="btnAjouter" layoutX="124.0" layoutY="480.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-ajouter" text="Ajouter" onAction="#ajouterOffre"/>
-    <Button fx:id="btnModifier" layoutX="214.0" layoutY="480.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-modifier" text="Modifier" onAction="#modifierOffre"/>
-    <Button fx:id="btnSupprimer" layoutX="304.0" layoutY="480.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-supprimer" text="Supprimer" onAction="#supprimerOffre"/>
+        <!-- Champs de saisie pour les autres informations -->
+        <TextField fx:id="tfPosteRecherche" layoutX="50.0" layoutY="180.0" prefHeight="28.0" prefWidth="250.0" promptText="Poste Recherché" />
+        <TextField fx:id="tfNiveauRequis" layoutX="50.0" layoutY="220.0" prefHeight="28.0" prefWidth="250.0" promptText="Niveau Requis" />
+        <TextField fx:id="tfSalairePropose" layoutX="50.0" layoutY="260.0" prefHeight="28.0" prefWidth="250.0" promptText="Salaire Proposé" />
+        <TextField fx:id="tfStatus" layoutX="50.0" layoutY="300.0" prefHeight="28.0" prefWidth="250.0" promptText="Statut" />
+        <TextField fx:id="tfContrat" layoutX="50.0" layoutY="340.0" prefHeight="28.0" prefWidth="250.0" promptText="Contrat" />
 
-    <!-- Section Offres Disponibles -->
-    <Label layoutX="614.0" layoutY="83.0" text="Liste des Offres Disponibles" />
-
-    <TableView fx:id="tableViewOffres" layoutX="492.0" layoutY="120.0" prefHeight="450.0" prefWidth="500.0" >
-        <columns>
-            <TableColumn text="ID" fx:id="colIdo" prefWidth="50"/>
-            <TableColumn text="Utilisateur" fx:id="colIdu" prefWidth="80"/>
-            <TableColumn text="Poste" fx:id="colPosteRecherche" prefWidth="100"/>
-            <TableColumn text="Niveau" fx:id="colNiveauRequis" prefWidth="100"/>
-            <TableColumn text="Salaire" fx:id="colSalairePropose" prefWidth="80"/>
-            <TableColumn text="Statut" fx:id="colStatus" prefWidth="80"/>
-            <TableColumn text="Contrat" fx:id="colContrat" prefWidth="80"/>
-        </columns>
-    </TableView>
-
+        <!-- Boutons d'action -->
+        <Button fx:id="btnAjouter" layoutX="50.0" layoutY="390.0" onAction="#creerOffre" prefHeight="39.0" prefWidth="84.0" text="Ajouter" />
+        <Button fx:id="btnModifier" layoutX="150.0" layoutY="390.0" onAction="#modifierOffre" prefHeight="39.0" prefWidth="84.0" text="Modifier" />
+        <Button fx:id="btnSupprimer" layoutX="250.0" layoutY="390.0" onAction="#supprimerOffre" prefHeight="39.0" prefWidth="93.0" text="Supprimer" />
+    </children>
 </AnchorPane>
