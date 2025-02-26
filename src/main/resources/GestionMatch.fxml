@@ -63,6 +63,10 @@
             <font><Font name="Cambria" size="14.0" /></font>
         </Button>
 
+        <Button fx:id="btnExportPDF" layoutX="130.0" layoutY="580.0" onAction="#genererPDF" prefHeight="39.0" prefWidth="120.0" styleClass="export-button" text="Exporter PDF">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Button>
+
         <!-- Title Label -->
         <HBox alignment="CENTER" layoutX="-21.0" layoutY="-24.0" prefHeight="110.0" prefWidth="227.0">
             <children>

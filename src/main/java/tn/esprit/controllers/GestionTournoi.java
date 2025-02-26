@@ -197,7 +197,7 @@ public class GestionTournoi {
             ImageView backgroundImage = new ImageView();
             backgroundImage.setFitWidth(200);
             backgroundImage.setFitHeight(400);
-            Image image = new Image("file:C:/Users/amine debbich/IdeaProjects/gameXpert/src/main/resources/lol.jpg");
+            Image image = new Image("lol.jpg");
             backgroundImage.setImage(image);
             backgroundImage.setOpacity(0.3);
 

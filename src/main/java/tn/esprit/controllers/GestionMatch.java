@@ -1,5 +1,7 @@
 package tn.esprit.controllers;
 
+import java.io.File;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -9,6 +11,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Match;
 import tn.esprit.services.ServiceMatch;
@@ -28,21 +35,25 @@ public class GestionMatch {
     @FXML private TextField tfScore;
     @FXML private TextField tfStatus;
     @FXML private VBox cardContainer;
+
     private Match selectedMatch = null;
     private Tournoi tournoiActuel;
 
     private final IService<Match> sm = new ServiceMatch();
+
     @FXML
     public void setTournoi(Tournoi tournoi) {
         this.tournoiActuel = tournoi;
         System.out.println("Tournoi sélectionné : " + tournoi.getNomt());
         tfIdt.setText(String.valueOf(tournoi.getIdt()));
     }
+
     @FXML
     public void initialize() {
         refreshMatchesList();
         addInputRestrictions();
     }
+
     private void addInputRestrictions() {
         tfIdt.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -86,10 +97,6 @@ public class GestionMatch {
     @FXML
     public void ajouterMatch(ActionEvent actionEvent) {
         if (!validateInputs()) {
-            return;
-        }
-        if ( tfEquipe1.getText().isEmpty() || tfEquipe2.getText().isEmpty() || dpDateDebutm.getValue() == null || tfScore.getText().isEmpty() || tfStatus.getText().isEmpty()) {
-            showAlert("Erreur", "Tous les champs doivent être remplis.", Alert.AlertType.ERROR);
             return;
         }
 
@@ -181,18 +188,17 @@ public class GestionMatch {
             }
 
             int tournoiId = tournoiActuel.getIdt();
-            System.out.println("tourni selectionner: " + tournoiId);
+            System.out.println("Tournoi sélectionné: " + tournoiId);
 
             for (Match m : sm.getAll()) {
                 StackPane card = new StackPane();
 
                 if (m.getIdt() == tournoiId) {
                     card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
-
                     ImageView backgroundImage = new ImageView();
                     backgroundImage.setFitWidth(200);
                     backgroundImage.setFitHeight(400);
-                    Image image = new Image("file:C:/Users/amine debbich/IdeaProjects/gameXpert/src/main/resources/lol1.jpg");
+                    Image image = new Image("lol1.jpg");
                     backgroundImage.setImage(image);
                     backgroundImage.setOpacity(0.3);
                     card.getChildren().add(backgroundImage);
@@ -207,18 +213,14 @@ public class GestionMatch {
 
                     Label teamsLabel = new Label(m.getEquipe1() + " vs " + m.getEquipe2());
                     teamsLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-family: 'Courier New', monospace; -fx-font-size: 24px; -fx-font-weight: bold;");
-
                     Label dateLabel = new Label("Date: " + m.getDate_debutm());
                     dateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
-
                     Label scoreLabel = new Label("Score: " + formattedScore);
                     scoreLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
-
                     Label statusLabel = new Label("Statut: " + m.getStatus());
                     statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
 
                     content.getChildren().addAll(teamsLabel, dateLabel, scoreLabel, statusLabel);
-
                     card.getChildren().add(content);
 
                     card.setOnMouseClicked(event -> {
@@ -244,8 +246,40 @@ public class GestionMatch {
         });
     }
 
+    @FXML
+    private void genererPDF(ActionEvent event) {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
 
-    public void remplirChamps(Match m) {
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 700);
+            contentStream.showText("Liste des Matchs:");
+            contentStream.newLineAtOffset(0, -20);
+
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            for (Match m : sm.getAll()) {
+                String line = "Match " + m.getIdm() + ": " + m.getEquipe1() + " vs " + m.getEquipe2() +
+                        " | Score: " + m.getScore() + " | Date: " + m.getDate_debutm();
+                contentStream.showText(line);
+                contentStream.newLineAtOffset(0, -15);
+            }
+
+            contentStream.endText();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            document.save(new File("match_list.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void remplirChamps(Match m) {
         tfIdm.setText(String.valueOf(m.getIdm()));
         tfIdt.setText(String.valueOf(m.getIdt()));
         tfEquipe1.setText(m.getEquipe1());
@@ -265,10 +299,10 @@ public class GestionMatch {
         tfStatus.clear();
     }
 
-    private void showAlert(String title, String message, Alert.AlertType type) {
+    private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
-        alert.setContentText(message);
+        alert.setContentText(content);
         alert.showAndWait();
     }
 }
