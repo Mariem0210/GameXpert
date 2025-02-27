@@ -132,3 +132,12 @@
     -fx-text-fill: black;
     -fx-font-weight: bold;
 }
+.list-view-custom .list-cell {
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #cccccc;
+    -fx-background-color: #ffffff;
+    -fx-min-width: 120px;
+    -fx-min-height: 120px;
+}

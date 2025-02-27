@@ -1,51 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="720.0" prefWidth="1080.0"
+            fx:controller="tn.esprit.controllers.CommandeController"
+            stylesheets="@style.css">
 
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.control.ScrollPane?>
+    <!-- Titre -->
+    <Label layoutX="420.0" layoutY="20.0" styleClass="title" text="Gestion des Commandes" />
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TN.ESPRIT.controllers.GestionCommande">
-
-    <!-- Section Titre -->
-    <Label layoutX="320.0" layoutY="20.0" styleClass="title" text="Gestion des Commandes" />
-
-    <!-- Section Formulaire -->
-    <Label layoutX="87.0" layoutY="80.0" text="Ajouter une nouvelle commande" />
-
-    <!-- Champs pour la commande -->
-    <DatePicker fx:id="tfDateCommande" layoutX="124.0" layoutY="120.0" prefHeight="28.0" prefWidth="165.0" promptText="Date de commande" />
-    <TextField fx:id="tfMontantTotale" layoutX="124.0" layoutY="170.0" prefHeight="28.0" prefWidth="165.0" promptText="Montant Total" />
-    <TextField fx:id="tfQuantite" layoutX="124.0" layoutY="220.0" prefHeight="28.0" prefWidth="165.0" promptText="Quantité" />
-    <TextField fx:id="tfIdProduit" layoutX="124.0" layoutY="270.0" prefHeight="28.0" prefWidth="165.0" promptText="ID Produit" />
-    <TextField fx:id="tfId" layoutX="124.0" layoutY="320.0" prefHeight="28.0" prefWidth="165.0" promptText="ID Commande" />
-
-    <!-- Boutons avec événements -->
-    <Button fx:id="btnAjouter" layoutX="124.0" layoutY="380.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-ajouter" text="Ajouter" onAction="#ajouterCommande"/>
-    <Button fx:id="btnModifier" layoutX="214.0" layoutY="380.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-modifier" text="Modifier" onAction="#modifierCommande"/>
-    <Button fx:id="btnSupprimer" layoutX="304.0" layoutY="380.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="80.0" styleClass="button button-supprimer" text="Supprimer" onAction="#supprimerCommande"/>
-    <Button fx:id="btnAfficher" layoutX="394.0" layoutY="380.0" mnemonicParsing="false" styleClass="button button-afficher" text="Afficher" onAction="#refreshCommandesList" />
-
-    <!-- Section Commandes Disponibles -->
-    <Label layoutX="614.0" layoutY="83.0" text="Liste des Commandes Disponibles" />
-
-    <TableView fx:id="tableViewCommandes" layoutX="492.0" layoutY="120.0" prefHeight="450.0" prefWidth="450.0" >
+    <!-- TableView pour afficher les commandes -->
+    <TableView fx:id="tableCommandes" layoutX="50.0" layoutY="100.0" prefWidth="980.0" prefHeight="500.0">
         <columns>
-            <TableColumn text="ID" fx:id="colId" prefWidth="50"/>
-            <TableColumn text="Date" fx:id="colDate" prefWidth="100"/>
-            <TableColumn text="Montant" fx:id="colMontant" prefWidth="100"/>
-            <TableColumn text="Quantité" fx:id="colQuantite" prefWidth="100"/>
-            <TableColumn text="Produit" fx:id="colProduit" prefWidth="100"/>
+            <!-- Colonne ID Commande -->
+            <TableColumn fx:id="colIdCommande" text="ID Commande" prefWidth="150.0" />
+            <!-- Colonne Date Commande -->
+            <TableColumn fx:id="colDateCommande" text="Date Commande" prefWidth="250.0" />
+            <!-- Colonne Montant Total -->
+            <TableColumn fx:id="colMontantTotal" text="Montant Total" prefWidth="200.0" />
+            <!-- Colonne ID Utilisateur -->
+            <TableColumn fx:id="colUtilisateur" text="ID Utilisateur" prefWidth="200.0" />
         </columns>
     </TableView>
 
-    <!-- Liste des Commandes -->
-
+    <!-- Boutons pour supprimer une commande et payer une commande -->
+    <Button layoutX="250.0" layoutY="630.0" text="Payer Commande" onAction="#handlePayerCommande" styleClass="payButton" />
+    <Button layoutX="400.0" layoutY="630.0" text="Supprimer Commande" onAction="#supprimerCommande" styleClass="deleteButton" />
+    <WebView fx:id="webView" layoutX="50.0" layoutY="300.0" prefWidth="980.0" prefHeight="300.0" />
 </AnchorPane>

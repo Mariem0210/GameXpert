@@ -1,4 +1,4 @@
-package TN.ESPRIT.interfaces;
+package tn.esprit.interfaces;
 import java.util.List;
 
 public interface IService <T>{

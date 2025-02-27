@@ -1,4 +1,4 @@
-package TN.ESPRIT;
+package tn.esprit;
 
 public class Test {
     private static Test instance;

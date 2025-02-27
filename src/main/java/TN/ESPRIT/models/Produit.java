@@ -1,30 +1,28 @@
-package TN.ESPRIT.models;
+package tn.esprit.models;
 
 import java.util.Date;
 
 public class Produit {
-    private int id_produit, stock;
-    private String nom, description, categorie, image_produit;
+    private int id_produit;
+    private String nom;
+    private String description;
     private float prix;
+    private int stock;
+    private String categorie;
+    private String image_produit;
     private Date date_creation;
 
-    // Constructeur par défaut
-    public Produit() {
-    }
-
-    // Constructeur avec tous les attributs
-    public Produit(int id_produit, String nom, String description, float prix, int stock, Date date_creation, String categorie, String image_produit) {
+    // Constructeur avec l'ID du produit
+    public Produit(int id_produit) {
         this.id_produit = id_produit;
-        this.nom = nom;
-        this.description = description;
-        this.prix = prix;
-        this.stock = stock;
-        this.date_creation = date_creation;
-        this.categorie = categorie;
-        this.image_produit = image_produit;
+        // Vous pouvez récupérer ici les autres informations à partir de la base de données si nécessaire
+        // Exemple : Requête pour récupérer nom, description, etc., à partir de l'ID
+        // Ici, on suppose que le produit est récupéré à partir de l'ID dans une base de données.
+        this.nom = "Nom du produit " + id_produit;  // Exemple, vous devez le remplacer par une vraie récupération
+        this.description = "Description du produit " + id_produit;  // Même remarque ici
+        this.prix = 100;  // Exemple
+        this.stock = 50;  // Exemple
     }
-
-    // Constructeur sans id_produit (utilisé pour les insertions)
     public Produit(String nom, String description, float prix, int stock, Date date_creation, String categorie, String image_produit) {
         this.nom = nom;
         this.description = description;
@@ -33,6 +31,20 @@ public class Produit {
         this.date_creation = date_creation;
         this.categorie = categorie;
         this.image_produit = image_produit;
+        // L'ID sera généré par la base de données lorsqu'un produit est inséré
+    }
+
+
+    // Constructeur avec tous les champs
+    public Produit(int id_produit, String nom, String description, float prix, int stock, String categorie, String image_produit, Date date_creation) {
+        this.id_produit = id_produit;
+        this.nom = nom;
+        this.description = description;
+        this.prix = prix;
+        this.stock = stock;
+        this.categorie = categorie;
+        this.image_produit = image_produit;
+        this.date_creation = date_creation;
     }
 
     // Getters et Setters
@@ -76,14 +88,6 @@ public class Produit {
         this.stock = stock;
     }
 
-    public Date getDate_creation() {
-        return date_creation;
-    }
-
-    public void setDate_creation(Date date_creation) {
-        this.date_creation = date_creation;
-    }
-
     public String getCategorie() {
         return categorie;
     }
@@ -100,7 +104,14 @@ public class Produit {
         this.image_produit = image_produit;
     }
 
-    // Méthode toString pour affichage
+    public Date getDate_creation() {
+        return date_creation;
+    }
+
+    public void setDate_creation(Date date_creation) {
+        this.date_creation = date_creation;
+    }
+
     @Override
     public String toString() {
         return "Produit{" +
@@ -109,9 +120,9 @@ public class Produit {
                 ", description='" + description + '\'' +
                 ", prix=" + prix +
                 ", stock=" + stock +
-                ", date_creation=" + date_creation +
                 ", categorie='" + categorie + '\'' +
                 ", image_produit='" + image_produit + '\'' +
+                ", date_creation=" + date_creation +
                 '}';
     }
 }

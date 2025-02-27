@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page de Paiement</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        #card-element {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            background: #fff;
+        }
+        button {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Formulaire de Paiement</h2>
+    <form id="payment-form">
+        <div id="card-element"></div>
+        <button id="submit">Payer</button>
+    </form>
+    <div id="error-message"></div>
+</div>
+
+<script>
+    var stripe = Stripe('pk_test_51QwQeCJrisMbus4mttyWrev3LR6nfp1FqHcSi9QyeHYIExiYcVcN0SKhSbfgoa6N9WSzonJYT0smWzdX93NmGqxT00teUQVUfJ');
+    var elements = stripe.elements();
+    var card = elements.create('card', {style: {base: {fontSize: '16px', fontFamily: 'Arial, sans-serif'}}});
+    card.mount('#card-element');
+
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        stripe.createToken(card).then(function(result) {
+            if (result.error) {
+                document.getElementById('error-message').textContent = result.error.message;
+            } else {
+                stripeTokenHandler(result.token);
+            }
+        });
+    });
+
+    function stripeTokenHandler(token) {
+        fetch('http://localhost:8080/payment', {
+            method: 'POST',
+            body: JSON.stringify({ token: token.id }),
+            headers: { 'Content-Type': 'application/json' },
+        })
+            .then(response => response.json())
+            .then(data => { console.log(data); });
+    }
+</script>
+</body>
+</html>

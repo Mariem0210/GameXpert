@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="720.0" prefWidth="1080.0"
+            fx:controller="tn.esprit.controllers.PanierController"
+            stylesheets="@style.css">
+
+    <Label layoutX="420.0" layoutY="20.0" styleClass="title" text="Gestion du Panier" />
+
+    <!-- TableView pour afficher le panier -->
+    <TableView fx:id="tablePanier" layoutX="50.0" layoutY="100.0" prefWidth="980.0" prefHeight="500.0">
+        <columns>
+            <TableColumn fx:id="colUtilisateur" text="ID Utilisateur" prefWidth="200.0"/>
+            <TableColumn fx:id="colProduit" text="Nom Produit" prefWidth="200.0"/>
+            <TableColumn fx:id="colQuantite" text="Quantité" prefWidth="150.0"/>
+            <TableColumn fx:id="colDateAjout" text="Date d'Ajout" prefWidth="250.0"/>
+            <TableColumn fx:id="colActions" text="Actions" prefWidth="150.0"/>
+        </columns>
+    </TableView>
+
+    <!-- Boutons pour valider le panier -->
+    <Button layoutX="450.0" layoutY="630.0" text="Valider Panier" onAction="#validerPanier" styleClass="validateButton" />
+</AnchorPane>

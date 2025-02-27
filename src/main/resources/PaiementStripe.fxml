@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="720.0" prefWidth="1080.0"
+            fx:controller="tn.esprit.controllers.StripeController"
+            stylesheets="@styles.css">
+
+    <!-- Titre -->
+    <Label layoutX="420.0" layoutY="20.0" styleClass="title" text="Paiement avec Stripe" />
+
+    <!-- Champs de saisie pour la carte bancaire -->
+    <Label layoutX="50.0" layoutY="100.0" text="Numéro de carte" />
+    <TextField fx:id="tfCardNumber" layoutX="50.0" layoutY="130.0" promptText="4242 4242 4242 4242" />
+
+    <Label layoutX="50.0" layoutY="180.0" text="Date d'expiration (MM/YY)" />
+    <TextField fx:id="tfExpMonth" layoutX="50.0" layoutY="210.0" promptText="MM" />
+    <TextField fx:id="tfExpYear" layoutX="150.0" layoutY="210.0" promptText="YY" />
+
+    <Label layoutX="50.0" layoutY="260.0" text="CVC" />
+    <TextField fx:id="tfCVC" layoutX="50.0" layoutY="290.0" promptText="123" />
+
+    <Label layoutX="50.0" layoutY="350.0" text="Montant (EUR)" />
+    <TextField fx:id="tfAmount" layoutX="50.0" layoutY="380.0" promptText="100.00" />
+
+    <!-- Bouton de paiement -->
+    <Button layoutX="50.0" layoutY="450.0" text="Payer" onAction="#processPayment" styleClass="payButton" />
+
+</AnchorPane>

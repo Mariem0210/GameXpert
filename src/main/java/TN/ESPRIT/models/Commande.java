@@ -1,82 +1,46 @@
-package TN.ESPRIT.models;
+package tn.esprit.models;
+
 import java.util.Date;
+
 public class Commande {
-    private int Id_commande, Quantite, id, Id_produit;
-    private Date Date_commande;
-    private float Montant_totale;
+    private int id_commande;
+    private Date date_commande;
+    private float montant_total;
+    private int id_utilisateur;
 
+    // Constructeurs
+    public Commande() {}
 
-
-
-    public Commande() {
-
-    }
-    public Commande(int Id_commande, Date Date_commande, float Montant_totale, int Quantite, int Id_produit, int id) {
-        this.Id_commande = Id_commande;
-        this.Date_commande = Date_commande;
-        this.Montant_totale = Montant_totale;
-        this.Quantite = Quantite;
-        this.Id_produit = Id_produit;
-        this.id = id;
+    public Commande(int id_commande, Date date_commande, float montant_total, int id_utilisateur) {
+        this.id_commande = id_commande;
+        this.date_commande = date_commande;
+        this.montant_total = montant_total;
+        this.id_utilisateur = id_utilisateur;
     }
 
-    public Commande(Date Date_commande, float Montant_totale, int Quantite, int Id_produit, int id) {
-        this.Date_commande = Date_commande;
-        this.Montant_totale = Montant_totale;
-        this.Quantite = Quantite;
-        this.Id_produit = Id_produit;
-        this.id = id;
-    }
-    public int getId_commande(){
-        return Id_commande;
-    }
-    public void setId_commande(int Id_commande){
-        this.Id_commande = Id_commande;
-    }
-    public Date getDate_commande(){
-        return Date_commande;
-    }
-    public void setDate_commande(Date Date_commande){
-        this.Date_commande = Date_commande;
-    }
-    public float getMontant_totale(){
-        return Montant_totale;
-    }
-    public void setMontant_totale(float Montant_totale){
-        this.Montant_totale = Montant_totale;
-    }
-    public int getQuantite(){
-        return Quantite;
-    }
-    public void setQuantite(int Quantite){
-        this.Quantite = Quantite;
-    }
-    public int getId_produit(){
-        return Id_produit;
-    }
-    public void setId_produit(int Id_produit){
-        this.Id_produit = Id_produit;
-    }
-    public int getId(){
-        return id;
-    }
-    public void setId(int id){
-        this.id = id;
+    public Commande(Date date_commande, float montant_total, int id_utilisateur) {
+        this.date_commande = date_commande;
+        this.montant_total = montant_total;
+        this.id_utilisateur = id_utilisateur;
     }
 
-
-
-
+    // Getters et Setters
+    public int getId_commande() { return id_commande; }
+    public void setId_commande(int id_commande) { this.id_commande = id_commande; }
+    public Date getDate_commande() { return date_commande; }
+    public void setDate_commande(Date date_commande) { this.date_commande = date_commande; }
+    public float getMontant_total() { return montant_total; }
+    public void setMontant_total(float montant_total) { this.montant_total = montant_total; }
+    public int getId_utilisateur() { return id_utilisateur; }
+    public void setId_utilisateur(int id_utilisateur) { this.id_utilisateur = id_utilisateur; }
 
     @Override
     public String toString() {
         return "Commande{" +
-                "Id_commande=" + Id_commande +
-                ", Date_commande='" + Date_commande + '\'' +
-                ", Montant_totale=" + Montant_totale +
-                ", Quantite=" + Quantite +
-                ", Id_produit=" + Id_produit +
-                ", id=" + id +
+                "id_commande=" + id_commande +
+                ", date_commande=" + date_commande +
+                ", montant_total=" + montant_total +
+                ", id_utilisateur=" + id_utilisateur +
                 '}';
     }
 }

@@ -1,9 +1,9 @@
-package TN.ESPRIT.test;
-import TN.ESPRIT.models.Commande;
-import TN.ESPRIT.models.Produit;
-import TN.ESPRIT.services.ServiceCommande;
-import TN.ESPRIT.services.ServiceProduit;
-import TN.ESPRIT.utils.MyDatabase;
+import tn.esprit.Test;
+import tn.esprit.models.Commande;
+import tn.esprit.models.Produit;
+import tn.esprit.services.ServiceCommande;
+import tn.esprit.services.ServiceProduit;
+import tn.esprit.utils.MyDatabase;
 import java.time.LocalDate;
 import java.util.Date;
 public class Main {
@@ -14,10 +14,10 @@ public class Main {
         //sc.update(c);
         //sc.delete(c);
         ServiceProduit sp = new ServiceProduit();
-        Produit p = new Produit(1, "pc_gam" , "i9", 2000, 9, new Date(), "INFORm", "image_produit655");
+       // Produit p = new Produit(1, "pc_gam" , "i9", 2000, 9, new Date(), "INFORm", "image_produit655");
         //sp.add(p);
         //sp.update(p);
-        sp.delete(p);
+        //sp.delete(p);
         System.out.println(sp.getAll());
 
     }

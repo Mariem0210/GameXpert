@@ -1,22 +1,21 @@
-package TN.ESPRIT.services;
+package tn.esprit.services;
 
-import TN.ESPRIT.interfaces.IService;
-import TN.ESPRIT.models.Produit;
-import TN.ESPRIT.utils.MyDatabase;
+import tn.esprit.models.Produit;
+import tn.esprit.utils.MyDatabase;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServiceProduit implements IService<Produit> {
+public class ServiceProduit {
     private Connection cnx;
 
     public ServiceProduit() {
         cnx = MyDatabase.getInstance().getCnx();
     }
 
-    @Override
     public void add(Produit produit) {
-        String qry = "INSERT INTO produits(`Nom`, `Description`, `Prix`, `Stock`, `Date_Creation`, `Categorie`, `Image_produit`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String qry = "INSERT INTO produit(Nom, Description, Prix, Stock, Date_Creation, Categorie, Image_produit) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, produit.getNom());
@@ -32,24 +31,23 @@ public class ServiceProduit implements IService<Produit> {
         }
     }
 
-    @Override
     public List<Produit> getAll() {
         List<Produit> produits = new ArrayList<>();
-        String qry = "SELECT * FROM produits";
+        String qry = "SELECT * FROM produit";
         try {
             Statement stm = cnx.createStatement();
             ResultSet rs = stm.executeQuery(qry);
             while (rs.next()) {
-                Produit p = new Produit();
-                p.setId_produit(rs.getInt("Id_produit"));
-                p.setNom(rs.getString("Nom"));
-                p.setDescription(rs.getString("Description"));
-                p.setPrix(rs.getFloat("Prix"));
-                p.setStock(rs.getInt("Stock"));
-                p.setDate_creation(rs.getDate("Date_Creation"));
-                p.setCategorie(rs.getString("Categorie"));
-                p.setImage_produit(rs.getString("Image_produit"));
-
+                Produit p = new Produit(
+                        rs.getInt("Id_produit"),
+                        rs.getString("Nom"),
+                        rs.getString("Description"),
+                        rs.getFloat("Prix"),
+                        rs.getInt("Stock"),
+                        rs.getString("Categorie"),
+                        rs.getString("Image_produit"),
+                        rs.getDate("Date_Creation")
+                );
                 produits.add(p);
             }
         } catch (SQLException e) {
@@ -58,9 +56,8 @@ public class ServiceProduit implements IService<Produit> {
         return produits;
     }
 
-    @Override
     public void update(Produit produit) {
-        String qry = "UPDATE produits SET `Nom`=?, `Description`=?, `Prix`=?, `Stock`=?, `Date_Creation`=?, `Categorie`=?, `Image_produit`=? WHERE `Id_produit`=?";
+        String qry = "UPDATE produit SET Nom=?, Description=?, Prix=?, Stock=?, Date_Creation=?, Categorie=?, Image_produit=? WHERE Id_produit=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, produit.getNom());
@@ -77,9 +74,8 @@ public class ServiceProduit implements IService<Produit> {
         }
     }
 
-    @Override
     public void delete(Produit produit) {
-        String qry = "DELETE FROM produits WHERE `Id_produit`=?";
+        String qry = "DELETE FROM produit WHERE Id_produit=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, produit.getId_produit());

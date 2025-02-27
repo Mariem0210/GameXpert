@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.CardProduitController"
+            style="-fx-background-color: #ffffff; -fx-border-color: #ddd; -fx-border-radius: 10; -fx-padding: 10;"
+            prefWidth="250" prefHeight="350">
+
+    <VBox spacing="10" alignment="CENTER">
+
+        <!-- Image du produit -->
+        <ImageView fx:id="imageProduit" fitWidth="120" fitHeight="120"
+                   style="-fx-border-radius: 10; -fx-background-radius: 10;"/>
+
+        <!-- Informations sur le produit -->
+        <Label fx:id="lblNom" style="-fx-font-weight: bold; -fx-font-size: 16px;"/>
+        <Label fx:id="lblDescription" wrapText="true" style="-fx-font-size: 12px;"/>
+        <Label fx:id="lblPrix" style="-fx-text-fill: #28a745; -fx-font-weight: bold;"/>
+        <Label fx:id="lblStock" style="-fx-font-size: 12px;"/>
+        <Label fx:id="lblCategorie" style="-fx-font-size: 12px;"/>
+
+        <!-- Bouton pour ajouter au panier -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button fx:id="btnAjouterPanier" text="🛒 Ajouter au Panier" onAction="#ajouterAuPanier"
+                    style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5px 10px;"/>
+        </HBox>
+    </VBox>
+
+</AnchorPane>
