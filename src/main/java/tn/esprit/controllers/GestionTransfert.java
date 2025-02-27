@@ -20,6 +20,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 public class GestionTransfert {
 
     @FXML private TextField tfIdu;
@@ -40,6 +48,39 @@ public class GestionTransfert {
         List<Transfert> transferts = serviceTransfert.getAll();
         transferts.sort(Comparator.comparing(Transfert::getDatet));
         afficherTransfertsTries(transferts);
+    }
+
+    @FXML
+    private void genererPDF(ActionEvent event) {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 700);
+            contentStream.showText("Liste des transferts:");
+            contentStream.newLineAtOffset(0, -20);
+
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            for (Transfert m : serviceTransfert.getAll()) {
+                String line = " transfert " + m.getIdtr() + " crée le " + m.getDatet() + " , montant donnée " + m.getMontantt() +
+                        " ,ancienne equipe " + m.getAncienne_equipe() + " , nouvelle equipe " + m.getNouvelle_equipe();
+                contentStream.showText(line);
+                contentStream.newLineAtOffset(0, -15);
+            }
+
+            contentStream.endText();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            document.save(new File("liste des transferts.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

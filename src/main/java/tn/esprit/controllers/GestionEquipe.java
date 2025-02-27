@@ -21,6 +21,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 public class GestionEquipe {
 
     @FXML private TextField tfNomEquipe;
@@ -57,6 +65,39 @@ public class GestionEquipe {
             clearFields();
         } catch (Exception e) {
             showAlert("Erreur", "Une erreur est survenue lors de l'ajout de l'équipe.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void genererPDF(ActionEvent event) {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 700);
+            contentStream.showText("Liste des equipes");
+            contentStream.newLineAtOffset(0, -20);
+
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            for (Equipe e : se.getAll()) {
+                String line = "equipe " + e.getIdeq() + " : " + e.getNom_equipe() + " crée le " + e.getDate_creation() ;
+
+                contentStream.showText(line);
+                contentStream.newLineAtOffset(0, -15);
+            }
+
+            contentStream.endText();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            document.save(new File("liste d'equipe.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -5,6 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionOffre_de_recrutement">
 
     <children>
@@ -37,5 +38,10 @@
         <Button fx:id="btnAjouter" layoutX="50.0" layoutY="390.0" onAction="#creerOffre" prefHeight="39.0" prefWidth="84.0" text="Ajouter" />
         <Button fx:id="btnModifier" layoutX="150.0" layoutY="390.0" onAction="#modifierOffre" prefHeight="39.0" prefWidth="84.0" text="Modifier" />
         <Button fx:id="btnSupprimer" layoutX="250.0" layoutY="390.0" onAction="#supprimerOffre" prefHeight="39.0" prefWidth="93.0" text="Supprimer" />
+
+        <Button fx:id="btnExportPDF" layoutX="130.0" layoutY="580.0" onAction="#genererPDF" prefHeight="39.0" prefWidth="120.0" styleClass="export-button" text="Exporter PDF">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Button>
+
     </children>
 </AnchorPane>

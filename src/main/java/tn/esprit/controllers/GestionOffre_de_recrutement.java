@@ -12,6 +12,15 @@ import tn.esprit.services.ServiceOffre_de_recrutement;
 import java.util.List;
 import java.util.Optional;
 
+
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 public class GestionOffre_de_recrutement {
 
 
@@ -118,6 +127,39 @@ public class GestionOffre_de_recrutement {
                 showAlert("Erreur", "Erreur lors de la création de l'offre.", Alert.AlertType.ERROR);
             }
         }
+
+    @FXML
+    private void genererPDF(ActionEvent event) {
+        PDDocument document = new PDDocument();
+        PDPage page = new PDPage();
+        document.addPage(page);
+
+        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, 700);
+            contentStream.showText("Liste des Offres de recrutement");
+            contentStream.newLineAtOffset(0, -20);
+
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+            for (Offre_de_recrutement o : serviceOffre.getAll()) {
+                String line = "l'offre de recrutement " + o.getIdo() + " , le contrat : " + o.getContrat() + " et salaire proposé " + o.getSalaire_propose() +
+                        " , le niveau requis " + o.getNiveu_requis() + " , le statut " + o.getStatus() + "avec la poste de recherche :" + o.getPoste_recherche();
+                contentStream.showText(line);
+                contentStream.newLineAtOffset(0, -15);
+            }
+
+            contentStream.endText();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            document.save(new File("liste des offres de recrutements.pdf"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
         @FXML
         public void modifierOffre(ActionEvent actionEvent) {

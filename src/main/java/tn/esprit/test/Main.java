@@ -17,7 +17,7 @@ public class Main {
 
     public static void main(String[] args) {
         //ServiceTransfert st = new ServiceTransfert();
-        //ServiceOffre_de_recrutement so = new ServiceOffre_de_recrutement();
+        ServiceOffre_de_recrutement so = new ServiceOffre_de_recrutement();
         ServiceEquipe se = new ServiceEquipe();
 
         //Transfert t = new Transfert(7,0, "nouvllllll", "aaa", 5555, new Date() );
