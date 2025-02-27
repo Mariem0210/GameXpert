@@ -1,5 +1,15 @@
 package tn.esprit.controllers;
-
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.io.IOException;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.ActionEvent;
@@ -28,6 +38,7 @@ import java.util.stream.Collectors;
 public class GestionTournoi {
 
     @FXML private TextField tfNomt;
+    @FXML private TextField tfNomt1;
     @FXML private TextField tfDescriptiont;
     @FXML private DatePicker dpDateDebutt;
     @FXML private DatePicker dpDateFint;
@@ -35,20 +46,125 @@ public class GestionTournoi {
     @FXML private TextField tfPrixt;
     @FXML private TextField tfStatutt;
     @FXML private VBox cardContainer;
+    @FXML private Button btnDateAscend; // Bouton pour trier par date ascendant
+    @FXML private Button btnDateDescend;
     private Tournoi selectedTournoi = null;
 
     private final IService<Tournoi> st = new ServiceTournoi();
 
     @FXML
     public void initialize() {
+        tfNomt1.textProperty().addListener((observable, oldValue, newValue) -> searchTournoi());
         refreshTournoisList();
         addInputRestrictions();
+        btnDateAscend.setOnAction(event -> trierParDateAscend());
+        btnDateDescend.setOnAction(event -> trierParDateDescend());
 
         cardContainer.setOnMouseClicked(event -> {
             if (selectedTournoi != null) {
                 remplirChamps(selectedTournoi);
             }
         });
+    }
+
+    public void searchTournoi() {
+        String searchQuery = tfNomt1.getText().toLowerCase();  // Get search query
+
+        // Clear previous results
+        cardContainer.getChildren().clear();
+
+        if (searchQuery.isEmpty()) {
+            // If the search field is empty, show all tournaments again
+            List<Tournoi> allTournois = st.getAll();
+            displayTournois(allTournois); // Display the full list of tournaments
+            return; // Exit the method
+        }
+
+        // Filter tournaments dynamically based on the search query
+        List<Tournoi> filteredTournois = st.getAll().stream()
+                .filter(t -> t.getNomt().toLowerCase().contains(searchQuery) || t.getDescriptiont().toLowerCase().contains(searchQuery))
+                .collect(Collectors.toList());
+
+        if (filteredTournois.isEmpty()) {
+        } else {
+            displayTournois(filteredTournois);
+        }
+    }
+
+    // Method to display tournaments in the card container
+    private void displayTournois(List<Tournoi> tournois) {
+        HBox currentRow = new HBox(10);
+        currentRow.setAlignment(Pos.TOP_LEFT);
+
+        int cardCount = 0;
+
+        for (Tournoi t : tournois) {
+            StackPane card = new StackPane();
+            card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
+
+            ImageView backgroundImage = new ImageView();
+            backgroundImage.setFitWidth(200);
+            backgroundImage.setFitHeight(400);
+            Image image = new Image("file:C:/Users/amine debbich/IdeaProjects/gameXpert/src/main/resources/lol.jpg");
+            backgroundImage.setImage(image);
+            backgroundImage.setOpacity(0.3);
+
+            card.getChildren().add(backgroundImage);
+
+            VBox content = new VBox(10);
+            content.setAlignment(Pos.CENTER);
+
+            Label nameLabel = new Label("Nom: " + t.getNomt());
+            nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Courier New', monospace; -fx-font-weight: bold;");
+
+            Label descriptionLabel = new Label("Description: " + t.getDescriptiont());
+            descriptionLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace; -fx-line-spacing: 4px;");
+
+            Label startDateLabel = new Label("Début: " + t.getDate_debutt());
+            startDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label endDateLabel = new Label("Fin: " + t.getDate_fint());
+            endDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label teamsLabel = new Label("Équipes: " + t.getNbr_equipes());
+            teamsLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label priceLabel = new Label("Prix: " + t.getPrixt());
+            priceLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label statusLabel = new Label("Statut: " + t.getStatutt());
+            statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
+
+            card.getChildren().add(content);
+
+            // Set mouse click event for the card
+            card.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    ouvrirGestionMatch(t);  // Double-click to open match management
+                } else {
+                    selectedTournoi = t;  // Single-click to select the tournament
+                    remplirChamps(t);  // Fill fields with the selected tournament details
+                }
+            });
+
+            currentRow.getChildren().add(card);
+            cardCount++;
+
+            // Add the current row when it's full
+            if (cardCount >= 4) {
+                cardContainer.getChildren().add(currentRow);
+                currentRow = new HBox(10);
+                currentRow.setAlignment(Pos.TOP_LEFT);
+                cardCount = 0;
+            }
+        }
+
+        // If there are remaining cards in the current row, add them to the container
+        if (cardCount > 0) {
+            cardContainer.getChildren().add(currentRow);
+        }
     }
 
     private void addInputRestrictions() {
@@ -64,7 +180,101 @@ public class GestionTournoi {
             }
         });
     }
+    @FXML
+    private void trierParDateAscend() {
+        List<Tournoi> tournois = st.getAll();
+        tournois.sort((t1, t2) -> t1.getDate_debutt().compareTo(t2.getDate_debutt())); // Tri croissant
+        afficherTournois(tournois);
+    }
+    @FXML
+    // Méthode pour trier les tournois par date descendant
+    private void trierParDateDescend() {
+        List<Tournoi> tournois = st.getAll();
+        tournois.sort((t1, t2) -> t2.getDate_debutt().compareTo(t1.getDate_debutt())); // Tri décroissant
+        afficherTournois(tournois);
+    }
 
+    @FXML  // Méthode pour afficher les tournois triés
+    private void afficherTournois(List<Tournoi> tournois) {
+        cardContainer.getChildren().clear();
+
+        HBox currentRow = new HBox(10);
+        currentRow.setAlignment(Pos.TOP_LEFT);
+
+        int cardCount = 0;
+
+        for (Tournoi t : tournois) {
+            StackPane card = new StackPane();
+            card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
+            ImageView backgroundImage = new ImageView();
+            backgroundImage.setFitWidth(200);
+            backgroundImage.setFitHeight(400);
+            Image image = new Image("lol.jpg");
+            backgroundImage.setImage(image);
+            backgroundImage.setOpacity(0.3);
+
+            card.getChildren().add(backgroundImage);
+            // Ajoutez le contenu de la carte ici (comme vous l'avez déjà fait)
+            VBox content = new VBox(10);
+            content.setAlignment(Pos.CENTER);
+
+            Label nameLabel = new Label("Nom: " + t.getNomt());
+            nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Courier New', monospace; -fx-font-weight: bold;");
+
+            // Ajoutez ici le reste des labels comme vous avez déjà fait
+
+            nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Courier New', monospace; -fx-font-weight: bold;");
+
+            Label descriptionLabel = new Label("Description: " + t.getDescriptiont());
+            descriptionLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace; -fx-line-spacing: 4px;");
+
+            Label startDateLabel = new Label("Début: " + t.getDate_debutt());
+            startDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label endDateLabel = new Label("Fin: " + t.getDate_fint());
+            endDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label teamsLabel = new Label("Équipes: " + t.getNbr_equipes());
+            teamsLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label priceLabel = new Label("Prix: " + t.getPrixt());
+            priceLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+
+            Label statusLabel = new Label("Statut: " + t.getStatutt());
+            statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+            Button qrButton = new Button("QR Code");
+            qrButton.setStyle("-fx-background-color: #ffcc00; -fx-text-fill: black; -fx-font-size: 14px;");
+            qrButton.setOnAction(e -> genererQRCode(t));
+
+            content.getChildren().add(qrButton);
+            content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);// Ajoutez les autres labels ici
+
+            card.getChildren().add(content);
+
+            card.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    ouvrirGestionMatch(t);
+                } else {
+                    selectedTournoi = t;
+                    remplirChamps(t);
+                }
+            });
+
+            currentRow.getChildren().add(card);
+            cardCount++;
+
+            if (cardCount >= 4) {
+                cardContainer.getChildren().add(currentRow);
+                currentRow = new HBox(10);
+                currentRow.setAlignment(Pos.TOP_LEFT);
+                cardCount = 0;
+            }
+        }
+
+        if (cardCount > 0) {
+            cardContainer.getChildren().add(currentRow);
+        }
+    }
     @FXML
     public void ajouterTournoi(ActionEvent actionEvent) {
         if (!validateFields()) {
@@ -226,7 +436,11 @@ public class GestionTournoi {
 
             Label statusLabel = new Label("Statut: " + t.getStatutt());
             statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+            Button qrButton = new Button("QR Code");
+            qrButton.setStyle("-fx-background-color: #ffcc00; -fx-text-fill: black; -fx-font-size: 14px;");
+            qrButton.setOnAction(e -> genererQRCode(t));
 
+            content.getChildren().add(qrButton);
             content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
 
             card.getChildren().add(content);
@@ -302,88 +516,37 @@ public class GestionTournoi {
         stage.setScene(scene);
         stage.show();
     }
-    @FXML
-    public void searchTournoi(ActionEvent event) {
-        String searchQuery = tfNomt.getText().toLowerCase();  // Assuming you want to search by the tournament name
 
-        if (searchQuery.isEmpty()) {
-            showAlert("Erreur", "Veuillez entrer un terme de recherche.", Alert.AlertType.ERROR);
-            return;
-        }
 
-        List<Tournoi> filteredTournois = st.getAll().stream()
-                .filter(t -> t.getNomt().toLowerCase().contains(searchQuery) || t.getDescriptiont().toLowerCase().contains(searchQuery))
-                .collect(Collectors.toList());
+    private void genererQRCode(Tournoi tournoi) {
+        String qrText = "http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=gamexpert&table=match&id_tournoi=" + tournoi.getIdt();
+        int width = 200;
+        int height = 200;
+        String filePath = "qrCode.png";
 
-        // If no results are found
-        if (filteredTournois.isEmpty()) {
-            showAlert("Aucun résultat", "Aucun tournoi trouvé pour ce critère.", Alert.AlertType.INFORMATION);
-        }
+        try {
+            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, width, height);
+            Path path = FileSystems.getDefault().getPath(filePath);
+            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
 
-        // Refresh the list with the filtered tournaments
-        cardContainer.getChildren().clear();
-        HBox currentRow = new HBox(10);
-        currentRow.setAlignment(Pos.TOP_LEFT);
+            // Affichage dans une nouvelle fenêtre
+            Image image = new Image("file:" + filePath);
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(200);
+            imageView.setFitHeight(200);
 
-        int cardCount = 0;
-
-        for (Tournoi t : filteredTournois) {
-            StackPane card = new StackPane();
-            card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
-
-            ImageView backgroundImage = new ImageView();
-            backgroundImage.setFitWidth(200);
-            backgroundImage.setFitHeight(400);
-            Image image = new Image("file:C:/Users/amine debbich/IdeaProjects/gameXpert/src/main/resources/lol.jpg");
-            backgroundImage.setImage(image);
-            backgroundImage.setOpacity(0.3);
-
-            card.getChildren().add(backgroundImage);
-
-            VBox content = new VBox(10);
-            content.setAlignment(Pos.CENTER);
-
-            Label nameLabel = new Label("Nom: " + t.getNomt());
-            nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Courier New', monospace; -fx-font-weight: bold;");
-
-            Label descriptionLabel = new Label("Description: " + t.getDescriptiont());
-            descriptionLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace; -fx-line-spacing: 4px;");
-
-            Label startDateLabel = new Label("Début: " + t.getDate_debutt());
-            startDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
-
-            Label endDateLabel = new Label("Fin: " + t.getDate_fint());
-            endDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
-
-            Label teamsLabel = new Label("Équipes: " + t.getNbr_equipes());
-            teamsLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
-
-            Label priceLabel = new Label("Prix: " + t.getPrixt());
-            priceLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
-
-            Label statusLabel = new Label("Statut: " + t.getStatutt());
-            statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
-
-            content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
-
-            card.getChildren().add(content);
-
-            currentRow.getChildren().add(card);
-            cardCount++;
-
-            if (cardCount >= 4) {
-                cardContainer.getChildren().add(currentRow);
-                currentRow = new HBox(10);
-                currentRow.setAlignment(Pos.TOP_LEFT);
-                cardCount = 0;
-            }
-        }
-
-        if (cardCount > 0) {
-            cardContainer.getChildren().add(currentRow);
+            Stage qrStage = new Stage();
+            VBox root = new VBox(imageView);
+            root.setAlignment(Pos.CENTER);
+            Scene scene = new Scene(root, 250, 250);
+            qrStage.setScene(scene);
+            qrStage.setTitle("QR Code Tournoi");
+            qrStage.show();
+        } catch (WriterException | IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de générer le QR Code.", Alert.AlertType.ERROR);
         }
     }
-
     public void remplirChamps(Tournoi t) {
         tfNomt.setText(t.getNomt());
         tfDescriptiont.setText(t.getDescriptiont());
