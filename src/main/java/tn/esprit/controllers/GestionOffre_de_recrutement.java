@@ -3,23 +3,26 @@ package tn.esprit.controllers;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Pos;
+import javafx.stage.Stage;
+import javafx.scene.chart.*;
+
 import tn.esprit.models.Offre_de_recrutement;
 import tn.esprit.services.ServiceOffre_de_recrutement;
 
 import java.util.List;
 import java.util.Optional;
 
-
 import java.io.File;
 import java.io.IOException;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
 
 public class GestionOffre_de_recrutement {
 
@@ -38,7 +41,35 @@ public class GestionOffre_de_recrutement {
             refreshOffresList();
         }
 
-        @FXML
+    @FXML
+    private void afficherStatistiques(ActionEvent event) {
+        Stage stage = new Stage();
+        stage.setTitle("Statistiques des Salaires");
+
+        PieChart pieChart = new PieChart();
+
+        List<Offre_de_recrutement> offres = serviceOffre.getAll();
+        int bas = 0, moyen = 0, eleve = 0;
+
+        for (Offre_de_recrutement offre : offres) {
+            float salaire = offre.getSalaire_propose();
+            if (salaire < 1000) bas++;
+            else if (salaire <= 3000) moyen++;
+            else eleve++;
+        }
+
+        pieChart.getData().add(new PieChart.Data("Bas (< 1000€)", bas));
+        pieChart.getData().add(new PieChart.Data("Moyen (1000€ - 3000€)", moyen));
+        pieChart.getData().add(new PieChart.Data("Élevé (> 3000€)", eleve));
+
+        VBox vbox = new VBox(pieChart);
+        vbox.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(vbox, 500, 400);
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
         public void refreshOffresList() {
             Platform.runLater(() -> {
                 offreContainer.getChildren().clear();
@@ -89,6 +120,8 @@ public class GestionOffre_de_recrutement {
                 if (cardCount > 0) offreContainer.getChildren().add(currentRow);
             });
         }
+
+
 
         @FXML
         public void creerOffre(ActionEvent actionEvent) {
