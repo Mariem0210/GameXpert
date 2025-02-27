@@ -34,6 +34,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import java.util.stream.Collectors;
+import java.time.LocalDate;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 
 public class GestionTournoi {
 
@@ -280,6 +284,26 @@ public class GestionTournoi {
         if (!validateFields()) {
             return;
         }
+
+        // Get the selected dates
+        LocalDate dateDebut = dpDateDebutt.getValue();
+        LocalDate dateFin = dpDateFint.getValue();
+
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Check if the start date is in the past
+        if (dateDebut.isBefore(currentDate)) {
+            showAlert("Erreur", "La date de début ne peut pas être dans le passé.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        // Check if the start date is after the end date
+        if (dateDebut.isAfter(dateFin)) {
+            showAlert("Erreur", "La date de début ne peut pas être après la date de fin.", Alert.AlertType.ERROR);
+            return;
+        }
+
         try {
             Tournoi t = new Tournoi();
             t.setNomt(tfNomt.getText());
@@ -298,6 +322,7 @@ public class GestionTournoi {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
+
 
     private boolean validateFields() {
         if (tfNomt.getText().isEmpty() || tfDescriptiont.getText().isEmpty() ||
