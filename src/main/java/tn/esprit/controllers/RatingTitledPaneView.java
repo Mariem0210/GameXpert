@@ -1,9 +1,7 @@
 package tn.esprit.controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
 import tn.esprit.interfaces.RatingService;
 import tn.esprit.models.Rating;
 
@@ -27,8 +25,7 @@ public class RatingTitledPaneView {
         } else {
             for (Rating rating : ratings) {
                 // Ajouter chaque notation à la ListView sous forme de texte
-                String ratingText = /*"ID: " + rating.getId() +*/
-                        " | ID Formation: " + rating.getIdf() +
+                String ratingText = "Formation: " + rating.getNomf() +  // Affichage du nom de la formation
                         " | Note: " + rating.getNote();
                 ratingListView.getItems().add(ratingText);
             }

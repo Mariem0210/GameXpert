@@ -34,20 +34,24 @@ public class RatingService {
     // Récupérer toutes les notes
     public List<Rating> getAllRatings() {
         List<Rating> ratings = new ArrayList<>();
-        String query = "SELECT * FROM rating";
-        try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
+        String query = "SELECT r.id, r.idf, r.note, f.nomf " +
+                "FROM rating r " +
+                "JOIN formation f ON r.idf = f.idf";  // Ne récupère que 'nomf'
 
-            while (rs.next()) {
-                ratings.add(new Rating(
-                        rs.getInt("id"),
-                        rs.getInt("idf"),
-                        rs.getInt("note")
-                ));
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                Rating rating = new Rating();
+                rating.setNote(resultSet.getFloat("note"));
+                rating.setNomf(resultSet.getString("nomf"));  // Récupère le nom de la formation
+                ratings.add(rating);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur lors de la récupération des notations : " + e.getMessage());
         }
+
         return ratings;
     }
+
 }
