@@ -55,9 +55,19 @@ public class GestionEquipe {
     @FXML
     public void ajouterEquipe(ActionEvent actionEvent) {
         if (!validateInputs()) return;
+
+        String nomEquipe = tfNomEquipe.getText().trim().toLowerCase();
+        boolean existe = se.getAll().stream()
+                .anyMatch(e -> e.getNom_equipe().trim().toLowerCase().equals(nomEquipe));
+
+        if (existe) {
+            showAlert("Erreur", "Impossible de créer cette équipe, ce nom existe déjà.", Alert.AlertType.ERROR);
+            return;
+        }
+
         try {
             Equipe e = new Equipe();
-            e.setNom_equipe(tfNomEquipe.getText());
+            e.setNom_equipe(tfNomEquipe.getText().trim());
             e.setDate_creation(new Date());
             se.add(e);
             refreshEquipesList(se.getAll());
