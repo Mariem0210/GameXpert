@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.controllers.RatingController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.controllers.RatingTitledPaneView">
     <children>
         <VBox spacing="10" alignment="CENTER">
             <TitledPane text="Liste des Notations" expanded="true">
                 <content>
                     <VBox spacing="5">
+                        <!-- Liste de notations -->
                         <ListView fx:id="ratingListView" prefHeight="200.0" prefWidth="300.0"/>
                     </VBox>
                 </content>

@@ -41,6 +41,8 @@ public class AjouterGiveawayController {
     @FXML
     private Button afficherBtn;
 
+
+
     // Service pour interagir avec la base de données
     private GiveawayService giveawayService = new GiveawayService();
 
@@ -50,6 +52,9 @@ public class AjouterGiveawayController {
         // Remplir la ComboBox avec les statuts
         statusgComboBox.getItems().addAll("actif", "terminé", "annulé");
         statusgComboBox.setValue("actif");
+
+
+
     }
 
     // Méthode pour ajouter un giveaway
@@ -147,4 +152,8 @@ public class AjouterGiveawayController {
             System.out.println("Erreur lors du chargement de l'interface AfficherGiveaways.fxml : " + e.getMessage());
         }
     }
+
+
+
+
 }

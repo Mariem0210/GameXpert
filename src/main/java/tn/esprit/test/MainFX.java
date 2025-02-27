@@ -15,17 +15,19 @@ public class MainFX extends Application {
         try {
             // Charger le fichier FXML
 
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFormation.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterGiveaway.fxml"));
+          // FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterFormation.fxml"));
+           // FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterGiveaway.fxml"));
             //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterCertificat.fxml"));
             //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherFormationView.fxml"));
-            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/Rating_View.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Rating_View.fxml"));
+            //FXMLLoader loader = new FXMLLoader(getClass().getResource("/AfficherGiveawayView.fxml"));
+
             Parent root = loader.load();
 
             // Configurer la scène
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Ajouter Produit");
+            primaryStage.setTitle("GameXpert");
             primaryStage.show();
         } catch (Exception e) {
             System.err.println("Erreur lors du chargement de l'interface : " + e.getMessage());

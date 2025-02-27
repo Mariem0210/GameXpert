@@ -54,5 +54,6 @@
 
         <!-- Bouton Afficher-->
         <Button fx:id="afficherBtn" layoutX="545.0" layoutY="614.0" mnemonicParsing="false" onAction="#afficherBtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
+
     </children>
 </AnchorPane>

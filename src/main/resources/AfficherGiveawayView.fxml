@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane fx:id="giveawayStackPane" xmlns="http://javafx.com/javafx/8.0.171"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="tn.esprit.controllers.AfficherGiveawayView">
+
+    <!-- Ajout d'un ScrollPane pour gérer le défilement -->
+    <ScrollPane fitToWidth="true">
+        <TilePane fx:id="giveawayContainer" hgap="15" vgap="15" prefColumns="3">
+            <!-- Exemple d'une carte giveaway (sera générée dynamiquement en Java) -->
+            <StackPane>
+                <VBox spacing="15" style="-fx-padding: 20px;
+                                        -fx-background-color: rgba(0, 0, 0, 0.8);
+                                        -fx-background-image: url('/ground.jpg');
+                                        -fx-background-size: cover;
+                                        -fx-border-radius: 8;
+                                        -fx-border-color: #8a2be2;
+                                        -fx-alignment: center;">
+                    <!-- Titre centré et agrandi -->
+                    <Label text="Titre: Exemple Giveaway"
+                           style="-fx-text-fill: white;
+                                  -fx-font-weight: bold;
+                                  -fx-font-size: 22px;
+                                  -fx-alignment: center;"/>
+
+                    <!-- Description, date et statut avec espacements -->
+                    <VBox spacing="10" style="-fx-alignment: center;">
+                        <Label text="Description: Ceci est un exemple" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                        <Label text="Début: 01/01/2025" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                        <Label text="Fin: 10/01/2025" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                        <Label text="Statut: Actif" style="-fx-text-fill: white; -fx-font-size: 14px;"/>
+                    </VBox>
+                </VBox>
+            </StackPane>
+        </TilePane>
+    </ScrollPane>
+
+</StackPane>
