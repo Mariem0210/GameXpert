@@ -11,14 +11,14 @@ public class RatingService {
     private static final Connection connection = MyDatabase.getInstance().getCnx();
 
     // Enregistrer ou mettre à jour une note
-    public static void enregistrerNote(int idf, int note) {
+    public static void enregistrerNote(int idf, double note) {
         String sql = "INSERT INTO rating (idf, note) VALUES (?, ?) " +
                 "ON DUPLICATE KEY UPDATE note = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             preparedStatement.setInt(1, idf);
-            preparedStatement.setInt(2, note);
-            preparedStatement.setInt(3, note);
+            preparedStatement.setDouble(2, note);  // Utilisez setDouble ici pour accepter un double
+            preparedStatement.setDouble(3, note);  // Utilisez setDouble ici aussi
 
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
@@ -30,6 +30,9 @@ public class RatingService {
             e.printStackTrace();
         }
     }
+
+
+
 
     // Récupérer toutes les notes
     public List<Rating> getAllRatings() {
