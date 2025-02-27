@@ -32,6 +32,6 @@ public class RatingTitledPaneView {
                         " | Note: " + rating.getNote();
                 ratingListView.getItems().add(ratingText);
             }
-        }git
+        }
     }
 }
