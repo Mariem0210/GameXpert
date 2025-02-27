@@ -52,4 +52,6 @@ public class Equipe {
                 ", idu='" + idu + '\'' +
                 "}\n";
     }
+
+
 }

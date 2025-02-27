@@ -14,6 +14,13 @@ import tn.esprit.interfaces.IService;
 import tn.esprit.models.Equipe;
 import tn.esprit.services.ServiceEquipe;
 
+
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import java.time.Instant;
 import java.time.ZoneId;
 import java.util.Date;
@@ -50,6 +57,27 @@ public class GestionEquipe {
             return false;
         }
         return true;
+    }
+
+    private Image generateLogoForTeam(String teamName) {
+        try {
+            // Utilisation de Robohash pour générer un logo unique basé sur le nom de l'équipe
+            String urlString = "https://robohash.org/" + teamName + "?set=set2"; // set2 est un style pour générer un logo
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+
+            // Récupération de l'image en entrée
+            InputStream inputStream = connection.getInputStream();
+            Image logo = new Image(inputStream);
+
+            return logo;
+        } catch (Exception e) {
+            System.out.println("Erreur lors de la génération du logo : " + e.getMessage());
+            return null;
+        }
     }
 
     @FXML
@@ -140,15 +168,14 @@ public class GestionEquipe {
                 StackPane card = new StackPane();
                 card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-radius: 20px; -fx-padding: 20px;");
 
-                // Ajout de l'image de fond
-                try {
-                    ImageView backgroundImage = new ImageView(new Image(getClass().getResource("/lol1.jpg").toExternalForm()));
+                // Ajout de l'image de fond générée par Robohash
+                Image logo = generateLogoForTeam(e.getNom_equipe());
+                if (logo != null) {
+                    ImageView backgroundImage = new ImageView(logo);
                     backgroundImage.setFitWidth(200);
                     backgroundImage.setFitHeight(300);
                     backgroundImage.setOpacity(0.3);
                     card.getChildren().add(backgroundImage);
-                } catch (Exception ex) {
-                    System.out.println("Erreur de chargement de l'image : " + ex.getMessage());
                 }
 
                 // Créer le contenu de la carte
@@ -196,6 +223,8 @@ public class GestionEquipe {
             if (cardCount > 0) equipeContainer.getChildren().add(currentRow);
         });
     }
+
+
 
     public void remplirChamps(Equipe e) {
         selectedEquipe = e;
