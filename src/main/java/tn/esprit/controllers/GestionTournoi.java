@@ -304,12 +304,19 @@ public class GestionTournoi {
             return;
         }
 
+        // Vérifier si le tournoi existe déjà
+        String nomTournoi = tfNomt.getText();
+        if (tournoiExiste(nomTournoi)) {
+            showAlert("Erreur", "Un tournoi avec ce nom existe déjà.", Alert.AlertType.ERROR);
+            return;
+        }
+
         try {
             Tournoi t = new Tournoi();
-            t.setNomt(tfNomt.getText());
+            t.setNomt(nomTournoi);
             t.setDescriptiont(tfDescriptiont.getText());
-            t.setDate_debutt(dpDateDebutt.getValue());
-            t.setDate_fint(dpDateFint.getValue());
+            t.setDate_debutt(dateDebut);
+            t.setDate_fint(dateFin);
             t.setNbr_equipes(Integer.parseInt(tfNbrEquipes.getText()));
             t.setPrixt(Float.parseFloat(tfPrixt.getText()));
             t.setStatutt(tfStatutt.getText());
@@ -322,6 +329,12 @@ public class GestionTournoi {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
+
+    // Méthode pour vérifier si un tournoi avec le même nom existe déjà
+    private boolean tournoiExiste(String nomTournoi) {
+        return st.getAll().stream().anyMatch(t -> t.getNomt().equalsIgnoreCase(nomTournoi));
+    }
+
 
 
     private boolean validateFields() {

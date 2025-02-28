@@ -101,11 +101,29 @@ public class GestionMatch {
         }
 
         try {
+            int idTournoi = Integer.parseInt(tfIdt.getText());
+            String equipe1 = tfEquipe1.getText();
+            String equipe2 = tfEquipe2.getText();
+            LocalDate dateMatch = dpDateDebutm.getValue();
+            LocalDate currentDate = LocalDate.now();
+
+            // Vérifier si la date du match est dans le passé
+            if (dateMatch.isBefore(currentDate)) {
+                showAlert("Erreur", "La date du match ne peut pas être dans le passé.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Vérifier si le match existe déjà
+            if (matchExiste(idTournoi, equipe1, equipe2)) {
+                showAlert("Erreur", "Ce match entre ces deux équipes existe déjà.", Alert.AlertType.ERROR);
+                return;
+            }
+
             Match m = new Match();
-            m.setIdt(Integer.parseInt(tfIdt.getText()));
-            m.setEquipe1(tfEquipe1.getText());
-            m.setEquipe2(tfEquipe2.getText());
-            m.setDate_debutm(dpDateDebutm.getValue());
+            m.setIdt(idTournoi);
+            m.setEquipe1(equipe1);
+            m.setEquipe2(equipe2);
+            m.setDate_debutm(dateMatch);
             m.setScore(tfScore.getText());
             m.setStatus(tfStatus.getText());
 
@@ -118,6 +136,14 @@ public class GestionMatch {
         } catch (Exception e) {
             showAlert("Erreur", "Une erreur est survenue lors de l'ajout du match.", Alert.AlertType.ERROR);
         }
+    }
+
+    // Méthode pour vérifier si un match entre ces deux équipes existe déjà dans le même tournoi
+    private boolean matchExiste(int idTournoi, String equipe1, String equipe2) {
+        return sm.getAll().stream()
+                .anyMatch(m -> m.getIdt() == idTournoi &&
+                        ((m.getEquipe1().equalsIgnoreCase(equipe1) && m.getEquipe2().equalsIgnoreCase(equipe2)) ||
+                                (m.getEquipe1().equalsIgnoreCase(equipe2) && m.getEquipe2().equalsIgnoreCase(equipe1))));
     }
 
     @FXML
