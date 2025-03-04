@@ -31,7 +31,6 @@ public class GestionOffre_de_recrutement {
 
         @FXML private VBox offreContainer;
         @FXML private TextField tfPosteRecherche, tfNiveauRequis, tfSalairePropose, tfStatus, tfContrat;
-        @FXML private Label lblIdo, lblIdu; // Labels for displaying ID's
         private final ServiceOffre_de_recrutement serviceOffre = new ServiceOffre_de_recrutement();
         private Offre_de_recrutement selectedOffre = null;
 
@@ -89,10 +88,7 @@ public class GestionOffre_de_recrutement {
                     VBox content = new VBox(10);
                     content.setAlignment(Pos.CENTER);
 
-                    Label lblIdo = new Label("ID: " + offre.getIdo());
-                    lblIdo.setStyle("-fx-text-fill: white;");
-                    Label lblIdu = new Label("ID Utilisateur: " + offre.getIdu());
-                    lblIdu.setStyle("-fx-text-fill: white;");
+
                     Label lblPoste = new Label("Poste: " + offre.getPoste_recherche());
                     lblPoste.setStyle("-fx-text-fill: white;");
                     Label lblNiveau = new Label("Niveau Requis: " + offre.getNiveu_requis());
@@ -104,7 +100,7 @@ public class GestionOffre_de_recrutement {
                     Label lblContrat = new Label("Contrat: " + offre.getContrat());
                     lblContrat.setStyle("-fx-text-fill: white;");
 
-                    content.getChildren().addAll(lblIdo, lblIdu, lblPoste, lblNiveau, lblSalaire, lblStatus, lblContrat);
+                    content.getChildren().addAll(lblPoste, lblNiveau, lblSalaire, lblStatus, lblContrat);
                     card.getChildren().add(content);
                     card.setOnMouseClicked(event -> remplirChamps(offre));
 
@@ -233,8 +229,7 @@ public class GestionOffre_de_recrutement {
 
         private void remplirChamps(Offre_de_recrutement offre) {
             selectedOffre = offre;
-            lblIdo.setText("ID Offre: " + offre.getIdo());
-            lblIdu.setText("ID Utilisateur: " + offre.getIdu());
+
             tfPosteRecherche.setText(offre.getPoste_recherche());
             tfNiveauRequis.setText(offre.getNiveu_requis());
             tfSalairePropose.setText(String.valueOf(offre.getSalaire_propose()));

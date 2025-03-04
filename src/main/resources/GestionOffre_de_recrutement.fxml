@@ -24,8 +24,6 @@
         </ScrollPane>
 
         <!-- Labels pour afficher l'ID de l'offre et l'ID utilisateur -->
-        <Label fx:id="lblIdo" layoutX="50.0" layoutY="100.0" prefHeight="28.0" prefWidth="250.0" text="ID Offre" style="-fx-text-fill: white;" />
-        <Label fx:id="lblIdu" layoutX="50.0" layoutY="140.0" prefHeight="28.0" prefWidth="250.0" text="ID Utilisateur" style="-fx-text-fill: white;" />
 
         <!-- Champs de saisie pour les autres informations -->
         <TextField fx:id="tfPosteRecherche" layoutX="50.0" layoutY="180.0" prefHeight="28.0" prefWidth="250.0" promptText="Poste Recherché" />
