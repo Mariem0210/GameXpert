@@ -39,6 +39,7 @@ public class GestionOffre_de_recrutement {
         public void initialize() {
             System.out.println("initialize() exécutée");
             refreshOffresList();
+
         }
 
     @FXML

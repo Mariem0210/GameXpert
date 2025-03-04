@@ -30,7 +30,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 public class GestionTransfert {
 
-    @FXML private TextField tfIdu;
+
     @FXML private TextField tfAncienneEquipe;
     @FXML private TextField tfNouvelleEquipe;
     @FXML private TextField tfMontantt;
@@ -114,11 +114,7 @@ public class GestionTransfert {
                 VBox content = new VBox(10);
                 content.setAlignment(Pos.CENTER);
 
-                Label lblId = new Label("ID: " + t.getIdtr());
-                lblId.setStyle("-fx-text-fill: white;");
 
-                Label lblIdu = new Label("ID Joueur: " + t.getIdu());
-                lblIdu.setStyle("-fx-text-fill: white;");
 
                 Label lblAncienneEquipe = new Label("Ancienne Équipe: " + t.getAncienne_equipe());
                 lblAncienneEquipe.setStyle("-fx-text-fill: white;");
@@ -136,7 +132,7 @@ public class GestionTransfert {
                 Label lblDate = new Label("Date: " + dateString);
                 lblDate.setStyle("-fx-text-fill: white;");
 
-                content.getChildren().addAll(lblId, lblIdu, lblAncienneEquipe, lblNouvelleEquipe, lblMontantt, lblDate);
+                content.getChildren().addAll(lblAncienneEquipe, lblNouvelleEquipe, lblMontantt, lblDate);
                 card.getChildren().add(content);
                 card.setOnMouseClicked(event -> remplirChamps(t));
 
@@ -157,7 +153,6 @@ public class GestionTransfert {
     @FXML
     public void initialize() {
         // Appliquer la couleur du texte en blanc pour les champs de saisie et boutons
-        tfIdu.setStyle("-fx-text-fill: white;");
         tfAncienneEquipe.setStyle("-fx-text-fill: white;");
         tfNouvelleEquipe.setStyle("-fx-text-fill: white;");
         tfMontantt.setStyle("-fx-text-fill: white;");
@@ -175,7 +170,6 @@ public class GestionTransfert {
         }
         try {
             Transfert transfert = new Transfert();
-            transfert.setIdu(Integer.parseInt(tfIdu.getText()));
             transfert.setAncienne_equipe(tfAncienneEquipe.getText());
             transfert.setNouvelle_equipe(tfNouvelleEquipe.getText());
             transfert.setMontantt(Integer.parseInt(tfMontantt.getText()));
@@ -232,11 +226,7 @@ public class GestionTransfert {
                 VBox content = new VBox(10);
                 content.setAlignment(Pos.CENTER);
 
-                Label lblId = new Label("ID: " + t.getIdtr());
-                lblId.setStyle("-fx-text-fill: white;");
 
-                Label lblIdu = new Label("ID Joueur: " + t.getIdu());
-                lblIdu.setStyle("-fx-text-fill: white;");
 
                 Label lblAncienneEquipe = new Label("Ancienne Équipe: " + t.getAncienne_equipe());
                 lblAncienneEquipe.setStyle("-fx-text-fill: white;");
@@ -254,7 +244,7 @@ public class GestionTransfert {
                 Label lblDate = new Label("Date: " + dateString);
                 lblDate.setStyle("-fx-text-fill: white;");
 
-                content.getChildren().addAll(lblId, lblIdu, lblAncienneEquipe, lblNouvelleEquipe, lblMontantt, lblDate);
+                content.getChildren().addAll(lblAncienneEquipe, lblNouvelleEquipe, lblMontantt, lblDate);
                 card.getChildren().add(content);
                 card.setOnMouseClicked(event -> remplirChamps(t));
 
@@ -273,7 +263,7 @@ public class GestionTransfert {
 
     public void remplirChamps(Transfert t) {
         selectedTransfert = t;
-        tfIdu.setText(String.valueOf(t.getIdu()));
+
         tfAncienneEquipe.setText(t.getAncienne_equipe());
         tfNouvelleEquipe.setText(t.getNouvelle_equipe());
         tfMontantt.setText(String.valueOf(t.getMontantt()));
@@ -290,7 +280,7 @@ public class GestionTransfert {
             return;
         }
         try {
-            selectedTransfert.setIdu(Integer.parseInt(tfIdu.getText()));
+
             selectedTransfert.setAncienne_equipe(tfAncienneEquipe.getText());
             selectedTransfert.setNouvelle_equipe(tfNouvelleEquipe.getText());
             selectedTransfert.setMontantt(Integer.parseInt(tfMontantt.getText()));
@@ -307,7 +297,7 @@ public class GestionTransfert {
     }
 
     private void clearFields() {
-        tfIdu.clear();
+
         tfAncienneEquipe.clear();
         tfNouvelleEquipe.clear();
         tfMontantt.clear();
@@ -322,7 +312,7 @@ public class GestionTransfert {
     }
 
     private boolean validerSaisie() {
-        if (tfIdu.getText().isEmpty() || tfAncienneEquipe.getText().isEmpty() || tfNouvelleEquipe.getText().isEmpty()
+        if (tfAncienneEquipe.getText().isEmpty() || tfNouvelleEquipe.getText().isEmpty()
                 || tfMontantt.getText().isEmpty() || dpDateT.getValue() == null) {
             showAlert("Erreur", "Tous les champs doivent être remplis.", Alert.AlertType.ERROR);
             return false;

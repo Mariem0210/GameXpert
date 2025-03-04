@@ -22,7 +22,6 @@
             </content>
         </ScrollPane>
 
-        <TextField fx:id="tfIdu" layoutX="165.0" layoutY="83.0" prefHeight="34.0" prefWidth="160.0" promptText="ID Utilisateur" />
         <TextField fx:id="tfAncienneEquipe" layoutX="165.0" layoutY="130.0" prefHeight="34.0" prefWidth="160.0" promptText="Ancienne Équipe" />
         <TextField fx:id="tfNouvelleEquipe" layoutX="165.0" layoutY="177.0" prefHeight="34.0" prefWidth="160.0" promptText="Nouvelle Équipe" />
         <TextField fx:id="tfMontantt" layoutX="165.0" layoutY="224.0" prefHeight="34.0" prefWidth="160.0" promptText="Montant" />
