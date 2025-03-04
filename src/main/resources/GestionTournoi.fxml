@@ -74,6 +74,13 @@
         <Button layoutX="313.0" layoutY="634.0" onAction="#afficherStatistiques" text="Voir Statistiques" />
         <Button fx:id="btnDateAscend" layoutX="839.0" layoutY="576.0" onAction="#trierParDateAscend" text="Date Ascendante" />
         <Button fx:id="btnDateDescend" layoutX="567.0" layoutY="576.0" onAction="#trierParDateDescend" text="Date Descendante" />
+        <Button fx:id="btnChat" layoutX="561.0" layoutY="626.0" onAction="#ouvrirChat" prefHeight="39.0" prefWidth="120.0" styleClass="chat-button" text="Chat Bot">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Button>
+        <Button fx:id="btnShowCalendar" layoutX="320.0" layoutY="576.0" onAction="#showTournamentCalendar" text="Show Calendar" prefHeight="39.0" prefWidth="120.0" styleClass="calendar-button">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Button>
+
 
         <Button fx:id="btnModifier" layoutX="114.0" layoutY="634.0" onAction="#modifierTournoi" prefHeight="39.0" prefWidth="84.0" styleClass="edit-button" text="Modifier">
             <font><Font name="Cambria" size="14.0" /></font>

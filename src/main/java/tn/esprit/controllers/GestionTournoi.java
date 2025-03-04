@@ -5,6 +5,9 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.io.IOException;
@@ -38,7 +41,23 @@ import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory; // Correct import
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.calendar.Calendar; // Correct import
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 public class GestionTournoi {
 
     @FXML private TextField tfNomt;
@@ -610,5 +629,43 @@ public class GestionTournoi {
         alert.setTitle(title);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    @FXML
+    private void ouvrirChat(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/chatbot.fxml"));
+            Parent root = fxmlLoader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("ChatBot");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void showTournamentCalendar() {
+        try {
+            // Initialiser le service Google Calendar
+            Calendar service = GoogleCalendarService.getCalendarService();
+
+            // Récupérer et trier les tournois par date_debutt
+            List<Tournoi> tournois = st.getAll().stream()
+                    .sorted(Comparator.comparing(Tournoi::getDate_debutt))
+                    .collect(Collectors.toList());
+
+            // Ajouter les tournois au calendrier
+            for (Tournoi t : tournois) {
+                GoogleCalendarService.addEvent(service, t.getNomt(), t.getDate_debutt());
+            }
+
+            // Afficher un message de succès
+            showAlert("Succès", "Les tournois ont été ajoutés au calendrier selon la date de début.", Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ajouter les tournois au calendrier : " + e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 }
