@@ -57,31 +57,64 @@ public class GestionTransfert {
         document.addPage(page);
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+            // Définir la police et la taille pour le titre
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 20);
             contentStream.beginText();
-            contentStream.newLineAtOffset(50, 700);
-            contentStream.showText("Liste des transferts:");
-            contentStream.newLineAtOffset(0, -20);
+            contentStream.newLineAtOffset(50, 750);
+            contentStream.showText("Liste des Transferts");
+            contentStream.endText();
 
+            // Ajouter une ligne de séparation
+            contentStream.setLineWidth(1f);
+            contentStream.moveTo(50, 740);
+            contentStream.lineTo(550, 740);
+            contentStream.stroke();
+
+            // Ajouter une couleur de fond (par exemple, un bleu clair)
+            contentStream.setNonStrokingColor(173, 216, 230); // Couleur bleu clair
+            contentStream.fill();
+
+            // Définir la police pour le contenu
             contentStream.setFont(PDType1Font.HELVETICA, 12);
+
+            float yPosition = 700; // Position de départ pour les transferts
             for (Transfert m : serviceTransfert.getAll()) {
-                String line = " transfert " + m.getIdtr() + " crée le " + m.getDatet() + " , montant donnée " + m.getMontantt() +
-                        " ,ancienne equipe " + m.getAncienne_equipe() + " , nouvelle equipe " + m.getNouvelle_equipe();
+                // Ajouter chaque ligne de transfert avec un espacement
+                String line = "Transfert " + m.getIdtr() + " : " +
+                        "Ancienne équipe : " + m.getAncienne_equipe() + " | " +
+                        "Nouvelle équipe : " + m.getNouvelle_equipe() + " | " +
+                        "Montant : " + m.getMontantt() + " € | " +
+                        "Date : " + m.getDatet();
+
+                // Afficher le texte dans le PDF
+                contentStream.beginText();
+                contentStream.newLineAtOffset(50, yPosition);
                 contentStream.showText(line);
-                contentStream.newLineAtOffset(0, -15);
+                contentStream.endText();
+
+                // Réduire la position Y pour la prochaine ligne
+                yPosition -= 20; // Plus d'espace entre les lignes
             }
 
-            contentStream.endText();
+            // Ajouter une bordure autour du contenu pour plus de clarté
+            contentStream.setLineWidth(1.5f);
+            contentStream.moveTo(50, yPosition + 10); // Ajuster la position pour la bordure
+            contentStream.lineTo(550, yPosition + 10);
+            contentStream.stroke();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        // Sauvegarder le PDF dans un fichier
         try {
-            document.save(new File("liste des transferts.pdf"));
+            document.save(new File("liste_des_transferts_ameliorée.pdf"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 
     @FXML
     private void trierTransfertsDescendant() {

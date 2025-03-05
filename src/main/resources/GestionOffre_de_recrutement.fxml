@@ -44,5 +44,9 @@
             <font><Font name="Cambria" size="14.0" /></font>
         </Button>
 
+        <Button fx:id="btnActualitesEsport" layoutX="130.0" layoutY="520.0" onAction="#afficherActualitesEsport" prefHeight="39.0" prefWidth="120.0" styleClass="news-button" text="Actualités Esport">
+            <font><Font name="Cambria" size="14.0" /></font>
+        </Button>
+
     </children>
 </AnchorPane>

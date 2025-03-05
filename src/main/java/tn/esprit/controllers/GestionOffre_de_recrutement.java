@@ -10,6 +10,30 @@ import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.chart.*;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.geometry.Insets;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Separator;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.net.URI;
+import java.net.URL;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 import tn.esprit.models.Offre_de_recrutement;
 import tn.esprit.services.ServiceOffre_de_recrutement;
 
@@ -23,6 +47,28 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.geometry.Insets;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Separator;
+import javafx.scene.control.ScrollPane;
+
+import java.net.URI;
+import java.net.URL;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 public class GestionOffre_de_recrutement {
 
@@ -190,6 +236,120 @@ public class GestionOffre_de_recrutement {
             e.printStackTrace();
         }
     }
+
+
+    @FXML
+    private void afficherActualitesEsport(ActionEvent event) {
+        try {
+            // Liste des flux RSS pour différents jeux esports
+            String[] rssFeeds = {
+                    "https://www.hltv.org/rss/news", // CS:GO
+                    "https://dotesports.com/valorant/feed", // Valorant
+                    "https://dotesports.com/fortnite/feed", // Fortnite
+                    "https://dotesports.com/fifa/feed", // FIFA
+                    "https://dotesports.com/league-of-legends/feed", // League of Legends
+                    "https://dotesports.com/rocket-league/feed" // Rocket League
+            };
+
+            // Créer une nouvelle fenêtre pour afficher les actualités
+            Stage stage = new Stage();
+            stage.setTitle("Actualités Esport (Multi-jeux)");
+
+            VBox vbox = new VBox(10);
+            vbox.setPadding(new Insets(10));
+
+            // Parcourir chaque flux RSS
+            for (String rssUrl : rssFeeds) {
+                try {
+                    // Parser le flux RSS
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = factory.newDocumentBuilder();
+                    Document document = builder.parse(new URL(rssUrl).openStream());
+
+                    // Récupérer les éléments "item" du flux RSS
+                    NodeList itemList = document.getElementsByTagName("item");
+
+                    for (int i = 0; i < itemList.getLength(); i++) {
+                        Element item = (Element) itemList.item(i);
+                        String title = item.getElementsByTagName("title").item(0).getTextContent();
+                        String link = item.getElementsByTagName("link").item(0).getTextContent();
+                        String description = item.getElementsByTagName("description").item(0).getTextContent();
+
+                        // Extraire l'URL de l'image (si disponible)
+                        String imageUrl = null;
+                        NodeList mediaContent = item.getElementsByTagName("media:content");
+                        if (mediaContent.getLength() > 0) {
+                            imageUrl = ((Element) mediaContent.item(0)).getAttribute("url");
+                        } else {
+                            NodeList enclosure = item.getElementsByTagName("enclosure");
+                            if (enclosure.getLength() > 0) {
+                                imageUrl = ((Element) enclosure.item(0)).getAttribute("url");
+                            }
+                        }
+
+                        // Créer un conteneur pour l'article
+                        HBox articleBox = new HBox(10);
+                        articleBox.setAlignment(Pos.TOP_LEFT);
+
+                        // Ajouter l'image (si disponible)
+                        if (imageUrl != null) {
+                            try {
+                                ImageView imageView = new ImageView(new Image(imageUrl));
+                                imageView.setFitWidth(100);
+                                imageView.setFitHeight(100);
+                                imageView.setPreserveRatio(true);
+                                articleBox.getChildren().add(imageView);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // Créer un conteneur pour le texte
+                        VBox textBox = new VBox(5);
+                        textBox.setAlignment(Pos.TOP_LEFT);
+
+                        // Créer un hyperlien pour le titre
+                        Hyperlink hyperlink = new Hyperlink(title);
+                        hyperlink.setOnAction(e -> {
+                            try {
+                                java.awt.Desktop.getDesktop().browse(new URI(link));
+                            } catch (Exception ex) {
+                                ex.printStackTrace();
+                            }
+                        });
+
+                        // Ajouter la description
+                        Label descLabel = new Label(description);
+                        descLabel.setWrapText(true);
+
+                        // Ajouter les éléments au conteneur de texte
+                        textBox.getChildren().addAll(hyperlink, descLabel);
+
+                        // Ajouter le conteneur de texte à l'article
+                        articleBox.getChildren().add(textBox);
+
+                        // Ajouter l'article à la VBox
+                        vbox.getChildren().addAll(articleBox, new Separator());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    showAlert("Erreur", "Impossible de récupérer les actualités pour : " + rssUrl, Alert.AlertType.ERROR);
+                }
+            }
+
+            // Ajouter une ScrollPane pour permettre le défilement
+            ScrollPane scrollPane = new ScrollPane(vbox);
+            scrollPane.setFitToWidth(true);
+
+            Scene scene = new Scene(scrollPane, 800, 600);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible de récupérer les actualités de l'esport.", Alert.AlertType.ERROR);
+        }
+    }
+
 
         @FXML
         public void modifierOffre(ActionEvent actionEvent) {
