@@ -24,10 +24,12 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-
-
-
+import java.io.InputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+
+
+
 
 
 public class AfficherCertificatController {
@@ -55,7 +57,7 @@ public class AfficherCertificatController {
                 VBox certificatCard = new VBox(10);
 
                 // Chargement de l'image depuis resources
-                javafx.scene.image.Image backgroundImage = new Image(getClass().getResource("/ground.jpg").toExternalForm());
+                javafx.scene.image.Image backgroundImage = new Image(getClass().getResource("/1.png").toExternalForm());
                 BackgroundImage background = new BackgroundImage(
                         backgroundImage,
                         BackgroundRepeat.NO_REPEAT,
@@ -135,89 +137,77 @@ public class AfficherCertificatController {
     }
 
     public void exportCertificatToPDF(Certificat certificat) {
-        Document document = new Document(PageSize.A4);
+        Document document = new Document();
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Enregistrer le Certificat");
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
 
             Stage stage = new Stage();
-            fileChooser.setInitialFileName(certificat.getNomc() + ".pdf");
+            fileChooser.setInitialFileName(certificat.getNomc() + "_Certificat.pdf");
             java.io.File file = fileChooser.showSaveDialog(stage);
 
             if (file != null) {
                 PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
                 document.open();
 
-                // Encadrement décoratif
-                PdfContentByte canvas = writer.getDirectContent();
-                Rectangle rect = new Rectangle(36, 36, 559, 806);
-                rect.setBorder(Rectangle.BOX);
-                rect.setBorderWidth(8);
-                rect.setBorderColor(BaseColor.DARK_GRAY);
-                canvas.rectangle(rect);
+                // Charger l'image de fond
+                PdfContentByte canvas = writer.getDirectContentUnder();
+                InputStream bgStream = getClass().getResourceAsStream("/FinalCertificate.jpg");
+                if (bgStream != null) {
+                    byte[] bgBytes = bgStream.readAllBytes();
+                    com.itextpdf.text.Image bgImage = com.itextpdf.text.Image.getInstance(bgBytes);
+                    bgImage.setAbsolutePosition(0, 0);
+                    bgImage.scaleToFit(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+                    canvas.addImage(bgImage);
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Image d'arrière-plan non trouvée !");
+                    return;
+                }
 
-                // Titre principal
-                Font titleFont = new Font(Font.FontFamily.HELVETICA, 28, Font.BOLD, BaseColor.BLACK);
-                Paragraph title = new Paragraph("Certificat de Réussite" , titleFont);
-                title.setAlignment(Element.ALIGN_CENTER);
-                title.setSpacingBefore(50);
-                document.add(title);
-
-                // Sous-titre
-                Font subTitleFont = new Font(Font.FontFamily.HELVETICA, 18, Font.ITALIC, BaseColor.GRAY);
-                Paragraph subTitle = new Paragraph("Ce certificat est décerné à", subTitleFont);
-                subTitle.setAlignment(Element.ALIGN_CENTER);
-                subTitle.setSpacingBefore(30);
-                document.add(subTitle);
-
-                // Nom du destinataire
+                // Police pour les informations
                 Font nameFont = new Font(Font.FontFamily.HELVETICA, 24, Font.BOLD, BaseColor.BLUE);
+                Font detailsFont = new Font(Font.FontFamily.HELVETICA, 14, Font.NORMAL, BaseColor.BLUE);
+
+                // Nom précis du destinataire
                 Paragraph name = new Paragraph(certificat.getNomc(), nameFont);
                 name.setAlignment(Element.ALIGN_CENTER);
-                name.setSpacingBefore(20);
-                document.add(name);
 
-                // Détails du certificat
-                Font bodyFont = new Font(Font.FontFamily.HELVETICA, 14, Font.NORMAL, BaseColor.BLACK);
-                Paragraph details = new Paragraph(
-                        "Type : " + certificat.getTypec() + "\n" +
-                                "Score : " + certificat.getScorec() + "\n" +
-                                "État : " + certificat.getEtatc() + "\n" +
-                                "Date d'expiration : " + certificat.getDateExpirationc(),
-                        bodyFont
-                );
+                // Créer un PdfPTable pour positionner précisément les informations
+                PdfPTable infoTable = new PdfPTable(1);
+                infoTable.setTotalWidth(500);
+                infoTable.setLockedWidth(true);
+                infoTable.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                // Cellule pour le nom
+                PdfPCell nameCell = new PdfPCell(name);
+                nameCell.setBorder(Rectangle.NO_BORDER);
+                nameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                infoTable.addCell(nameCell);
+
+                // Cellule pour le score et la date d'expiration sous forme de petite phrase
+                String detailsText = String.format("Score: %.2f | Date d'Expiration: %s",
+                        certificat.getScorec(), certificat.getDateExpirationc());
+                Paragraph details = new Paragraph(detailsText, detailsFont);
+
+
                 details.setAlignment(Element.ALIGN_CENTER);
-                details.setSpacingBefore(30);
-                document.add(details);
 
-                // Signature et Date
-                Paragraph space = new Paragraph("\n\n\n");
-                document.add(space);
+                PdfPCell detailsCell = new PdfPCell(details);
+                detailsCell.setBorder(Rectangle.NO_BORDER);
+                detailsCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                infoTable.addCell(detailsCell);
 
-                PdfPTable table = new PdfPTable(2);
-                table.setWidthPercentage(80);
-                table.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-                PdfPCell dateCell = new PdfPCell(new Phrase("Date : ....................."));
-                dateCell.setBorder(Rectangle.NO_BORDER);
-                dateCell.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-                PdfPCell signCell = new PdfPCell(new Phrase("Signature : ....................."));
-                signCell.setBorder(Rectangle.NO_BORDER);
-                signCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
-
-                table.addCell(dateCell);
-                table.addCell(signCell);
-
-                document.add(table);
+                // Positionner le tableau précisément
+                infoTable.writeSelectedRows(0, -1, 50, 350, canvas);
 
                 document.close();
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Certificat exporté avec succès en PDF.");
+                showAlert(Alert.AlertType.INFORMATION, "Succès", "Certificat exporté avec succès.");
             }
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de l'exportation du certificat.");
+
         }
     }
 

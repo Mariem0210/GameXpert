@@ -13,6 +13,7 @@ public class Formation {
     private int capacitef;
     private float prixf;
     private int idu;
+    private String coachName;
 
     // Constructors
     public Formation() {}
@@ -106,6 +107,13 @@ public class Formation {
 
     public void setIdu(int idu) {
         this.idu = idu;
+    }
+    public String getCoachName() {
+        return coachName;
+    }
+
+    public void setCoachName(String coachName) {
+        this.coachName = coachName;
     }
 
     @Override

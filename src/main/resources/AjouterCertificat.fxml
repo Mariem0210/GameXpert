@@ -59,5 +59,7 @@
 
         <!-- Bouton Afficher -->
         <Button fx:id="afficherBtn" layoutX="551.0" layoutY="642.0" mnemonicParsing="false" onAction="#affichebtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
+
+        <Button fx:id="trierBtn" layoutX="780.0" layoutY="571.0" mnemonicParsing="false" onAction="#trierCertificatsParEtat" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Trier la liste" />
     </children>
 </AnchorPane>

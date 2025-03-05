@@ -15,4 +15,3 @@ public interface IServiceFormation<Formation> {
     List<Formation> recupererFormations() throws SQLException;
     //void getFormationById(int id) throws SQLException;
 }
-

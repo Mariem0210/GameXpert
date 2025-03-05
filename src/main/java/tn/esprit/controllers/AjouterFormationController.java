@@ -152,8 +152,19 @@ public class AjouterFormationController {
             }
 
 // Email à envoyer à tous les utilisateurs
-            String subject = "Nouvelle formation ajoutée";
-            String body = "Une nouvelle formation a été ajoutée. Découvrez-la maintenant !";
+            String subject = "Rejoignez notre nouvelle formation de gaming 🎮 !";
+
+            String body = "🎮 Une nouvelle aventure de gaming vous attend ! 🚀\n\n" +
+                    "Nous sommes heureux de vous annoncer l'ajout d'une nouvelle formation excitante qui vous permettra de perfectionner vos compétences et d'explorer l'univers du gaming ! Voici tous les détails :\n\n" +
+                    "📅 **Nom de la formation** : " + formation.getNomf() + "\n" +
+                    "📝 **Description** : " + formation.getDescriptionf() + "\n" +
+                    "⏳ **Date de début** : " + formation.getDateDebutf() + "\n" +
+                    "⏳ **Date de fin** : " + formation.getDateFinf() + "\n" +
+                    "💰 **Prix** : " + formation.getPrixf() + " DT\n" +
+                    "🎮 **Niveau** : " + formation.getNiveauf() + "\n" +
+                    "👥 **Capacité** : " + formation.getCapacitef() + " participants\n\n" +
+                    "Cette formation est une opportunité unique pour vous immerger dans l'univers du gaming et améliorer vos compétences. Ne manquez pas votre chance de faire partie de cette expérience !\n\n" +
+                    "👉 Inscrivez-vous dès maintenant et lancez-vous dans cette aventure !";
 
 // Envoyer l'email à tous les utilisateurs
             for (User user : utilisateurs) {

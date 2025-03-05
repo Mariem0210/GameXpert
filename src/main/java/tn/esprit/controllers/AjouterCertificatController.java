@@ -34,6 +34,8 @@ public class AjouterCertificatController {
     private TextField iduField;
     @FXML
     private Button afficherBtn;
+    @FXML
+    private Button trierBtn;
 
     private CertificatService certificatService = new CertificatService();
     @FXML
@@ -43,6 +45,8 @@ public class AjouterCertificatController {
     public void initialize() {
         typecComboBox.getItems().addAll("Participation", "Excellence", "Complétion");
         etatcComboBox.getItems().addAll("Valide", "Expiré", "Révoqué"); // Remplir le ComboBox 'etatc
+        // Ajouter un écouteur d'événement pour le bouton de tri
+        trierBtn.setOnAction(event -> trierCertificatsParEtat());
     }
 
     @FXML
@@ -199,6 +203,37 @@ public class AjouterCertificatController {
         this.formation = formation;
         idfField.setText(String.valueOf(formation.getIdf())); // Passer l'ID de la formation
     }
+    @FXML
+    private void trierCertificatsParEtat() {
+        try {
+            Connection cnx = DriverManager.getConnection("jdbc:mysql://localhost:3306/gamexpert", "root", "");
+            Statement stmt = cnx.createStatement();
+
+            // Requête SQL pour trier les certificats par état
+            ResultSet rs = stmt.executeQuery("SELECT * FROM certificat ORDER BY etatc");
+
+            StringBuilder result = new StringBuilder("Certificats triés par état :\n");
+
+            while (rs.next()) {
+                result.append("Nom : ").append(rs.getString("nomc"))
+                        .append(" | Type : ").append(rs.getString("typec"))
+                        .append(" | Score : ").append(rs.getFloat("scorec"))
+                        .append(" | État : ").append(rs.getString("etatc"))
+                        .append("\n");
+            }
+
+            // Afficher les résultats dans une boîte de dialogue
+            showAlert(Alert.AlertType.INFORMATION, "Tri des certificats", result.toString());
+
+            // Fermer la connexion
+            rs.close();
+            stmt.close();
+            cnx.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur de base de données", "Impossible de trier les certificats.");
+        }}
 
 
 }
