@@ -1,6 +1,12 @@
 package tn.esprit.controllers;
-
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.File;
+import java.awt.Color;
+import java.time.format.DateTimeFormatter;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -271,40 +277,125 @@ public class GestionMatch {
             }
         });
     }
-
     @FXML
     private void genererPDF(ActionEvent event) {
-        PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
-        document.addPage(page);
+        try {
+            // Charger l'image
+            File imageFile = new File("C:/Users/amine debbich/IdeaProjects/gameXpert/pdf.jpeg");
+            PDImageXObject pdImage = PDImageXObject.createFromFileByExtension(imageFile, new PDDocument());
 
-        try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
-            contentStream.beginText();
-            contentStream.newLineAtOffset(50, 700);
-            contentStream.showText("Liste des Matchs:");
-            contentStream.newLineAtOffset(0, -20);
+            // Créer un nouveau document PDF
+            PDDocument document = new PDDocument();
+            PDPage page = new PDPage();
+            document.addPage(page);
 
-            contentStream.setFont(PDType1Font.HELVETICA, 12);
-            for (Match m : sm.getAll()) {
-                String line = "Match " + m.getIdm() + ": " + m.getEquipe1() + " vs " + m.getEquipe2() +
-                        " | Score: " + m.getScore() + " | Date: " + m.getDate_debutm();
-                contentStream.showText(line);
-                contentStream.newLineAtOffset(0, -15);
+            // Créer un flux de contenu pour la page
+            PDPageContentStream contentStream = new PDPageContentStream(document, page);
+
+            // Dessiner l'image en arrière-plan
+            contentStream.drawImage(pdImage, 0, 0, page.getMediaBox().getWidth(), page.getMediaBox().getHeight());
+
+            // Définir la police et la taille du texte
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+
+            // Définir les dimensions du tableau
+            float margin = 50; // Marge autour du tableau
+            float yStart = page.getMediaBox().getHeight() - margin; // Position Y de départ
+            float tableWidth = page.getMediaBox().getWidth() - 2 * margin; // Largeur du tableau
+            float rowHeight = 20; // Hauteur de chaque ligne
+            float cellMargin = 5; // Marge intérieure des cellules
+
+            // Définir les colonnes du tableau
+            int numberOfColumns = 4; // Nombre de colonnes (Équipe 1, Équipe 2, Score, Date)
+            float[] columnWidths = {tableWidth * 0.25f, tableWidth * 0.25f, tableWidth * 0.20f, tableWidth * 0.30f}; // Largeurs des colonnes
+
+            // Dessiner l'en-tête du tableau
+            float nextY = yStart;
+            contentStream.setLineWidth(1);
+            contentStream.setStrokingColor(Color.BLACK); // Utilisation de java.awt.Color
+
+            // Dessiner les lignes du tableau
+            for (int i = 0; i <= sm.getAll().size(); i++) {
+                contentStream.moveTo(margin, nextY);
+                contentStream.lineTo(margin + tableWidth, nextY);
+                contentStream.stroke();
+                nextY -= rowHeight;
             }
 
-            contentStream.endText();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            // Dessiner les colonnes du tableau
+            float nextX = margin;
+            for (int i = 0; i < numberOfColumns; i++) {
+                contentStream.moveTo(nextX, yStart);
+                contentStream.lineTo(nextX, yStart - (sm.getAll().size() + 1) * rowHeight);
+                contentStream.stroke();
+                nextX += columnWidths[i];
+            }
 
-        try {
+            // Remplir l'en-tête du tableau
+            String[] headers = {"Équipe 1", "Équipe 2", "Score", "Date"};
+            nextX = margin + cellMargin;
+            nextY = yStart - 15; // Position Y pour l'en-tête
+            for (int i = 0; i < numberOfColumns; i++) {
+                contentStream.beginText();
+                contentStream.newLineAtOffset(nextX, nextY);
+                contentStream.showText(headers[i]);
+                contentStream.endText();
+                nextX += columnWidths[i];
+            }
+
+            // Remplir les lignes du tableau avec les informations des matchs
+            nextY = yStart - rowHeight; // Position Y pour la première ligne de données
+            for (Match m : sm.getAll()) {
+                nextX = margin + cellMargin;
+
+                // Formater la date en String
+                String formattedDate = m.getDate_debutm().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                String[] rowData = {
+                        m.getEquipe1(),
+                        m.getEquipe2(),
+                        m.getScore(),
+                        formattedDate // Utilisation de la date formatée
+                };
+
+                for (int i = 0; i < numberOfColumns; i++) {
+                    contentStream.beginText();
+                    contentStream.newLineAtOffset(nextX, nextY);
+                    contentStream.showText(rowData[i]);
+                    contentStream.endText();
+                    nextX += columnWidths[i];
+                }
+
+                nextY -= rowHeight; // Passer à la ligne suivante
+
+                // Si on atteint le bas de la page, créer une nouvelle page
+                if (nextY < margin) {
+                    contentStream.close(); // Fermer le flux de contenu actuel
+                    page = new PDPage(); // Créer une nouvelle page
+                    document.addPage(page);
+                    contentStream = new PDPageContentStream(document, page); // Ouvrir un nouveau flux de contenu
+                    contentStream.drawImage(pdImage, 0, 0, page.getMediaBox().getWidth(), page.getMediaBox().getHeight()); // Redessiner l'image
+                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12); // Redéfinir la police
+
+                    // Réinitialiser les positions pour la nouvelle page
+                    yStart = page.getMediaBox().getHeight() - margin;
+                    nextY = yStart - rowHeight;
+                }
+            }
+
+            // Fermer le dernier flux de contenu
+            contentStream.close();
+
+            // Sauvegarder le document PDF
             document.save(new File("match_list.pdf"));
+            document.close();
+
+            showAlert("Succès", "PDF généré avec succès!", Alert.AlertType.INFORMATION);
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Erreur", "Erreur lors de la génération du PDF.", Alert.AlertType.ERROR);
         }
     }
-
     private void remplirChamps(Match m) {
         tfIdm.setText(String.valueOf(m.getIdm()));
         tfIdt.setText(String.valueOf(m.getIdt()));

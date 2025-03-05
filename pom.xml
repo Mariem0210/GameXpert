@@ -134,6 +134,7 @@
             <artifactId>google-api-services-calendar</artifactId>
             <version>v3-rev20211026-1.32.1</version>
         </dependency>
+
         <!-- Google HTTP Client Jackson2 -->
         <dependency>
             <groupId>com.google.http-client</groupId>
@@ -164,6 +165,11 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
             <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
         </dependency>
 
         <dependency>

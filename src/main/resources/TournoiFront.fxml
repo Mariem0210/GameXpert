@@ -1,14 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.TournoiFront">
 
+    <children>
+        <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
+            <image>
+                <Image url="@game.jpg" />
+            </image>
+        </ImageView>
+        <!-- Scrollable container for cards -->
+        <ScrollPane layoutX="136.0" layoutY="172.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
+            <content>
+                <VBox fx:id="cardContainer" prefHeight="481.0" prefWidth="714.0" spacing="10" />
+            </content>
+        </ScrollPane>
+        
+
+        <HBox layoutX="664.0" layoutY="474.0" spacing="10" />
+
+        <HBox alignment="CENTER" prefHeight="110.0" prefWidth="227.0">
+            <children>
+                <Label text="TOURNAMENT" textFill="#433c3c">
+                    <font><Font name="Cambria Bold" size="30.0" /></font>
+                </Label>
+            </children>
+        </HBox>
+
+    </children>
 </AnchorPane>

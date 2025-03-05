@@ -7,9 +7,19 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import java.io.IOException;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -344,11 +354,50 @@ public class GestionTournoi {
             refreshTournoisList();
             showAlert("Succès", "Tournoi ajouté avec succès!", Alert.AlertType.INFORMATION);
             clearFields();
+
+            // Ajouter le tournoi dans Challonge
+            ajouterTournoiChallonge(nomTournoi, t.getDescriptiont(), dateDebut.toString(), dateFin.toString());
+
         } catch (NumberFormatException e) {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
 
+    private void ajouterTournoiChallonge(String nomTournoi, String description, String dateDebut, String dateFin) {
+        String apiKey = "gAxjGk8jFHLck2nDKvsPunKBqsuike4q18d58Mn0";
+        String url = "https://api.challonge.com/v1/tournaments.json";
+
+        try {
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(url);
+
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("api_key", apiKey));
+            params.add(new BasicNameValuePair("tournament[name]", nomTournoi));
+            params.add(new BasicNameValuePair("tournament[description]", description));
+            params.add(new BasicNameValuePair("tournament[start_at]", dateDebut));
+            params.add(new BasicNameValuePair("tournament[end_at]", dateFin));
+
+            post.setEntity(new UrlEncodedFormEntity(params));
+
+            HttpResponse response = client.execute(post);
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            String line;
+            StringBuilder result = new StringBuilder();
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            if (response.getStatusLine().getStatusCode() == 200) {
+                System.out.println("Tournoi ajouté avec succès dans Challonge: " + result.toString());
+            } else {
+                System.err.println("Erreur lors de l'ajout du tournoi dans Challonge: " + result.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // Méthode pour vérifier si un tournoi avec le même nom existe déjà
     private boolean tournoiExiste(String nomTournoi) {
         return st.getAll().stream().anyMatch(t -> t.getNomt().equalsIgnoreCase(nomTournoi));
