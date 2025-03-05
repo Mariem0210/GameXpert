@@ -30,7 +30,7 @@
         <java.version>22</java.version>
         <spring-boot.version>3.3.9</spring-boot.version>
     </properties>
-
+    <packaging>jar</packaging>
     <dependencies>
         <!-- Spring Boot dependencies -->
         <dependency>

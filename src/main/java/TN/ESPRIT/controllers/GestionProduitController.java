@@ -1,5 +1,5 @@
 package tn.esprit.controllers;
-
+import javafx.scene.control.ComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +20,22 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import tn.esprit.models.Produit;
+import tn.esprit.services.ServiceProduit;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 
 public class GestionProduitController {
 
@@ -29,14 +45,39 @@ public class GestionProduitController {
     @FXML private TextField tfStock;
     @FXML private TextField tfCategorie;
     @FXML private TextField tfImageProduit;
+    @FXML private TextField tfRecherche;
     @FXML private VBox productContainer;
+    @FXML private ComboBox<String> cbTri;
+
     private final ServicePanier servicePanier = new ServicePanier();
     private final ServiceProduit serviceProduits = new ServiceProduit();
     private Produit selectedProduit = null;
 
     @FXML
     public void initialize() {
-        afficherProduits();
+        afficherProduits(serviceProduits.getAll());
+    }
+    @FXML
+    private void trierProduits(ActionEvent event) {
+        String critere = cbTri.getValue();
+        List<Produit> produitsTries = new ArrayList<>(serviceProduits.getAll());
+
+        switch (critere) {
+            case "Nom":
+                produitsTries.sort(Comparator.comparing(Produit::getNom));
+                break;
+            case "Catégorie":
+                produitsTries.sort(Comparator.comparing(Produit::getCategorie));
+                break;
+            case "Prix":
+                produitsTries.sort(Comparator.comparingDouble(Produit::getPrix));
+                break;
+            case "Stock":
+                produitsTries.sort(Comparator.comparingInt(Produit::getStock));
+                break;
+        }
+
+        afficherProduits(produitsTries);
     }
 
     @FXML
@@ -55,14 +96,20 @@ public class GestionProduitController {
                     tfImageProduit.getText()
             );
             serviceProduits.add(produit);
-            afficherProduits();
+            afficherProduits(serviceProduits.getAll());
             showAlert("Succès", "Produit ajouté avec succès!", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (NumberFormatException e) {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
-
+    @FXML
+    private void rechercherProduit(String query) {
+        List<Produit> produitsFiltres = serviceProduits.getAll().stream()
+                .filter(p -> p.getNom().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
+        afficherProduits(produitsFiltres);
+    }
     @FXML
     private void supprimerProduit(ActionEvent event) {
         if (selectedProduit == null) {
@@ -78,7 +125,7 @@ public class GestionProduitController {
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             serviceProduits.delete(selectedProduit);
-            afficherProduits();
+            afficherProduits(serviceProduits.getAll());
             showAlert("Succès", "Produit supprimé avec succès!", Alert.AlertType.INFORMATION);
             clearFields();
         }
@@ -96,20 +143,23 @@ public class GestionProduitController {
     @FXML
     private void ouvrirPanier(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Panier.fxml"));
-            System.out.println("Panier.fxml chargé avec succès !");
+            // Charger la vue du panier depuis le fichier Panier.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Panier.fxml"));
             Parent root = loader.load();
 
+            // Créer une nouvelle scène avec la vue chargée
+            Scene scene = new Scene(root);
 
-
+            // Créer une nouvelle fenêtre (stage) pour afficher le panier
             Stage stage = new Stage();
-            stage.setTitle("Panier");
-            stage.setScene(new Scene(root));
+            stage.setTitle("Panier"); // Titre de la fenêtre
+            stage.setScene(scene);
+
+            // Afficher la fenêtre du panier
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-
-
+            showAlert("Erreur", "Impossible d'ouvrir le panier.", Alert.AlertType.ERROR);
         }
     }
     @FXML
@@ -131,58 +181,150 @@ public class GestionProduitController {
 
             serviceProduits.update(selectedProduit);
 
-            afficherProduits();
+            afficherProduits(serviceProduits.getAll());
             showAlert("Succès", "Produit modifié avec succès!", Alert.AlertType.INFORMATION);
             clearFields();
         } catch (NumberFormatException e) {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
+    @FXML
+    private void handleRecherche() {
+        String query = tfRecherche.getText();
+        rechercherProduit(query);
+    }
+    private boolean validateFields() {
+        if (tfNom.getText().isEmpty() || tfDescription.getText().isEmpty() ||
+                tfPrix.getText().isEmpty() || tfStock.getText().isEmpty() ||
+                tfCategorie.getText().isEmpty() || tfImageProduit.getText().isEmpty()) {
+
+            showAlert("Erreur", "Tous les champs doivent être remplis.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        try {
+            Float.parseFloat(tfPrix.getText());
+            Integer.parseInt(tfStock.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Prix et Stock doivent être des nombres valides.", Alert.AlertType.ERROR);
+            return false;
+        }
+
+        return true;
+    }
 
     @FXML
-    public void afficherProduits() {
+
+    public void afficherProduits(List<Produit> produits) {
         productContainer.getChildren().clear();
-        HBox currentRow = new HBox(10);
+        HBox currentRow = new HBox(20);
+        currentRow.setStyle("-fx-background-color: transparent;");
         currentRow.setAlignment(Pos.TOP_LEFT);
         int cardCount = 0;
 
-        for (Produit produit : serviceProduits.getAll()) {
-            VBox productCard = new VBox(10);
-            productCard.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-padding: 20px; -fx-background-radius: 10px;");
-            Label nameLabel = new Label("Nom: " + produit.getNom());
-            Label priceLabel = new Label("Prix: " + produit.getPrix() + "€");
-            Label stockLabel = new Label("Stock: " + produit.getStock());
-
-            productCard.getChildren().addAll(nameLabel, priceLabel, stockLabel);
-            productCard.setOnMouseClicked(event -> {
-                selectedProduit = produit;
-                remplirChamps(produit);
-            });
+        for (Produit produit : produits) {
+            VBox productCard = createProductCard(produit);
 
             currentRow.getChildren().add(productCard);
             cardCount++;
 
             if (cardCount >= 4) {
                 productContainer.getChildren().add(currentRow);
-                currentRow = new HBox(10);
+                currentRow = new HBox(20);
+                currentRow.setStyle("-fx-background-color: transparent;");
                 currentRow.setAlignment(Pos.TOP_LEFT);
                 cardCount = 0;
             }
         }
+
         if (cardCount > 0) {
             productContainer.getChildren().add(currentRow);
         }
     }
 
-    private boolean validateFields() {
-        if (tfNom.getText().isEmpty() || tfDescription.getText().isEmpty() ||
-                tfPrix.getText().isEmpty() || tfStock.getText().isEmpty() || tfCategorie.getText().isEmpty()) {
-            showAlert("Erreur", "Tous les champs doivent être remplis.", Alert.AlertType.ERROR);
-            return false;
-        }
-        return true;
-    }
+    private VBox createProductCard(Produit produit) {
+        VBox productCard = new VBox(10);
+        productCard.getStyleClass().add("product-card");
+        productCard.setStyle(
+                "-fx-background-color: #473E66;" +
+                        "-fx-border-color: #6B5B95;" +
+                        "-fx-border-width: 2px;" +
+                        "-fx-border-radius: 10px;" +
+                        "-fx-background-radius: 10px;" +
+                        "-fx-padding: 15px;" +
+                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);"
+        );
+        productCard.setPrefWidth(180);
+        productCard.setPrefHeight(220);
+        productCard.setAlignment(Pos.CENTER);
 
+        // Product Name
+        Label nameLabel = new Label(produit.getNom());
+        nameLabel.setStyle(
+                "-fx-text-fill: #F0F0F0;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 16px;"
+        );
+
+        // Price Label
+        Label priceLabel = new Label(String.format("%.2f €", produit.getPrix()));
+        priceLabel.setStyle(
+                "-fx-text-fill: #FF6B6B;" +
+                        "-fx-font-size: 14px;"
+        );
+
+        // Stock Label
+        Label stockLabel = new Label("Stock: " + produit.getStock());
+        stockLabel.setStyle(
+                "-fx-text-fill: #9B8194;" +
+                        "-fx-font-size: 12px;"
+        );
+
+        // Hover and Click Effects
+        productCard.setOnMouseEntered(event -> {
+            productCard.setStyle(
+                    "-fx-background-color: #6B5B95;" +
+                            "-fx-border-color: #FF6B6B;" +
+                            "-fx-border-width: 2px;" +
+                            "-fx-border-radius: 10px;" +
+                            "-fx-background-radius: 10px;" +
+                            "-fx-padding: 15px;" +
+                            "-fx-effect: dropshadow(three-pass-box, rgba(255,107,107,0.5), 10, 0, 0, 2);"
+            );
+        });
+
+        productCard.setOnMouseExited(event -> {
+            productCard.setStyle(
+                    "-fx-background-color: #473E66;" +
+                            "-fx-border-color: #6B5B95;" +
+                            "-fx-border-width: 2px;" +
+                            "-fx-border-radius: 10px;" +
+                            "-fx-background-radius: 10px;" +
+                            "-fx-padding: 15px;" +
+                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2);"
+            );
+        });
+
+        productCard.setOnMouseClicked(event -> {
+            selectedProduit = produit;
+            remplirChamps(produit);
+
+            // Visual feedback on selection
+            productCard.setStyle(
+                    "-fx-background-color: #FF6B6B;" +
+                            "-fx-border-color: #1E1A2F;" +
+                            "-fx-border-width: 2px;" +
+                            "-fx-border-radius: 10px;" +
+                            "-fx-background-radius: 10px;" +
+                            "-fx-padding: 15px;" +
+                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 2);"
+            );
+        });
+
+        productCard.getChildren().addAll(nameLabel, priceLabel, stockLabel);
+
+        return productCard;
+    }
     private void remplirChamps(Produit p) {
         tfNom.setText(p.getNom());
         tfDescription.setText(p.getDescription());

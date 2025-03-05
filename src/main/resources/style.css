@@ -1,7 +1,7 @@
 /* Style général */
 .root {
-    -fx-background-color: #1e1e2e;
     -fx-font-family: "Arial";
+    -fx-background-color: #F0F0F0; /* Couleur de fond */
 }
 
 /* Style des labels */
@@ -14,14 +14,14 @@
 .title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #ffcc00;
+    -fx-text-fill: #ffcc00; /* Jaune */
 }
 
 /* Style des champs de texte */
 .text-field, .date-picker {
-    -fx-background-color: #2a2a3d;
+    -fx-background-color: #2a2a3d; /* Fond sombre */
     -fx-text-fill: white;
-    -fx-border-color: #03a9f4;
+    -fx-border-color: #03a9f4; /* Bordure bleue */
     -fx-border-radius: 5px;
     -fx-padding: 5px;
 }
@@ -31,113 +31,116 @@
     -fx-background-radius: 5px;
     -fx-font-size: 14px;
     -fx-padding: 8px 16px;
-}
-
-.button-ajouter {
-    -fx-background-color: #ff5722;
+    -fx-background-color: #6B7FD7; /* Bleu */
     -fx-text-fill: white;
 }
 
-.button-afficher {
-    -fx-background-color: #03a9f4;
-    -fx-text-fill: white;
+.button:hover {
+    -fx-background-color: #5A6EC7; /* Bleu plus foncé au survol */
 }
 
-/* Style du FlowPane contenant les cartes */
-#cardContainer {
-    -fx-background-color: #252538;
-    -fx-padding: 15px;
-    -fx-border-radius: 10px;
-    -fx-border-color: #ffcc00;
-}
-
-
-/*.card {
-    -fx-background-color: #0073e6;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-min-width: 200px;
-    -fx-max-width: 250px;
-}
-
-
-.card Label, .card Text {
-    -fx-text-fill: black !important;
-}*/
-.card {
-    -fx-background-color: #1e1e2e;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-min-width: 200px;
-    -fx-max-width: 250px;
-}
-
-.card Label {
-    -fx-text-fill: white; /* Texte en blanc */
-    -fx-font-size: 14px;
-}
-
+/* Style des cartes de produits */
 .product-card {
     -fx-padding: 10px;
-    -fx-background-color: #ffffff;
-    -fx-border-color: #d1d1d1;
+    -fx-background-color: #1e1e2e; /* Fond sombre */
+    -fx-border-color: #ffcc00; /* Bordure jaune */
     -fx-border-radius: 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 0);
     -fx-alignment: center;
 }
 
-.product-title {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
+/* Style du ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
 }
 
-.product-description {
-    -fx-font-size: 12px;
-    -fx-text-fill: gray;
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
 }
 
-.product-price {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #27ae60;
+/* Style de l'image de fond */
+.background-image {
+    -fx-opacity: 0.7;
 }
 
-.delete-button {
-    -fx-background-color: #e74c3c;
+/* Style des boutons spécifiques */
+.button-ajouter {
+    -fx-background-color: #ff5722; /* Orange */
     -fx-text-fill: white;
-    -fx-font-weight: bold;
 }
+
+.button-modifier {
+    -fx-background-color: #03a9f4; /* Bleu */
+    -fx-text-fill: white;
+}
+
+.button-supprimer {
+    -fx-background-color: #e74c3c; /* Rouge */
+    -fx-text-fill: white;
+}
+
+/* Style du champ de recherche */
+.search-field {
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+    -fx-border-color: #6B7FD7; /* Bleu */
+    -fx-border-radius: 20px;
+}
+/* Style de la TableView */
 .table-view {
-    -fx-background-color: #1e1e2e;
-    -fx-border-color: #ffcc00;
+    -fx-background-color: #FFFFFF; /* Fond blanc */
+    -fx-border-color: #CCCCCC; /* Bordure grise */
     -fx-border-radius: 5px;
 }
 
-.table-column {
-    -fx-alignment: CENTER;
+/* Style des cellules de la TableView */
+.table-cell {
+    -fx-text-fill: #333333; /* Couleur du texte */
     -fx-font-size: 14px;
-    -fx-text-fill: white;
-    -fx-background-color: #252538;
+    -fx-alignment: CENTER;
 }
 
-.table-row-cell {
-    -fx-background-color: #2a2a3d;
-    -fx-text-fill: white;
-}
-
-.table-row-cell:selected {
-    -fx-background-color: #ffcc00;
-    -fx-text-fill: black;
+/* Style des en-têtes de colonnes */
+.table-view .column-header {
+    -fx-background-color: #6B7FD7; /* Fond bleu */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
-.list-view-custom .list-cell {
-    -fx-padding: 10;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-border-color: #cccccc;
-    -fx-background-color: #ffffff;
-    -fx-min-width: 120px;
-    -fx-min-height: 120px;
+
+/* Style des boutons dans la colonne Actions */
+.button {
+    -fx-background-color: #6B7FD7; /* Bleu */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 10px;
+}
+
+.button:hover {
+    -fx-background-color: #5A6EC7; /* Bleu plus foncé au survol */
+}
+/* Style du bouton de suppression (rouge) */
+.delete-button {
+    -fx-background-color: #FF0000; /* Rouge */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 14px;
+}
+
+/* Style des boutons + et - */
+.increment-button {
+    -fx-background-color: #4CAF50; /* Vert */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 14px;
+}
+
+.decrement-button {
+    -fx-background-color: #F44336; /* Rouge */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 14px;
+}
+
+/* Style du label de quantité */
+.quantity-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
 }

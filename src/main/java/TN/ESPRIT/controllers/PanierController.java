@@ -1,74 +1,88 @@
 package tn.esprit.controllers;
-import javafx.beans.property.SimpleStringProperty;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import tn.esprit.models.Panier;
 import tn.esprit.models.Produit;
 import tn.esprit.models.Commande;
 import tn.esprit.services.ServicePanier;
 import tn.esprit.services.ServiceCommande;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.FlowPane;
-import java.util.List;
+
 import java.util.Date;
+import java.util.List;
 
 public class PanierController {
 
     @FXML
     private TableView<Panier> tablePanier;
+
     @FXML
-    private TableColumn<Panier, Integer> colUtilisateur;
+    private TableColumn<Panier, String> colProduit;
+
     @FXML
-    private TableColumn<Panier, String> colProduit; // Changer le type de la colonne pour String (Nom du produit)
-    @FXML
-    private TableColumn<Panier, Integer> colQuantite;
+    private TableColumn<Panier, String> colQuantite; // Changé en String pour afficher les boutons
+
     @FXML
     private TableColumn<Panier, String> colDateAjout;
-    @FXML
-    private TableColumn<Panier, String> colActions; // Colonne pour les actions (supprimer, modifier)
 
     private final ServiceCommande serviceCommande = new ServiceCommande();
-
     private final ServicePanier servicePanier = new ServicePanier();
-
 
     @FXML
     public void initialize() {
         System.out.println("PanierController - initialize() exécuté !");
 
-        // Liaison des colonnes avec les attributs du modèle Panier
-        colUtilisateur.setCellValueFactory(new PropertyValueFactory<>("id_utilisateur"));
-
         // Affichage du nom du produit au lieu de l'ID
         colProduit.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getProduit().getNom()));  // Accéder au nom du produit
+                new SimpleStringProperty(cellData.getValue().getProduit().getNom()));
 
-        colQuantite.setCellValueFactory(new PropertyValueFactory<>("quantite"));
-
-        // Affichage de la date d'ajout sous forme de String
-        colDateAjout.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getDate_ajout().toString()));
-
-        // Configuration de la colonne "Actions" pour afficher les boutons
-        colActions.setCellFactory(param -> new TableCell<Panier, String>() {
-            private final Button deleteButton = new Button("Supprimer");
-            private final Button modifyButton = new Button("Modifier");
+        // Configuration de la colonne "Quantité" pour afficher les boutons et la quantité
+        colQuantite.setCellFactory(param -> new TableCell<Panier, String>() {
+            private final Button incrementButton = new Button("+");
+            private final Button decrementButton = new Button("-");
+            private final Button deleteButton = new Button("🗑️"); // Bouton de suppression
+            private final Label quantityLabel = new Label();
 
             {
+                // Style des boutons + et -
+                incrementButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+                decrementButton.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+
+                // Style du bouton de suppression (rouge)
+                deleteButton.setStyle("-fx-background-color: #FF0000; -fx-text-fill: white;");
+
+                // Action pour le bouton d'incrémentation
+                incrementButton.setOnAction(event -> {
+                    Panier panier = getTableRow().getItem();
+                    if (panier != null) {
+                        panier.setQuantite(panier.getQuantite() + 1); // Incrémenter la quantité
+                        servicePanier.update(panier); // Mettre à jour dans la base de données
+                        afficherPanier(); // Rafraîchir l'affichage
+                    }
+                });
+
+                // Action pour le bouton de décrémentation
+                decrementButton.setOnAction(event -> {
+                    Panier panier = getTableRow().getItem();
+                    if (panier != null) {
+                        if (panier.getQuantite() > 1) {
+                            panier.setQuantite(panier.getQuantite() - 1); // Décrémenter la quantité
+                            servicePanier.update(panier); // Mettre à jour dans la base de données
+                            afficherPanier(); // Rafraîchir l'affichage
+                        } else {
+                            showAlert("Attention", "La quantité ne peut pas être inférieure à 1.", Alert.AlertType.WARNING);
+                        }
+                    }
+                });
+
                 // Action pour le bouton de suppression
                 deleteButton.setOnAction(event -> {
                     Panier panier = getTableRow().getItem();
                     if (panier != null) {
                         supprimerDuPanier(panier);
-                    }
-                });
-
-                // Action pour le bouton de modification
-                modifyButton.setOnAction(event -> {
-                    Panier panier = getTableRow().getItem();
-                    if (panier != null) {
-                        showModifyDialog(panier);
                     }
                 });
             }
@@ -79,11 +93,20 @@ public class PanierController {
                 if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                     setGraphic(null);
                 } else {
-                    FlowPane flowPane = new FlowPane(deleteButton, modifyButton);
-                    setGraphic(flowPane);
+                    Panier panier = getTableRow().getItem();
+                    quantityLabel.setText(String.valueOf(panier.getQuantite()));
+
+                    // Organisation des boutons et de la quantité dans un HBox
+                    HBox hbox = new HBox(decrementButton, quantityLabel, incrementButton, deleteButton);
+                    hbox.setSpacing(10); // Espacement entre les éléments
+                    setGraphic(hbox);
                 }
             }
         });
+
+        // Affichage de la date d'ajout sous forme de String
+        colDateAjout.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getDate_ajout().toString()));
 
         afficherPanier();
     }
@@ -113,6 +136,7 @@ public class PanierController {
     }
 
     // Méthode pour valider le panier
+    @FXML
     public void validerPanier() {
         System.out.println("Validation du panier en cours...");
 
@@ -133,7 +157,7 @@ public class PanierController {
         List<Panier> panierList = servicePanier.getAll();
         float total = 0;
         for (Panier panier : panierList) {
-            total += (panier.getQuantite() * panier.getProduit().getPrix() ) ;// Montant total = quantité * prix du produit
+            total += (panier.getQuantite() * panier.getProduit().getPrix());
         }
         return total;
     }
@@ -141,28 +165,8 @@ public class PanierController {
     private void supprimerTousLesProduitsDuPanier() {
         List<Panier> panierList = servicePanier.getAll();
         for (Panier panier : panierList) {
-            servicePanier.delete(panier);  // Supprimer chaque produit du panier
+            servicePanier.delete(panier);
         }
-    }
-
-
-    // Méthode pour afficher un dialog de modification de la quantité
-    private void showModifyDialog(Panier panier) {
-        TextInputDialog dialog = new TextInputDialog(String.valueOf(panier.getQuantite()));
-        dialog.setTitle("Modifier Quantité");
-        dialog.setHeaderText("Modifiez la quantité du produit");
-        dialog.setContentText("Quantité :");
-        dialog.showAndWait().ifPresent(input -> {
-            try {
-                int newQuantity = Integer.parseInt(input);
-                panier.setQuantite(newQuantity);  // Mise à jour de la quantité
-                servicePanier.update(panier);     // Mise à jour dans la base de données
-                afficherPanier();  // Rafraîchissement de l'affichage
-                showAlert("Succès", "Quantité mise à jour!", Alert.AlertType.INFORMATION);
-            } catch (NumberFormatException e) {
-                showAlert("Erreur", "Veuillez entrer un nombre valide!", Alert.AlertType.ERROR);
-            }
-        });
     }
 
     // Méthode pour afficher une alerte

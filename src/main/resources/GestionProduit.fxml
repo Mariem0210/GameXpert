@@ -7,38 +7,120 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionProduitController">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0"
+            stylesheets="@style.css"
+            styleClass="background"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.GestionProduitController">
 
     <children>
-        <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
+        <!-- Cyberpunk-inspired Background -->
+        <ImageView fitHeight="729.0" fitWidth="1345.0"
+                   layoutX="-74.0" layoutY="-1.0"
+                   opacity="0.3">
             <image>
                 <Image url="@game.jpg" />
             </image>
         </ImageView>
 
-        <ScrollPane layoutX="407.0" layoutY="72.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
+        <!-- Product Display Scroll Pane -->
+        <ScrollPane layoutX="407.0" layoutY="72.0"
+                    prefHeight="481.0" prefWidth="714.0"
+                    styleClass="scroll-pane">
             <content>
-                <VBox fx:id="productContainer" prefHeight="481.0" prefWidth="714.0" spacing="10">
+                <VBox fx:id="productContainer"
+                      prefHeight="481.0"
+                      prefWidth="714.0"
+                      spacing="10"
+                      styleClass="product-card">
+                    <!-- Dynamic product items will be added here -->
                 </VBox>
             </content>
         </ScrollPane>
 
-        <TextField fx:id="tfNom" layoutX="165.0" layoutY="83.0" prefHeight="34.0" prefWidth="160.0" promptText="Nom Produit" styleClass="shadow" />
-        <TextField fx:id="tfDescription" layoutX="120.0" layoutY="459.0" prefHeight="125.0" prefWidth="250.0" promptText="Description" styleClass="shadow" />
-        <TextField fx:id="tfPrix" layoutX="166.0" layoutY="130.0" prefHeight="50.0" prefWidth="160.0" promptText="Prix" styleClass="shadow" />
-        <TextField fx:id="tfStock" layoutX="163.0" layoutY="206.0" prefHeight="50.0" prefWidth="160.0" promptText="Stock" styleClass="shadow" />
-        <TextField fx:id="tfCategorie" layoutX="165.0" layoutY="275.0" prefHeight="38.0" prefWidth="160.0" promptText="Catégorie" styleClass="shadow" />
-        <TextField fx:id="tfImageProduit" layoutX="164.0" layoutY="335.0" prefHeight="39.0" prefWidth="160.0" promptText="Image URL" styleClass="shadow" />
+        <!-- Input Fields with Gaming Styling -->
+        <TextField fx:id="tfNom"
+                   layoutX="165.0" layoutY="83.0"
+                   prefHeight="34.0" prefWidth="160.0"
+                   promptText="Product Name"
+                   styleClass="text-field"/>
 
-        <Button fx:id="btnAjouter" layoutX="17.0" layoutY="633.0" onAction="#ajouterProduit" prefHeight="39.0" prefWidth="84.0" styleClass="button" text="Ajouter" />
-        <Button fx:id="btnModifier" layoutX="114.0" layoutY="633.0" onAction="#modifierProduit" prefHeight="39.0" prefWidth="84.0" styleClass="edit-button" text="Modifier" />
-        <Button fx:id="btnSupprimer" layoutX="209.0" layoutY="633.0" onAction="#supprimerProduit" prefHeight="39.0" prefWidth="93.0" styleClass="delete-button" text="Supprimer" />
-        <Button fx:id="btnAjouterPanier" layoutX="350.0" layoutY="633.0" onAction="#ajouterAuPanier" prefHeight="39.0" prefWidth="120.0" styleClass="button-panier" text="Ajouter au Panier" />
-        <Button fx:id="btnPanier" layoutX="500.0" layoutY="633.0" onAction="#ouvrirPanier" prefHeight="39.0" prefWidth="120.0" styleClass="button-panier" text="Voir Panier" />
+        <TextField fx:id="tfDescription"
+                   layoutX="120.0" layoutY="459.0"
+                   prefHeight="125.0" prefWidth="250.0"
+                   promptText="Description"
+                   styleClass="text-field"/>
+
+        <TextField fx:id="tfPrix"
+                   layoutX="166.0" layoutY="130.0"
+                   prefHeight="50.0" prefWidth="160.0"
+                   promptText="Price"
+                   styleClass="text-field"/>
+
+        <TextField fx:id="tfStock"
+                   layoutX="163.0" layoutY="206.0"
+                   prefHeight="50.0" prefWidth="160.0"
+                   promptText="Stock"
+                   styleClass="text-field"/>
+
+        <TextField fx:id="tfCategorie"
+                   layoutX="165.0" layoutY="275.0"
+                   prefHeight="38.0" prefWidth="160.0"
+                   promptText="Category"
+                   styleClass="text-field"/>
+
+        <TextField fx:id="tfImageProduit"
+                   layoutX="164.0" layoutY="335.0"
+                   prefHeight="39.0" prefWidth="160.0"
+                   promptText="Image URL"
+                   styleClass="text-field"/>
+
+        <TextField fx:id="tfRecherche"
+                   layoutX="165.0" layoutY="40.0"
+                   prefHeight="34.0" prefWidth="200.0"
+                   promptText="Search Products..."
+                   onKeyReleased="#handleRecherche"
+                   styleClass="search-field"/>
+
+        <!-- Buttons with Gaming Aesthetic -->
+        <Button fx:id="btnAjouter"
+                layoutX="17.0" layoutY="633.0"
+                onAction="#ajouterProduit"
+                prefHeight="39.0" prefWidth="84.0"
+                styleClass="button"
+                text="Add"/>
+
+        <Button fx:id="btnModifier"
+                layoutX="114.0" layoutY="633.0"
+                onAction="#modifierProduit"
+                prefHeight="39.0" prefWidth="84.0"
+                styleClass="button"
+                text="Modify"/>
+
+        <Button fx:id="btnSupprimer"
+                layoutX="209.0" layoutY="633.0"
+                onAction="#supprimerProduit"
+                prefHeight="39.0" prefWidth="93.0"
+                styleClass="button-primary"
+                text="Delete"/>
+
+        <Button fx:id="btnAjouterPanier"
+                layoutX="350.0" layoutY="633.0"
+                onAction="#ajouterAuPanier"
+                prefHeight="39.0" prefWidth="120.0"
+                styleClass="button"
+                text="Add to Cart"/>
+
+        <Button fx:id="btnPanier"
+                layoutX="500.0" layoutY="633.0"
+                onAction="#ouvrirPanier"
+                prefHeight="39.0" prefWidth="120.0"
+                styleClass="button-primary"
+                text="View Cart"/>
 
     </children>
 </AnchorPane>

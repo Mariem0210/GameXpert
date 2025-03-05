@@ -1,4 +1,5 @@
 package tn.esprit.test;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,18 +16,15 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-      //FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionCommande.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionProduit.fxml"));
-        //FXMLLoader loader= new FXMLLoader(getClass().getResource("/Panier.fxml"));
         try {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("---- Gestion Formation -----");
+            primaryStage.setTitle("Gestion des Produits");
             primaryStage.show();
-
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur lors du chargement du fichier FXML : " + e.getMessage());
         }
     }
 }
