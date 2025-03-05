@@ -98,3 +98,48 @@
 .button:hover {
     -fx-opacity: 0.8;
 }
+/* Style général pour les articles */
+.article-box {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+    -fx-padding: 15px;
+    -fx-spacing: 10px;
+}
+
+/* Style pour les images */
+.article-image {
+    -fx-fit-width: 120px;
+    -fx-fit-height: 120px;
+    -fx-preserve-ratio: true;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+/* Style pour les titres */
+.article-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2a2a3d;
+}
+
+/* Style pour les descriptions */
+.article-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555555;
+    -fx-wrap-text: true;
+}
+
+/* Style pour les hyperliens */
+.article-hyperlink {
+    -fx-text-fill: #0078d7;
+    -fx-underline: true;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* Style pour les séparateurs */
+.separator {
+    -fx-padding: 10px 0;
+}

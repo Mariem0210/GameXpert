@@ -257,6 +257,7 @@ public class GestionOffre_de_recrutement {
 
             VBox vbox = new VBox(10);
             vbox.setPadding(new Insets(10));
+            vbox.setStyle("-fx-background-color: #f4f4f4;");
 
             // Parcourir chaque flux RSS
             for (String rssUrl : rssFeeds) {
@@ -275,33 +276,33 @@ public class GestionOffre_de_recrutement {
                         String link = item.getElementsByTagName("link").item(0).getTextContent();
                         String description = item.getElementsByTagName("description").item(0).getTextContent();
 
-                        // Extraire l'URL de l'image (si disponible)
-                        String imageUrl = null;
-                        NodeList mediaContent = item.getElementsByTagName("media:content");
-                        if (mediaContent.getLength() > 0) {
-                            imageUrl = ((Element) mediaContent.item(0)).getAttribute("url");
-                        } else {
-                            NodeList enclosure = item.getElementsByTagName("enclosure");
-                            if (enclosure.getLength() > 0) {
-                                imageUrl = ((Element) enclosure.item(0)).getAttribute("url");
-                            }
-                        }
+                        // Extraire l'URL de l'image automatiquement
+                        String imageUrl = extractImageUrlFromItem(item);
 
                         // Créer un conteneur pour l'article
                         HBox articleBox = new HBox(10);
                         articleBox.setAlignment(Pos.TOP_LEFT);
+                        articleBox.setStyle("-fx-background-color: #ffffff; -fx-border-radius: 10px; -fx-background-radius: 10px; -fx-padding: 15px;");
+                        articleBox.getStyleClass().add("article-box");
 
                         // Ajouter l'image (si disponible)
-                        if (imageUrl != null) {
+                        if (imageUrl != null && !imageUrl.isEmpty()) {
                             try {
                                 ImageView imageView = new ImageView(new Image(imageUrl));
-                                imageView.setFitWidth(100);
-                                imageView.setFitHeight(100);
+                                imageView.setFitWidth(120); // Largeur fixe pour l'image
+                                imageView.setFitHeight(120); // Hauteur fixe pour l'image
                                 imageView.setPreserveRatio(true);
+                                imageView.getStyleClass().add("article-image");
                                 articleBox.getChildren().add(imageView);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        } else {
+                            // Si aucune image n'est disponible, ajouter un espace vide pour conserver la mise en page
+                            Region placeholder = new Region();
+                            placeholder.setPrefWidth(120);
+                            placeholder.setPrefHeight(120);
+                            articleBox.getChildren().add(placeholder);
                         }
 
                         // Créer un conteneur pour le texte
@@ -310,6 +311,7 @@ public class GestionOffre_de_recrutement {
 
                         // Créer un hyperlien pour le titre
                         Hyperlink hyperlink = new Hyperlink(title);
+                        hyperlink.getStyleClass().add("article-hyperlink");
                         hyperlink.setOnAction(e -> {
                             try {
                                 java.awt.Desktop.getDesktop().browse(new URI(link));
@@ -319,7 +321,8 @@ public class GestionOffre_de_recrutement {
                         });
 
                         // Ajouter la description
-                        Label descLabel = new Label(description);
+                        Label descLabel = new Label(cleanDescription(description));
+                        descLabel.getStyleClass().add("article-description");
                         descLabel.setWrapText(true);
 
                         // Ajouter les éléments au conteneur de texte
@@ -340,6 +343,7 @@ public class GestionOffre_de_recrutement {
             // Ajouter une ScrollPane pour permettre le défilement
             ScrollPane scrollPane = new ScrollPane(vbox);
             scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background-color: #f4f4f4;");
 
             Scene scene = new Scene(scrollPane, 800, 600);
             stage.setScene(scene);
@@ -348,6 +352,40 @@ public class GestionOffre_de_recrutement {
             e.printStackTrace();
             showAlert("Erreur", "Impossible de récupérer les actualités de l'esport.", Alert.AlertType.ERROR);
         }
+    }
+
+    /**
+     * Extrait l'URL de l'image à partir d'un élément <item> du flux RSS.
+     */
+    private String extractImageUrlFromItem(Element item) {
+        // Essayer de récupérer l'image depuis <media:content>
+        NodeList mediaContent = item.getElementsByTagName("media:content");
+        if (mediaContent.getLength() > 0) {
+            return ((Element) mediaContent.item(0)).getAttribute("url");
+        }
+
+        // Essayer de récupérer l'image depuis <enclosure>
+        NodeList enclosure = item.getElementsByTagName("enclosure");
+        if (enclosure.getLength() > 0) {
+            return ((Element) enclosure.item(0)).getAttribute("url");
+        }
+
+        // Essayer de récupérer l'image depuis la description HTML
+        String description = item.getElementsByTagName("description").item(0).getTextContent();
+        if (description.contains("<img")) {
+            int imgStart = description.indexOf("src=\"") + 5;
+            int imgEnd = description.indexOf("\"", imgStart);
+            return description.substring(imgStart, imgEnd);
+        }
+
+        return null; // Aucune image trouvée
+    }
+
+    /**
+     * Nettoie la description pour enlever les balises HTML.
+     */
+    private String cleanDescription(String description) {
+        return description.replaceAll("<[^>]*>", ""); // Supprime toutes les balises HTML
     }
 
 
