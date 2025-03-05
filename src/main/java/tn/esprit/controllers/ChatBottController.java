@@ -19,7 +19,7 @@ public class ChatBottController {
                     String botResponse = HuggingFaceChatService.sendMessage(userMessage);
                     chatArea.appendText("🤖 Bot: " + botResponse + "\n\n");
                 } catch (Exception e) {
-                    chatArea.appendText("❌ Erreur: Impossible de contacter l'API Hugging Face.\n");
+                    chatArea.appendText("❌ Erreur: Impossible de contacter l'API Gemini. Vérifiez votre clé API ou votre connexion.\n");
                     e.printStackTrace(); // Affiche l'erreur dans la console
                 }
             }).start();

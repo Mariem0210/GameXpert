@@ -622,20 +622,26 @@ public class GestionTournoi {
         stage.setScene(scene);
         stage.show();
     }
+    public class QRCodeGenerator {
 
-
-    private void genererQRCode(Tournoi tournoi) {
-        String qrText = "http://localhost/phpmyadmin/index.php?route=/sql&pos=0&db=gamexpert&table=match&id_tournoi=" + tournoi.getIdt();
-        int width = 200;
-        int height = 200;
-        String filePath = "qrCode.png";
-
-        try {
+        public static void generateQRCode(String qrText, int width, int height, String filePath) throws WriterException, IOException {
             BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, width, height);
             Path path = FileSystems.getDefault().getPath(filePath);
             MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+        }
+    }
+    @FXML
+    private void genererQRCode(Tournoi tournoi) {
+        // URL qui affichera les matchs du tournoi
+        String qrText = "http://localhost:8080/tournoi/" + tournoi.getIdt() + "/matchs";
+        int width = 200;
+        int height = 200;
+        String filePath = "qrCode_" + tournoi.getIdt() + ".png";
 
-            // Affichage dans une nouvelle fenêtre
+        try {
+            QRCodeGenerator.generateQRCode(qrText, width, height, filePath);
+
+            // Afficher le QR Code dans une nouvelle fenêtre
             Image image = new Image("file:" + filePath);
             ImageView imageView = new ImageView(image);
             imageView.setFitWidth(200);
