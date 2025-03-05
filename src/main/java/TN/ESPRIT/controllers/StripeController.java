@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import tn.esprit.config.Config;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,23 +34,23 @@ public class StripeController {
     @FXML
     public void processPayment() {
         try {
-            // 1. Créer un token pour la carte bancaire
+            // 1. Créer un token pour la carte bancaire (utilisez des cartes de test Stripe)
             Map<String, Object> cardParams = new HashMap<>();
-            cardParams.put("number", tfCardNumber.getText());
-            cardParams.put("exp_month", Integer.parseInt(tfExpMonth.getText()));
-            cardParams.put("exp_year", Integer.parseInt(tfExpYear.getText()));
-            cardParams.put("cvc", tfCVC.getText());
+            cardParams.put("number", "4242424242424242"); // Carte de test Stripe
+            cardParams.put("exp_month", 12); // Mois d'expiration
+            cardParams.put("exp_year", 2024); // Année d'expiration
+            cardParams.put("cvc", "123"); // CVC
 
             Map<String, Object> tokenParams = new HashMap<>();
             tokenParams.put("card", cardParams);
 
             Token token = Token.create(tokenParams);
 
-            // 2. Créer un paiement (Charge)
+            // 2. Créer un paiement (Charge) avec le token
             Map<String, Object> chargeParams = new HashMap<>();
-            chargeParams.put("amount", (int) (Double.parseDouble(tfAmount.getText()) * 100)); // Stripe utilise les centimes
+            chargeParams.put("amount", (int) (Double.parseDouble(tfAmount.getText()) * 100)); // Montant en centimes
             chargeParams.put("currency", "eur");
-            chargeParams.put("source", token.getId());
+            chargeParams.put("source", token.getId()); // Utiliser le token comme source
             chargeParams.put("description", "Paiement Produit");
 
             Charge charge = Charge.create(chargeParams);

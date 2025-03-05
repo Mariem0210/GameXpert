@@ -1,20 +1,73 @@
-.title {
-    -fx-font-size: 18px;
+/* Style général */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Carte contenant les produits */
+.card {
+    -fx-background-color: white;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+}
+
+/* Titre principal */
+.title-label {
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
+    -fx-text-fill: #333;
 }
 
-.label {
-    -fx-font-size: 14px;
-}
-
+/* Barre de recherche et boutons */
 .text-field {
+    -fx-pref-height: 35px;
     -fx-font-size: 14px;
-    -fx-pref-width: 200px;
 }
 
 .button {
-    -fx-font-size: 14px;
-    -fx-background-color: #28a745;
+    -fx-background-color: #6B5B95;
     -fx-text-fill: white;
-    -fx-pref-width: 100px;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #563D7C;
+}
+
+/* Produits */
+.product-card {
+    -fx-background-color: #fff;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 5, 0, 0, 2);
+    -fx-alignment: center;
+}
+
+/* Labels des produits */
+.product-card Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #555;
+}
+
+/* Bouton Ajouter au Panier */
+.add-to-cart-button {
+    -fx-background-color: #FF6B6B;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.add-to-cart-button:hover {
+    -fx-background-color: #E63946;
 }

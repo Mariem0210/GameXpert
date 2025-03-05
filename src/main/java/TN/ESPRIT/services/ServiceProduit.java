@@ -13,7 +13,31 @@ public class ServiceProduit {
     public ServiceProduit() {
         cnx = MyDatabase.getInstance().getCnx();
     }
-
+    public List<Produit> searchByName(String name) {
+        List<Produit> produits = new ArrayList<>();
+        String qry = "SELECT * FROM produit WHERE Nom LIKE ?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, "%" + name + "%");
+            ResultSet rs = pstm.executeQuery();
+            while (rs.next()) {
+                Produit p = new Produit(
+                        rs.getInt("Id_produit"),
+                        rs.getString("Nom"),
+                        rs.getString("Description"),
+                        rs.getFloat("Prix"),
+                        rs.getInt("Stock"),
+                        rs.getString("Categorie"),
+                        rs.getString("Image_produit"),
+                        rs.getDate("Date_Creation")
+                );
+                produits.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la recherche du produit : " + e.getMessage());
+        }
+        return produits;
+    }
     public void add(Produit produit) {
         String qry = "INSERT INTO produit(Nom, Description, Prix, Stock, Date_Creation, Categorie, Image_produit) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {

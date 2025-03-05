@@ -3,6 +3,9 @@ import javafx.scene.control.ComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,6 +40,30 @@ import java.util.Comparator;
 import java.util.List;
 
 
+import com.theokanning.openai.completion.CompletionRequest;
+import com.theokanning.openai.service.OpenAiService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import javafx.stage.Stage;
+import tn.esprit.models.Produit;
+import tn.esprit.models.Panier;
+import tn.esprit.services.ServiceProduit;
+import tn.esprit.services.ServicePanier;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import java.io.File;
+
 public class GestionProduitController {
 
     @FXML private TextField tfNom;
@@ -48,15 +75,77 @@ public class GestionProduitController {
     @FXML private TextField tfRecherche;
     @FXML private VBox productContainer;
     @FXML private ComboBox<String> cbTri;
-
+    @FXML
+    private TextArea taChat; // Zone de texte pour afficher les résultats
     private final ServicePanier servicePanier = new ServicePanier();
     private final ServiceProduit serviceProduits = new ServiceProduit();
     private Produit selectedProduit = null;
+    private File imageFile;
+    @FXML
+    // Zone de texte pour afficher les résultats
+
+    private final CheapSharkAPI cheapSharkAPI = new CheapSharkAPI(); // Instance de l'API
+
+    // Méthode appelée lorsque l'utilisateur clique sur "Rechercher des offres"
+    @FXML
+
+
+    private void rechercherOffres() {
+        System.out.println("Bouton 'Rechercher des offres' cliqué."); // Log pour vérifier que la méthode est appelée
+        try {
+            String reponseAPI = cheapSharkAPI.searchDeals("");
+            System.out.println("Réponse de l'API : " + reponseAPI); // Log la réponse de l'API
+            displayDeals(reponseAPI); // Parser et afficher les offres
+        } catch (IOException e) {
+            e.printStackTrace();
+            taChat.appendText("Erreur : Impossible de récupérer les offres.\n");
+        }
+    }
+
+    private void displayDeals(String jsonResponse) {
+        System.out.println("Réponse JSON reçue : " + jsonResponse); // Log la réponse JSON
+        Gson gson = new Gson();
+        JsonArray deals = gson.fromJson(jsonResponse, JsonArray.class);
+
+        if (deals == null || deals.size() == 0) {
+            taChat.appendText("Aucune offre trouvée.\n");
+            return;
+        }
+
+        for (int i = 0; i < deals.size(); i++) {
+            JsonObject deal = deals.get(i).getAsJsonObject();
+            String title = deal.has("title") ? deal.get("title").getAsString() : "Titre non disponible";
+            String salePrice = deal.has("salePrice") ? deal.get("salePrice").getAsString() : "N/A";
+            String normalPrice = deal.has("normalPrice") ? deal.get("normalPrice").getAsString() : "N/A";
+            String savings = deal.has("savings") ? String.format("%.2f", deal.get("savings").getAsDouble()) + " %" : "N/A";
+
+            taChat.appendText("Titre : " + title + "\n");
+            taChat.appendText("Prix promotionnel : " + salePrice + " €\n");
+            taChat.appendText("Prix normal : " + normalPrice + " €\n");
+            taChat.appendText("Économie : " + savings + "\n");
+            taChat.appendText("-----------------------------\n");
+        }
+    }
+
+    // Méthode pour sélectionner une image
+    @FXML
+    private void choisirImage(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        imageFile = fileChooser.showOpenDialog(null);
+        if (imageFile != null) {
+            tfImageProduit.setText(imageFile.getAbsolutePath());
+        }
+    }
 
     @FXML
     public void initialize() {
         afficherProduits(serviceProduits.getAll());
     }
+
     @FXML
     private void trierProduits(ActionEvent event) {
         String critere = cbTri.getValue();
@@ -80,6 +169,40 @@ public class GestionProduitController {
         afficherProduits(produitsTries);
     }
 
+
+
+
+
+
+    @FXML
+    private void ouvrirChatIA(ActionEvent event) {
+        try {
+            // Charger la vue du chat IA depuis le fichier ChatIA.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/ChatIA.fxml"));
+            Parent root = loader.load();
+
+            // Obtenir le contrôleur du chat IA
+            ChatIAController chatIAController = loader.getController();
+
+            // Passer la liste des produits au contrôleur du chat IA
+            chatIAController.setProduits(serviceProduits.getAll());
+
+            // Créer une nouvelle scène avec la vue chargée
+            Scene scene = new Scene(root);
+
+            // Créer une nouvelle fenêtre (stage) pour afficher le chat IA
+            Stage stage = new Stage();
+            stage.setTitle("Chat IA"); // Titre de la fenêtre
+            stage.setScene(scene);
+
+            // Afficher la fenêtre du chat IA
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ouvrir le chat IA.", Alert.AlertType.ERROR);
+        }
+    }
+
     @FXML
     public void ajouterProduit(ActionEvent actionEvent) {
         if (!validateFields()) {
@@ -93,7 +216,7 @@ public class GestionProduitController {
                     Integer.parseInt(tfStock.getText()),
                     new Date(), // Génération automatique de la date de création
                     tfCategorie.getText(),
-                    tfImageProduit.getText()
+                    imageFile != null ? imageFile.toURI().toString() : tfImageProduit.getText()
             );
             serviceProduits.add(produit);
             afficherProduits(serviceProduits.getAll());
@@ -103,6 +226,7 @@ public class GestionProduitController {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
+
     @FXML
     private void rechercherProduit(String query) {
         List<Produit> produitsFiltres = serviceProduits.getAll().stream()
@@ -110,6 +234,7 @@ public class GestionProduitController {
                 .collect(Collectors.toList());
         afficherProduits(produitsFiltres);
     }
+
     @FXML
     private void supprimerProduit(ActionEvent event) {
         if (selectedProduit == null) {
@@ -130,6 +255,7 @@ public class GestionProduitController {
             clearFields();
         }
     }
+
     @FXML
     public void ajouterAuPanier(ActionEvent actionEvent) {
         if (selectedProduit == null) {
@@ -140,6 +266,7 @@ public class GestionProduitController {
         servicePanier.add(panier);
         showAlert("Succès", "Produit ajouté au panier!", Alert.AlertType.INFORMATION);
     }
+
     @FXML
     private void ouvrirPanier(ActionEvent event) {
         try {
@@ -162,6 +289,7 @@ public class GestionProduitController {
             showAlert("Erreur", "Impossible d'ouvrir le panier.", Alert.AlertType.ERROR);
         }
     }
+
     @FXML
     private void modifierProduit(ActionEvent event) {
         if (selectedProduit == null) {
@@ -188,11 +316,13 @@ public class GestionProduitController {
             showAlert("Erreur", "Veuillez entrer des valeurs valides.", Alert.AlertType.ERROR);
         }
     }
+
     @FXML
     private void handleRecherche() {
         String query = tfRecherche.getText();
         rechercherProduit(query);
     }
+
     private boolean validateFields() {
         if (tfNom.getText().isEmpty() || tfDescription.getText().isEmpty() ||
                 tfPrix.getText().isEmpty() || tfStock.getText().isEmpty() ||
@@ -214,8 +344,7 @@ public class GestionProduitController {
     }
 
     @FXML
-
-    public void afficherProduits(List<Produit> produits) {
+    private void afficherProduits(List<Produit> produits) {
         productContainer.getChildren().clear();
         HBox currentRow = new HBox(20);
         currentRow.setStyle("-fx-background-color: transparent;");
@@ -224,7 +353,6 @@ public class GestionProduitController {
 
         for (Produit produit : produits) {
             VBox productCard = createProductCard(produit);
-
             currentRow.getChildren().add(productCard);
             cardCount++;
 
@@ -257,6 +385,15 @@ public class GestionProduitController {
         productCard.setPrefWidth(180);
         productCard.setPrefHeight(220);
         productCard.setAlignment(Pos.CENTER);
+
+        // Product Image
+        ImageView imageView = new ImageView();
+        if (produit.getImage_produit() != null && !produit.getImage_produit().isEmpty()) {
+            Image image = new Image(produit.getImage_produit());
+            imageView.setImage(image);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+        }
 
         // Product Name
         Label nameLabel = new Label(produit.getNom());
@@ -321,10 +458,11 @@ public class GestionProduitController {
             );
         });
 
-        productCard.getChildren().addAll(nameLabel, priceLabel, stockLabel);
+        productCard.getChildren().addAll(imageView, nameLabel, priceLabel, stockLabel);
 
         return productCard;
     }
+
     private void remplirChamps(Produit p) {
         tfNom.setText(p.getNom());
         tfDescription.setText(p.getDescription());

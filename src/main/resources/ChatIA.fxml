@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.ChatIAController">
+
+    <children>
+        <!-- Zone de texte pour afficher les messages -->
+        <TextArea fx:id="taChat"
+                  layoutX="10.0" layoutY="10.0"
+                  prefHeight="340.0" prefWidth="580.0"
+                  editable="false"
+                  wrapText="true" />
+
+        <!-- Champ de texte pour saisir les messages -->
+        <TextField fx:id="tfMessage"
+                   layoutX="10.0" layoutY="360.0"
+                   prefHeight="30.0" prefWidth="480.0"
+                   promptText="Entrez votre message..."
+                   onAction="#envoyerMessage" />
+
+        <!-- Bouton pour envoyer le message -->
+        <Button fx:id="btnEnvoyer"
+                layoutX="500.0" layoutY="360.0"
+                prefHeight="30.0" prefWidth="90.0"
+                text="Envoyer"
+                onAction="#envoyerMessage" />
+    </children>
+</AnchorPane>

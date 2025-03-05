@@ -10,6 +10,47 @@ import tn.esprit.models.Produit;
 import tn.esprit.models.Commande;
 import tn.esprit.services.ServicePanier;
 import tn.esprit.services.ServiceCommande;
+import javafx.scene.control.ComboBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import javafx.stage.Stage;
+import tn.esprit.models.Produit;
+import tn.esprit.models.Panier;
+import tn.esprit.services.ServiceProduit;
+import tn.esprit.services.ServicePanier;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import tn.esprit.models.Produit;
+import tn.esprit.services.ServiceProduit;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import javafx.stage.FileChooser;
+import java.io.File;
+
 
 import java.util.Date;
 import java.util.List;
@@ -136,6 +177,7 @@ public class PanierController {
     }
 
     // Méthode pour valider le panier
+
     @FXML
     public void validerPanier() {
         System.out.println("Validation du panier en cours...");
@@ -151,6 +193,30 @@ public class PanierController {
         supprimerTousLesProduitsDuPanier();
 
         showAlert("Succès", "Votre commande a été validée et le panier vidé!", Alert.AlertType.INFORMATION);
+
+        // Rediriger vers l'interface de gestion des commandes
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GestionCommande.fxml"));
+            Parent root = loader.load();
+
+            // Créer une nouvelle scène avec la vue chargée
+            Scene scene = new Scene(root);
+
+            // Créer une nouvelle fenêtre (stage) pour afficher l'interface de commande
+            Stage stage = new Stage();
+            stage.setTitle("Gestion des Commandes"); // Titre de la fenêtre
+            stage.setScene(scene);
+
+            // Afficher la fenêtre de gestion des commandes
+            stage.show();
+
+            // Fermer la fenêtre actuelle du panier
+            Stage currentStage = (Stage) tablePanier.getScene().getWindow();
+            currentStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ouvrir l'interface de gestion des commandes.", Alert.AlertType.ERROR);
+        }
     }
 
     private float calculerMontantTotal() {
