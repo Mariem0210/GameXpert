@@ -1,0 +1,20 @@
+.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-font-size: 14px;
+}
+
+.text-field {
+    -fx-font-size: 14px;
+    -fx-pref-width: 200px;
+}
+
+.button {
+    -fx-font-size: 14px;
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-pref-width: 100px;
+}

@@ -4,10 +4,10 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
 import com.stripe.model.Token;
-import com.stripe.param.ChargeCreateParams;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import tn.esprit.config.Config;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,11 +19,15 @@ public class StripeController {
     @FXML private TextField tfCVC;
     @FXML private TextField tfAmount;
 
-    // Clé API secrète de Stripe (À NE PAS METTRE EN DUR EN PRODUCTION, utilisez un fichier de config)
     private static final String STRIPE_SECRET_KEY = "sk_test_51QwQeCJrisMbus4mh1Hg52UGJ8C7Zo9dvswVN4ac7mslDJ2YDYgZuR63v36c3Zwo03COxEIo7G95EjReDfuJ6t8500VofDvzyg";
 
     public StripeController() {
         Stripe.apiKey = STRIPE_SECRET_KEY;
+    }
+
+    // Méthode pour définir le montant du paiement
+    public void setMontant(float montant) {
+        tfAmount.setText(String.valueOf(montant));
     }
 
     @FXML

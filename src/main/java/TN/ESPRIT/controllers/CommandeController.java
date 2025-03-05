@@ -2,19 +2,18 @@ package tn.esprit.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXML;
-import javafx.scene.web.WebView;
-import tn.esprit.controllers.PanierController;
-import tn.esprit.models.Commande;
-import tn.esprit.services.ServiceCommande;
-import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.FlowPane;
+import javafx.stage.Stage;
+import tn.esprit.models.Commande;
+import tn.esprit.services.ServiceCommande;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CommandeController {
@@ -29,8 +28,6 @@ public class CommandeController {
     private TableColumn<Commande, Float> colMontantTotal;
     @FXML
     private TableColumn<Commande, Integer> colUtilisateur;
-    @FXML
-    private WebView webView;
 
     private final ServiceCommande serviceCommande = new ServiceCommande();
 
@@ -41,7 +38,6 @@ public class CommandeController {
         colDateCommande.setCellValueFactory(new PropertyValueFactory<>("date_commande"));
         colMontantTotal.setCellValueFactory(new PropertyValueFactory<>("montant_total"));
         colUtilisateur.setCellValueFactory(new PropertyValueFactory<>("id_utilisateur"));
-        webView.getEngine().load(getClass().getResource("/paymentPage.html").toExternalForm());
         afficherCommandes();
     }
 
@@ -71,20 +67,30 @@ public class CommandeController {
             showAlert("Erreur", "Aucune commande sélectionnée", Alert.AlertType.ERROR);
         }
     }
+
     @FXML
     public void handlePayerCommande(ActionEvent event) {
-        // Vérifier si la commande est prête à être payée
         Commande commande = tableCommandes.getSelectionModel().getSelectedItem();
         if (commande != null) {
-            // Appeler StripeController pour initier le paiement
-            StripeController stripeController = new StripeController();
-            stripeController.processPayment();  // Lance le processus de paiement via Stripe
+            // Rediriger vers la scène de paiement Stripe
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/PaiementStripe.fxml"));
+                Parent root = loader.load();
+                StripeController stripeController = loader.getController();
+                stripeController.setMontant(commande.getMontant_total()); // Passer le montant de la commande
 
-            showAlert("Paiement", "Le paiement a été traité.", Alert.AlertType.INFORMATION);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Paiement avec Stripe");
+                stage.show();
+            } catch (IOException e) {
+                showAlert("Erreur", "Impossible de charger la page de paiement.", Alert.AlertType.ERROR);
+            }
         } else {
             showAlert("Erreur", "Aucune commande sélectionnée pour le paiement", Alert.AlertType.ERROR);
         }
     }
+
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

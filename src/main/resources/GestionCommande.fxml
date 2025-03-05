@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.web.WebView?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
             prefHeight="720.0" prefWidth="1080.0"
@@ -28,5 +27,4 @@
     <!-- Boutons pour supprimer une commande et payer une commande -->
     <Button layoutX="250.0" layoutY="630.0" text="Payer Commande" onAction="#handlePayerCommande" styleClass="payButton" />
     <Button layoutX="400.0" layoutY="630.0" text="Supprimer Commande" onAction="#supprimerCommande" styleClass="deleteButton" />
-    <WebView fx:id="webView" layoutX="50.0" layoutY="300.0" prefWidth="980.0" prefHeight="300.0" />
 </AnchorPane>
