@@ -1,12 +1,15 @@
 package tn.esprit.controllers;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.SnapshotResult;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.application.Platform;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import com.itextpdf.text.Image;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -14,6 +17,8 @@ import tn.esprit.models.Certificat;
 import tn.esprit.interfaces.CertificatService;
 import java.sql.SQLException;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+
 import java.util.List;
 import java.util.Optional;
 import com.itextpdf.text.*;
@@ -27,6 +32,16 @@ import javafx.scene.layout.BackgroundSize;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Label;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.AnchorPane;
+
 
 
 
@@ -57,7 +72,7 @@ public class AfficherCertificatController {
                 VBox certificatCard = new VBox(10);
 
                 // Chargement de l'image depuis resources
-                javafx.scene.image.Image backgroundImage = new Image(getClass().getResource("/1.png").toExternalForm());
+                /*javafx.scene.image.Image backgroundImage = new Image(getClass().getResource("/1.png").toExternalForm());
                 BackgroundImage background = new BackgroundImage(
                         backgroundImage,
                         BackgroundRepeat.NO_REPEAT,
@@ -66,7 +81,7 @@ public class AfficherCertificatController {
                         new BackgroundSize(100, 100, true, true, false, true)
                 );
 
-                certificatCard.setBackground(new Background(background)); // Appliquer l'image de fond
+                certificatCard.setBackground(new Background(background)); // Appliquer l'image de fond*/
 
                 certificatCard.setStyle("-fx-border-radius: 10; -fx-border-color: #8a2be2; -fx-padding: 15px;");
                 certificatCard.setPrefSize(280, 320);
@@ -137,80 +152,92 @@ public class AfficherCertificatController {
     }
 
     public void exportCertificatToPDF(Certificat certificat) {
-        Document document = new Document();
         try {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Enregistrer le Certificat");
-            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+            // Charger le fichier FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Certif.fxml"));
+            AnchorPane root = loader.load();
 
-            Stage stage = new Stage();
-            fileChooser.setInitialFileName(certificat.getNomc() + "_Certificat.pdf");
-            java.io.File file = fileChooser.showSaveDialog(stage);
-
-            if (file != null) {
-                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
-                document.open();
-
-                // Charger l'image de fond
-                PdfContentByte canvas = writer.getDirectContentUnder();
-                InputStream bgStream = getClass().getResourceAsStream("/FinalCertificate.jpg");
-                if (bgStream != null) {
-                    byte[] bgBytes = bgStream.readAllBytes();
-                    com.itextpdf.text.Image bgImage = com.itextpdf.text.Image.getInstance(bgBytes);
-                    bgImage.setAbsolutePosition(0, 0);
-                    bgImage.scaleToFit(PageSize.A4.getWidth(), PageSize.A4.getHeight());
-                    canvas.addImage(bgImage);
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Erreur", "Image d'arrière-plan non trouvée !");
-                    return;
-                }
-
-                // Police pour les informations
-                Font nameFont = new Font(Font.FontFamily.HELVETICA, 24, Font.BOLD, BaseColor.BLUE);
-                Font detailsFont = new Font(Font.FontFamily.HELVETICA, 14, Font.NORMAL, BaseColor.BLUE);
-
-                // Nom précis du destinataire
-                Paragraph name = new Paragraph(certificat.getNomc(), nameFont);
-                name.setAlignment(Element.ALIGN_CENTER);
-
-                // Créer un PdfPTable pour positionner précisément les informations
-                PdfPTable infoTable = new PdfPTable(1);
-                infoTable.setTotalWidth(500);
-                infoTable.setLockedWidth(true);
-                infoTable.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-                // Cellule pour le nom
-                PdfPCell nameCell = new PdfPCell(name);
-                nameCell.setBorder(Rectangle.NO_BORDER);
-                nameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                infoTable.addCell(nameCell);
-
-                // Cellule pour le score et la date d'expiration sous forme de petite phrase
-                String detailsText = String.format("Score: %.2f | Date d'Expiration: %s",
-                        certificat.getScorec(), certificat.getDateExpirationc());
-                Paragraph details = new Paragraph(detailsText, detailsFont);
-
-
-                details.setAlignment(Element.ALIGN_CENTER);
-
-                PdfPCell detailsCell = new PdfPCell(details);
-                detailsCell.setBorder(Rectangle.NO_BORDER);
-                detailsCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-                infoTable.addCell(detailsCell);
-
-                // Positionner le tableau précisément
-                infoTable.writeSelectedRows(0, -1, 50, 350, canvas);
-
-                document.close();
-                showAlert(Alert.AlertType.INFORMATION, "Succès", "Certificat exporté avec succès.");
+            // Remplir les données dynamiques dans le FXML
+            Label nomLabel = (Label) root.lookup("#nomLabel");
+            if (nomLabel != null) {
+                nomLabel.setText(certificat.getNomc());
             }
-        } catch (DocumentException | IOException e) {
+
+            Label scoreLabel = (Label) root.lookup("#scoreLabel");
+            if (scoreLabel != null) {
+                scoreLabel.setText("Score: " + certificat.getScorec());
+            }
+
+            Label dateLabel = (Label) root.lookup("#dateLabel");
+            if (dateLabel != null) {
+                dateLabel.setText("Date d'expiration: " + certificat.getDateExpirationc());
+            }
+
+            // Créer une scène temporaire pour capturer le rendu
+            Scene scene = new Scene(root);
+            Stage tempStage = new Stage();
+            tempStage.setScene(scene);
+            tempStage.show(); // Afficher la scène pour forcer le rendu
+
+            // Attendre que la scène soit rendue
+            Platform.runLater(() -> {
+                try {
+                    // Vérifier les dimensions de la scène
+                    if (scene.getWidth() <= 0 || scene.getHeight() <= 0) {
+                        showAlert(Alert.AlertType.ERROR, "Erreur", "Les dimensions de la scène sont invalides.");
+                        return;
+                    }
+
+                    // Prendre un snapshot de la scène
+                    WritableImage writableImage = new WritableImage((int) scene.getWidth(), (int) scene.getHeight());
+                    scene.snapshot(writableImage);
+
+                    // Ouvrir une boîte de dialogue pour enregistrer le PDF
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Enregistrer le Certificat");
+                    fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Fichiers PDF", "*.pdf"));
+                    fileChooser.setInitialFileName(certificat.getNomc() + "_Certificat.pdf");
+                    File file = fileChooser.showSaveDialog(new Stage());
+
+                    if (file != null) {
+                        // Convertir l'image JavaFX en BufferedImage
+                        java.awt.image.BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+
+                        // Enregistrer l'image dans un fichier temporaire
+                        File tempFile = File.createTempFile("certificat", ".png");
+                        ImageIO.write(bufferedImage, "png", tempFile);
+
+                        // Créer un document PDF
+                        Document document = new Document(PageSize.A4);
+                        PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+                        document.open();
+
+                        // Ajouter l'image au PDF
+                        Image pdfImage = Image.getInstance(tempFile.getAbsolutePath()); // Utilisation correcte de Image.getInstance()
+                        pdfImage.scaleAbsolute(PageSize.A4.getWidth(), PageSize.A4.getHeight());
+                        pdfImage.setAbsolutePosition(0, 0);
+                        document.add(pdfImage);
+
+                        // Fermer le document
+                        document.close();
+
+                        // Supprimer le fichier temporaire
+                        tempFile.delete();
+
+                        showAlert(Alert.AlertType.INFORMATION, "Succès", "Certificat exporté avec succès.");
+                    }
+                } catch (IOException | DocumentException e) {
+                    e.printStackTrace();
+                    showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de l'exportation du certificat.");
+                } finally {
+                    tempStage.close(); // Fermer la fenêtre temporaire
+                }
+            });
+        } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Échec de l'exportation du certificat.");
-
         }
     }
-
 
     private void deleteCertificat(Certificat certificat) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

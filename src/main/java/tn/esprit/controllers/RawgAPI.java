@@ -1,4 +1,5 @@
 package tn.esprit.controllers;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -18,10 +19,12 @@ public class RawgAPI {
     public static List<Game> getGames() {
         List<Game> games = new ArrayList<>();
         try {
+            // Connexion à l'API
             URL url = new URL(BASE_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
+            // Lecture de la réponse
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder response = new StringBuilder();
             String line;
@@ -31,16 +34,19 @@ public class RawgAPI {
             }
             reader.close();
 
-            // Parser le JSON
+            // Parsing du JSON
             JsonObject jsonResponse = JsonParser.parseString(response.toString()).getAsJsonObject();
             JsonArray results = jsonResponse.getAsJsonArray("results");
 
             for (int i = 0; i < results.size(); i++) {
                 JsonObject gameJson = results.get(i).getAsJsonObject();
                 String name = gameJson.get("name").getAsString();
-                String imageUrl = gameJson.get("background_image").getAsString();
-                double rating = gameJson.get("rating").getAsDouble();
+                String imageUrl = gameJson.has("background_image") && !gameJson.get("background_image").isJsonNull()
+                        ? gameJson.get("background_image").getAsString()
+                        : "https://via.placeholder.com/150"; // Image par défaut si non disponible
+                double rating = gameJson.has("rating") ? gameJson.get("rating").getAsDouble() : 0.0;
 
+                // Ajout du jeu à la liste
                 games.add(new Game(name, imageUrl, rating));
             }
         } catch (Exception e) {

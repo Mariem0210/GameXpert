@@ -35,6 +35,12 @@
             <artifactId>javafx-fxml</artifactId>
             <version>22.0.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>22.0.2</version> <!-- Remplacez par la version de JavaFX que vous utilisez -->
+        </dependency>
+
 
 
         <!-- Gson (pour traiter le JSON) -->
