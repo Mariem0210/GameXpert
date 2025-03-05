@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.FrontTransfert">
+
+    <children>
+        <!-- Image de fond -->
+        <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
+            <image>
+                <Image url="@game.jpg" />
+            </image>
+        </ImageView>
+
+        <!-- ScrollPane pour afficher les transferts -->
+        <ScrollPane layoutX="50.0" layoutY="50.0" prefHeight="620.0" prefWidth="980.0" style="-fx-background: transparent; -fx-background-color: transparent;" hbarPolicy="NEVER">
+            <content>
+                <VBox fx:id="transfertContainer" prefHeight="620.0" prefWidth="980.0" spacing="20" style="-fx-background-color: transparent;">
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <!-- Titre de la page -->
+        <Label layoutX="50.0" layoutY="10.0" text="Liste des Transferts" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+    </children>
+</AnchorPane>

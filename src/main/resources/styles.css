@@ -1,0 +1,47 @@
+/* style.css */
+.root {
+    -fx-background-color: #1a1a2e;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.card {
+    -fx-background-color: #2a2a3d;
+    -fx-border-color: #ffcc00;
+    -fx-border-radius: 20px;
+    -fx-padding: 20px;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+}
+/* style.css */
+.article-box {
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 15px;
+}
+
+.article-hyperlink {
+    -fx-text-fill: #0078d7;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.article-description {
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+}
+
+.article-image {
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}

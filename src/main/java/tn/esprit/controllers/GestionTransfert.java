@@ -58,48 +58,119 @@ public class GestionTransfert {
 
         try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
             // Définir la police et la taille pour le titre
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 20);
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
             contentStream.beginText();
             contentStream.newLineAtOffset(50, 750);
             contentStream.showText("Liste des Transferts");
             contentStream.endText();
 
-            // Ajouter une ligne de séparation
-            contentStream.setLineWidth(1f);
+            // Ajouter une ligne de séparation sous le titre
+            contentStream.setLineWidth(1.5f);
             contentStream.moveTo(50, 740);
             contentStream.lineTo(550, 740);
             contentStream.stroke();
-
-            // Ajouter une couleur de fond (par exemple, un bleu clair)
-            contentStream.setNonStrokingColor(173, 216, 230); // Couleur bleu clair
-            contentStream.fill();
 
             // Définir la police pour le contenu
             contentStream.setFont(PDType1Font.HELVETICA, 12);
 
             float yPosition = 700; // Position de départ pour les transferts
-            for (Transfert m : serviceTransfert.getAll()) {
+
+            // Ajouter un en-tête de tableau
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 14);
+            contentStream.beginText();
+            contentStream.newLineAtOffset(50, yPosition);
+            contentStream.showText("ID");
+            contentStream.endText();
+
+            contentStream.beginText();
+            contentStream.newLineAtOffset(120, yPosition);
+            contentStream.showText("Ancienne Équipe");
+            contentStream.endText();
+
+            contentStream.beginText();
+            contentStream.newLineAtOffset(270, yPosition);
+            contentStream.showText("Nouvelle Équipe");
+            contentStream.endText();
+
+            contentStream.beginText();
+            contentStream.newLineAtOffset(420, yPosition);
+            contentStream.showText("Montant (€)");
+            contentStream.endText();
+
+            contentStream.beginText();
+            contentStream.newLineAtOffset(520, yPosition);
+            contentStream.showText("Date");
+            contentStream.endText();
+
+            yPosition -= 20;
+
+            // Ajouter une ligne de séparation sous l'en-tête
+            contentStream.setLineWidth(1f);
+            contentStream.moveTo(50, yPosition);
+            contentStream.lineTo(550, yPosition);
+            contentStream.stroke();
+
+            yPosition -= 10;
+
+            // Définir la police pour les données
+            contentStream.setFont(PDType1Font.HELVETICA, 12);
+
+            for (Transfert t : serviceTransfert.getAll()) {
                 // Ajouter chaque ligne de transfert avec un espacement
-                String line = "Transfert " + m.getIdtr() + " : " +
-                        "Ancienne équipe : " + m.getAncienne_equipe() + " | " +
-                        "Nouvelle équipe : " + m.getNouvelle_equipe() + " | " +
-                        "Montant : " + m.getMontantt() + " € | " +
-                        "Date : " + m.getDatet();
+                String id = String.valueOf(t.getIdtr());
+                String ancienneEquipe = t.getAncienne_equipe();
+                String nouvelleEquipe = t.getNouvelle_equipe();
+                String montant = String.valueOf(t.getMontantt());
+                String date = Instant.ofEpochMilli(t.getDatet().getTime())
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate()
+                        .toString();
 
                 // Afficher le texte dans le PDF
                 contentStream.beginText();
                 contentStream.newLineAtOffset(50, yPosition);
-                contentStream.showText(line);
+                contentStream.showText(id);
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(120, yPosition);
+                contentStream.showText(ancienneEquipe);
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(270, yPosition);
+                contentStream.showText(nouvelleEquipe);
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(420, yPosition);
+                contentStream.showText(montant);
+                contentStream.endText();
+
+                contentStream.beginText();
+                contentStream.newLineAtOffset(520, yPosition);
+                contentStream.showText(date);
                 contentStream.endText();
 
                 // Réduire la position Y pour la prochaine ligne
-                yPosition -= 20; // Plus d'espace entre les lignes
+                yPosition -= 20;
+
+                // Ajouter une ligne de séparation entre les lignes
+                contentStream.setLineWidth(0.5f);
+                contentStream.moveTo(50, yPosition);
+                contentStream.lineTo(550, yPosition);
+                contentStream.stroke();
+
+                yPosition -= 10;
             }
 
             // Ajouter une bordure autour du contenu pour plus de clarté
             contentStream.setLineWidth(1.5f);
-            contentStream.moveTo(50, yPosition + 10); // Ajuster la position pour la bordure
+            contentStream.moveTo(50, 760);
+            contentStream.lineTo(550, 760);
             contentStream.lineTo(550, yPosition + 10);
+            contentStream.lineTo(50, yPosition + 10);
+            contentStream.lineTo(50, 760);
             contentStream.stroke();
 
         } catch (IOException e) {
@@ -109,8 +180,11 @@ public class GestionTransfert {
         // Sauvegarder le PDF dans un fichier
         try {
             document.save(new File("liste_des_transferts_ameliorée.pdf"));
+            document.close();
+            showAlert("Succès", "PDF généré avec succès!", Alert.AlertType.INFORMATION);
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Erreur", "Erreur lors de la génération du PDF.", Alert.AlertType.ERROR);
         }
     }
 
