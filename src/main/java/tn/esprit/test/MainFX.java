@@ -20,8 +20,8 @@ public class MainFX extends Application {
        //FXMLLoader loader =new FXMLLoader(getClass().getResource("/GestionTransfert.fxml"));
         //FXMLLoader loader =new FXMLLoader(getClass().getResource("/GestionOffre_de_recrutement.fxml"));
         //FXMLLoader loader =new FXMLLoader(getClass().getResource("/FrontTransfert.fxml"));
-       // FXMLLoader loader =new FXMLLoader(getClass().getResource("/FrontEquipe.fxml"));
-        FXMLLoader loader =new FXMLLoader(getClass().getResource("/FrontOffre_de_recrutement.fxml"));
+        FXMLLoader loader =new FXMLLoader(getClass().getResource("/FrontEquipe.fxml"));
+       // FXMLLoader loader =new FXMLLoader(getClass().getResource("/FrontOffre_de_recrutement.fxml"));
 
 
 

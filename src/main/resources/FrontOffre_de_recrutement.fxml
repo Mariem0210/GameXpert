@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionOffre_de_recrutement">
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.FrontOffre_de_recrutement">
 
     <children>
         <!-- Image de fond -->
@@ -13,9 +13,9 @@
             <image>
                 <Image url="@game.jpg" />
             </image>
-        </ImageView>S
+        </ImageView>
 
-        <!-- ScrollPane pour afficher les offres -->
+        <!-- ScrollPane pour afficher les équipes -->
         <ScrollPane layoutX="50.0" layoutY="50.0" prefHeight="620.0" prefWidth="980.0" style="-fx-background: transparent; -fx-background-color: transparent;" hbarPolicy="NEVER">
             <content>
                 <VBox fx:id="offreContainer" prefHeight="620.0" prefWidth="980.0" spacing="20" style="-fx-background-color: transparent;">
@@ -23,12 +23,15 @@
             </content>
         </ScrollPane>
 
-        <!-- Titre de la page -->
-        <Label layoutX="50.0" layoutY="10.0" text="Liste des Offres de Recrutement" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
 
-        <!-- Bouton pour afficher les actualités esport -->
-        <Button fx:id="btnActualitesEsport" layoutX="50.0" layoutY="650.0" onAction="#afficherActualitesEsport" prefHeight="39.0" prefWidth="200.0" styleClass="news-button" text="Actualités Esport">
-            <font><Font name="Cambria" size="14.0" /></font>
-        </Button>
+        <!-- Titre de la page -->
+        <Label layoutX="50.0" layoutY="10.0" text="Liste des offres de recrutements" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
     </children>
 </AnchorPane>
+
+
+
+
+
+
+

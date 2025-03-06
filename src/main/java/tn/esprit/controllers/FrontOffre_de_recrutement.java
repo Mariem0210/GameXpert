@@ -42,43 +42,31 @@ public class FrontOffre_de_recrutement implements Initializable {
             List<Offre_de_recrutement> offres = serviceOffre.getAll();
             System.out.println("Nombre d'offres récupérées: " + offres.size());
 
-            HBox currentRow = new HBox(10);
-            currentRow.setAlignment(Pos.TOP_LEFT);
-            int cardCount = 0;
-
             for (Offre_de_recrutement offre : offres) {
                 StackPane card = new StackPane();
-                card.setPrefSize(150, 150);
+                card.setPrefSize(900, 150); // Ajuster la largeur et la hauteur de la carte
                 card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-radius: 20px; -fx-padding: 20px;");
 
                 VBox content = new VBox(10);
                 content.setAlignment(Pos.CENTER);
 
                 Label lblPoste = new Label("Poste: " + offre.getPoste_recherche());
-                lblPoste.setStyle("-fx-text-fill: white;");
+                lblPoste.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
                 Label lblNiveau = new Label("Niveau Requis: " + offre.getNiveu_requis());
-                lblNiveau.setStyle("-fx-text-fill: white;");
+                lblNiveau.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
                 Label lblSalaire = new Label("Salaire: " + offre.getSalaire_propose() + " €");
-                lblSalaire.setStyle("-fx-text-fill: white;");
+                lblSalaire.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
                 Label lblStatus = new Label("Status: " + offre.getStatus());
-                lblStatus.setStyle("-fx-text-fill: white;");
+                lblStatus.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
                 Label lblContrat = new Label("Contrat: " + offre.getContrat());
-                lblContrat.setStyle("-fx-text-fill: white;");
+                lblContrat.setStyle("-fx-text-fill: white; -fx-font-size: 16px;");
 
                 content.getChildren().addAll(lblPoste, lblNiveau, lblSalaire, lblStatus, lblContrat);
                 card.getChildren().add(content);
 
-                currentRow.getChildren().add(card);
-                cardCount++;
-
-                if (cardCount >= 4) {
-                    offreContainer.getChildren().add(currentRow);
-                    currentRow = new HBox(10);
-                    cardCount = 0;
-                }
+                // Ajouter la carte à la VBox principale
+                offreContainer.getChildren().add(card);
             }
-
-            if (cardCount > 0) offreContainer.getChildren().add(currentRow);
         });
     }
 

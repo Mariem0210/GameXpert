@@ -46,8 +46,8 @@ public class FrontEquipe implements Initializable {
                 Image logo = generateLogoForTeam(e.getNom_equipe());
                 if (logo != null) {
                     ImageView backgroundImage = new ImageView(logo);
-                    backgroundImage.setFitWidth(900); // Ajuster la largeur de l'image
-                    backgroundImage.setFitHeight(150);
+                    backgroundImage.setFitWidth(150); // Ajuster la largeur de l'image
+                    backgroundImage.setFitHeight(200);
                     backgroundImage.setOpacity(0.3);
                     card.getChildren().add(backgroundImage);
                 }
