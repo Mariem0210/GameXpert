@@ -1,7 +1,7 @@
 package tn.esprit.models;
 
 import java.time.LocalDate;
-
+import java.util.Objects;
 public class Utilisateur {
 
     private int idu, numtelu;
@@ -14,7 +14,30 @@ public class Utilisateur {
     protected String photo_de_profile;
 
 
-
+    // Constructeur pour Google Auth
+    public Utilisateur(
+            int idu,
+            String nomu,
+            String prenomu,
+            String mailu,
+            String mdpu,
+            int numtelu,
+            String typeu,
+            LocalDate dateinscriu,
+            LocalDate datenaissanceu,
+            String photo_de_profile
+    ) {
+        this.idu = idu;
+        this.nomu = nomu;
+        this.prenomu = prenomu;
+        this.mailu = mailu;
+        this.mdpu = mdpu;
+        this.numtelu = numtelu;
+        this.typeu = typeu;
+        this.dateinscriu = dateinscriu;
+        this.datenaissanceu = datenaissanceu;
+        this.photo_de_profile = photo_de_profile;
+    }
     // Constructeur
     public Utilisateur(int idu, String text, String prenomuTfText, String mailuTfText, String mdpuTfText, String typeuTfText, int numTel, LocalDate dateNaissance, LocalDate dateInscription) {
 
@@ -52,6 +75,9 @@ public class Utilisateur {
 
     public Utilisateur() {
 
+    }
+
+    public Utilisateur(String id, String name, String givenName, String email, String s, int i, Object o, String picture) {
     }
 
 

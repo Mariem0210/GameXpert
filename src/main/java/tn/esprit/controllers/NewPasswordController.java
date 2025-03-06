@@ -1,120 +1,96 @@
 package tn.esprit.controllers;
 
-import tn.esprit.models.Joueur;
-import tn.esprit.models.Coach;
-import tn.esprit.models.Utilisateur;
-import tn.esprit.services.UserDataManager;
-import tn.esprit.services.ServiceUtilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
+import tn.esprit.services.ServiceUtilisateur;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class NewPasswordController {
 
+    // Éléments FXML
     @FXML
-    private Button Button_Login;
-
+    private PasswordField hiddenpassword1;
     @FXML
-    private Button Button_cancel;
-
+    private PasswordField hiddenpassword2;
     @FXML
-    private TextField CodeErr;
-
+    private TextField password1;
     @FXML
-    private Label CodeLabel;
-
-    @FXML
-    private ImageView eyeclosed, eyeclosed1, eyeopen, eyeopen1;
-
-    @FXML
-    private TextField fieldserr, passerr, password1, password2, weakPassword;
-
-    @FXML
-    private PasswordField hiddenpassword1, hiddenpassword2;
-
+    private TextField password2;
     @FXML
     private Button hide, hide1, show, show1;
 
-    @FXML
-    private Label label_user_id;
+    private ServiceUtilisateur userService = new ServiceUtilisateur();
+    private String userEmail; // Stocke l'email de l'utilisateur
 
-    private ServiceUtilisateur us = new ServiceUtilisateur();
-    private UserDataManager userDataManager = UserDataManager.getInstance();
-    int CurrentUserId = userDataManager.getIdu();
-    Utilisateur currentUser = us.getUser(CurrentUserId);
+
 
     @FXML
-    void Cancel(ActionEvent event) throws IOException {
-        Stage stage = (Stage) Button_cancel.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Login");
+    void CheckCode(ActionEvent event) {
+        String newPassword = getCurrentPassword();
+        String confirmPassword = getConfirmPassword();
+
+        if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            showAlert("Erreur", "Les champs ne doivent pas être vides");
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            showAlert("Erreur", "Les mots de passe ne correspondent pas");
+            return;
+        }
+
+        if (!userService.isMdp(newPassword)) {
+            showAlert("Erreur", "Le mot de passe doit contenir au moins 6 caractères");
+            return;
+        }
+
+        try {
+            // Mettre à jour le mot de passe via l'email
+            userService.updatePassword(userEmail, newPassword);
+            showAlert("Succès", "Mot de passe mis à jour !");
+            redirectToLogin();
+        } catch (SQLException e) {
+            showAlert("Erreur", "Échec de la mise à jour");
+            e.printStackTrace();
+        }
     }
 
-
-
-    @FXML
-    void CheckCode(ActionEvent event) throws SQLException, IOException {
-        String mdpu = hiddenpassword1.getText().trim();
-        String confirmMdp = hiddenpassword2.getText().trim();
-
-        // Vérifier si un utilisateur est actuellement connecté
-        if (currentUser == null) {
-            System.out.println("Aucun utilisateur connecté");
-            return;
-        }
-
-        // Vérifier si les champs sont vides
-        if (mdpu.isEmpty() || confirmMdp.isEmpty()) {
-            System.out.println("ERREUR : Les champs du mot de passe ne doivent pas être vides.");
-            return;
-        }
-
-        // Vérifier si les mots de passe correspondent
-        if (!mdpu.equals(confirmMdp)) {
-            System.out.println("ERREUR : Les mots de passe ne correspondent pas.");
-            return;
-        }
-
-        // Vérifier si le mot de passe est sécurisé
-        if (!us.isMdp(mdpu)) {
-            System.out.println("ERREUR : Le mot de passe n'est pas sécurisé.");
-            return;
-        }
-
-        // Mise à jour du mot de passe de l'utilisateur
-        currentUser.setMdpu(mdpu);
-        us.update(currentUser);
-
-        System.out.println("Mot de passe mis à jour avec succès !");
-
-        // Changer de scène après la mise à jour
-        Stage stage = (Stage) hiddenpassword1.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+    private String getCurrentPassword() {
+        return hiddenpassword1.isVisible() ?
+                hiddenpassword1.getText() :
+                password1.getText();
     }
 
+    private String getConfirmPassword() {
+        return hiddenpassword2.isVisible() ?
+                hiddenpassword2.getText() :
+                password2.getText();
+    }
 
+    private void redirectToLogin() {
+        try {
+            Stage stage = (Stage) hiddenpassword1.getScene().getWindow();
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/Login.fxml"))));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 
     @FXML
     void Hidepassword11(ActionEvent event) {
@@ -151,4 +127,8 @@ public class NewPasswordController {
         hide1.setVisible(true);
         show1.setVisible(false);
     }
+    public void setUserEmail(String email) {
+        this.userEmail = email;
+    }
+
 }

@@ -1,11 +1,13 @@
 package tn.esprit.controllers;
 
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import tn.esprit.models.Coach;
 import tn.esprit.models.Joueur;
 import tn.esprit.models.Utilisateur;
+import tn.esprit.services.AuthService;
 import tn.esprit.services.ServiceUtilisateur;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,7 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
+import javafx.scene.control.Alert;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -163,4 +165,28 @@ public class CreateAccController implements Initializable {
             System.out.println("file is not valid");
         }
     }
+    public void prefillGoogleUser(String nom, String prenom, String email, String photoUrl) {
+        Platform.runLater(() -> {
+            this.nom.setText(nom);
+            this.prenom_tf.setText(prenom);
+            this.email.setText(email);
+            this.urlimage.setText(photoUrl);
+
+            // Valeurs par défaut
+            this.num_telephone.setText("00000000");
+            this.birthdate.setValue(LocalDate.now().minusYears(18));
+            this.Choicebox.setValue("JOUEUR");
+
+            if (photoUrl != null && !photoUrl.isBlank()) {
+                try {
+                    Image image = new Image(photoUrl, true);
+                    Photo_de_profil.setImage(image);
+                } catch (Exception e) {
+                    System.out.println("Erreur image: " + e.getMessage());
+                }
+            }
+        });
+    }
+
+
 }

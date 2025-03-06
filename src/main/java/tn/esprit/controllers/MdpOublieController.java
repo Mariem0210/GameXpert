@@ -1,4 +1,4 @@
-/*package tn.esprit.controllers;
+package tn.esprit.controllers;
 
 import tn.esprit.models.Utilisateur;
 import tn.esprit.services.UserDataManager;
@@ -47,10 +47,10 @@ public class MdpOublieController {
     @FXML
     private TextField usernametext;
     ServiceUtilisateur us = new ServiceUtilisateur();
-
+    private String userEmail;
     private void send_SMS(int recipnum, int code){
-      String ACCOUNT_SID = "AC69efe739a3ba6247ae6d72d9f48b9600";
-        String AUTH_TOKEN = "aa1ff59b933917faac07cd2dc0ced175";
+      String ACCOUNT_SID = "AC0fcd6048de3c6bacd548c34f6dd605d0";
+        String AUTH_TOKEN = "5a8b5d4cd090cdf050f48cc7076b5d2e";
 
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
 
@@ -61,56 +61,60 @@ public class MdpOublieController {
 
         Message twilioMessage = Message.creator(
                 new PhoneNumber(recipientNumber),
-                new PhoneNumber("+16292586208"),message).create();
+                new PhoneNumber("+16168014581"),message).create();
 
         System.out.println("SMS envoyé : " + twilioMessage.getSid());
     }
-    @FXML
-    void Cancel(ActionEvent event) throws IOException {
-        Stage stage=(Stage) Button_cancel.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setTitle("Login");
 
+        @FXML
+        void Cancel(ActionEvent event) throws IOException {
+            Stage stage = (Stage) Button_cancel.getScene().getWindow();
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/Login.fxml"))));
+            stage.setTitle("Login");
+        }
+
+        @FXML
+        void Checklogin(ActionEvent event) throws IOException {
+            String email = usernametext.getText().trim();
+
+            if(email.isEmpty()) {
+                fieldserr.setVisible(true);
+                return;
+            }
+
+            try {
+                if(us.isEmailAvailable(email)) {
+                    errorField.setVisible(true);
+                    return;
+                }
+
+                // Générer et sauvegarder le code
+                int code = us.generer();
+                us.updateResetCode(email, code);
+
+                // Envoyer le code par SMS
+                Utilisateur user = us.getUserByEmail(email);
+                send_SMS(user.getNumtelu(), code);
+
+                // Passer à l'écran de code
+                Stage stage = (Stage) Button_continue.getScene().getWindow();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Code.fxml"));
+                Parent root = loader.load();
+                CodeController controller = loader.getController();
+                controller.setUserEmail(email);
+                stage.setScene(new Scene(root));
+                stage.setTitle("Code");
+
+            } catch (SQLException e) {
+                errorField.setText("Database error");
+                errorField.setVisible(true);
+                e.printStackTrace();
+            }
+        }
+
+    public void setUserEmail(String email) {
+        this.userEmail = email;
     }
 
-    @FXML
-    void Checklogin(ActionEvent event) throws InvalidAlgorithmParameterException, SQLException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException, IOException {
-        if(usernametext.getText()=="")
-        {
-            fieldserr.setVisible(true);} else {
-            fieldserr.setVisible(false);
-
-        }
-
-        if(!us.isEmailAvailable(usernametext.getText().toString()))
-        {   errorField.setVisible(false);
-            Utilisateur U=new Utilisateur(),u=new Utilisateur();
-            U=us.getUser(us.getUserId(usernametext.getText().toString()));
-            System.out.println(U);
-            int code=0;
-            System.out.println(U.getNumtelu());
-            code=us.generer();
-            System.out.println(code);
-            send_SMS(U.getNumtelu(), code);
-            Stage stage=(Stage) Button_continue.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Code.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("Code");
-            CodeController codecontroller=loader.getController();
-            UserDataManager.getInstance().setUserId(U.getIdu());
-            codecontroller.setCode(code);
-        }
-        else
-        {
-            errorField.setVisible(true);
-        }
-
-
-    }
 
 }

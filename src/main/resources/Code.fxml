@@ -29,7 +29,7 @@
                         <Font name="Sitka Text" size="18.0" />
                     </font>
                 </Label>
-                <Button fx:id="Button_cancel" layoutX="152.0" layoutY="198.0" mnemonicParsing="false" onAction="#Cancel" prefHeight="10.0" prefWidth="70.0" style="-fx-border-color: #B7C7C3;" text="Cancel" />
+                <Button fx:id="Button_cancel" layoutX="152.0" layoutY="198.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="70.0" style="-fx-border-color: #B7C7C3;" text="Cancel" />
             </children>
         </AnchorPane>
         <Label fx:id="label_user_id" layoutX="198.0" layoutY="453.0" text="Label" visible="false" />

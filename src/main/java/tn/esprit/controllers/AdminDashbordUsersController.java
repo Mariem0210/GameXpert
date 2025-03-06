@@ -1,8 +1,10 @@
 package tn.esprit.controllers;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import tn.esprit.services.AuthService;
 import tn.esprit.services.UserDataManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -115,15 +117,45 @@ public class AdminDashbordUsersController implements Initializable {
     }
 
     @FXML
-    void LogOut(ActionEvent event) throws IOException {
-        userDataManager.logout();
-        CurrentUserId =0;
-        currentUser=null;
-        Stage stage=(Stage) logoutButton.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
+    void LogOut(ActionEvent event) {
+        try {
+            AuthService authService = new AuthService();
+            authService.supprimerToken();
+        } catch (IOException e) {
+            Platform.runLater(() -> {
+                new Alert(Alert.AlertType.WARNING,
+                        "Impossible de supprimer les tokens Google\n" + e.getMessage())
+                        .show();
+            });
+        }
+
+        try {
+            userDataManager.logout();
+            CurrentUserId = 0;
+            currentUser = null;
+
+            Stage stage = (Stage) logoutButton.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+            Parent root = loader.load();
+
+            // Création d'une nouvelle scène vierge
+            Scene newScene = new Scene(root);
+
+            // Remplacement complet de la scène
+            stage.setScene(newScene);
+            stage.setTitle("Login");
+
+            // Nettoyage mémoire explicite
+            root = null;
+            loader = null;
+
+        } catch (IOException e) {
+            Platform.runLater(() -> {
+                new Alert(Alert.AlertType.ERROR,
+                        "Erreur lors de la déconnexion\nVeuillez fermer l'application manuellement")
+                        .show();
+            });
+        }
     }
 
     private VBox selectedCard = null;

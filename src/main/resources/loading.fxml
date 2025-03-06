@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ProgressIndicator?>
+
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: linear-gradient(to bottom right, #1D0D34, #3D1D64);"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.LoadingController">
+    <children>
+        <!-- Logo area with gameXpert name -->
+        <Label layoutX="250.0" layoutY="200.0" text="gameXpert." textFill="#a562ff">
+            <font>
+                <Font name="System Bold" size="48.0" />
+            </font>
+        </Label>
+
+        <!-- Loading indicator -->
+        <ProgressIndicator layoutX="350.0" layoutY="450.0" prefWidth="100.0" prefHeight="100.0" progress="-1.0"
+                           style="-fx-progress-color: #a562ff;"/>
+    </children>
+</AnchorPane>

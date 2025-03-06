@@ -16,6 +16,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -296,5 +297,138 @@ public class ServiceUtilisateur implements IService<Utilisateur> {
         Random rand = new Random();
         int code = rand.nextInt((9999 - 1000) + 1) + 1000;
         return code;
+    }
+    public Utilisateur getUserByEmail(String usermailu) {
+        String query = "SELECT * FROM utilisateur WHERE mailu = ?";
+        try (PreparedStatement pstmt = cnx.prepareStatement(query)) {
+            pstmt.setString(1, usermailu);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Utilisateur user = new Utilisateur();
+                user.setIdu(rs.getInt("idu"));
+                user.setNomu(rs.getString("nomu"));
+                user.setPrenomu(rs.getString("prenomu"));
+                user.setNumtelu(rs.getInt("numtelu"));
+                user.setMailu(rs.getString("mailu"));
+                user.setMdpu(encryptor.decrypt(rs.getString("mdpu"),encryptionKey));
+                user.setTypeu(rs.getString("typeu"));
+                user.setDateinscriu(rs.getDate("dateinscriu").toLocalDate());
+                user.setDatenaissanceu(rs.getDate("datenaissanceu").toLocalDate());
+                user.setPhoto_de_profile(rs.getString("photo_profilu"));
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (java.security.InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        return null; // Return null if user is not found
+    }
+    public int isPasswordMatch2(Utilisateur user) {
+        String qry = "SELECT * FROM utilisateur WHERE mailu = ? AND typeu = ?";
+        try {
+            PreparedStatement stm = cnx.prepareStatement(qry);
+            stm.setString(1, user.getMailu());
+            stm.setString(2, user.getTypeu());
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                user.setMdpu(encryptor.decrypt(rs.getString("mdpu"),encryptionKey));
+                // Check if the entered password matches the stored hashed password
+
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } catch (InvalidAlgorithmParameterException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalBlockSizeException e) {
+            throw new RuntimeException(e);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        } catch (BadPaddingException e) {
+            throw new RuntimeException(e);
+        } catch (java.security.InvalidKeyException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+    public boolean verifyResetCode(String email, String enteredCode) throws SQLException {
+        String query = "SELECT reset_code, code_expiration FROM utilisateur WHERE mailu = ?";
+
+        try (PreparedStatement pst = cnx.prepareStatement(query)) {
+            pst.setString(1, email);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                String storedCode = rs.getString("reset_code");
+                Timestamp expiration = rs.getTimestamp("code_expiration");
+
+                // Vérifier si le code est null ou expiré
+                if (storedCode == null || expiration == null) {
+                    return false;
+                }
+
+                return storedCode.equals(enteredCode)
+                        && expiration.after(new Timestamp(System.currentTimeMillis()));
+            }
+            return false;
+        } catch (SQLException e) {
+            System.err.println("Erreur SQL dans verifyResetCode: " + e.getMessage());
+            throw e; // Relancer l'exception pour la tracer
+        }
+    }
+    public void updateResetCode(String email, int code) throws SQLException {
+        String query = "UPDATE utilisateur SET reset_code = ?, code_expiration = ? WHERE mailu = ?";
+
+        try {
+            // Vérifier la connexion
+            if (cnx == null || cnx.isClosed()) {
+                throw new SQLException("La connexion à la base de données est fermée");
+            }
+
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.SECOND, 30);
+            Timestamp expiration = new Timestamp(cal.getTimeInMillis());
+
+            try (PreparedStatement pst = cnx.prepareStatement(query)) {
+                pst.setString(1, String.format("%04d", code)); // Code sur 6 chiffres
+                pst.setTimestamp(2, expiration);
+                pst.setString(3, email);
+
+                int rowsUpdated = pst.executeUpdate();
+
+                if (rowsUpdated == 0) {
+                    throw new SQLException("Aucun utilisateur trouvé avec l'email: " + email);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la mise à jour du code de reset:");
+            System.err.println("-> Requête SQL: " + query);
+            System.err.println("-> Paramètres: [" + code + ", " + email + "]");
+            System.err.println("-> Message d'erreur: " + e.getMessage());
+            throw e;
+        }
+    }
+    public void updatePassword(String email, String newPassword) throws SQLException {
+        String query = "UPDATE utilisateur SET mdpu = ? WHERE mailu = ?";
+
+        try (PreparedStatement pst = cnx.prepareStatement(query)) {
+            pst.setString(1, encryptor.encrypt(newPassword, encryptionKey));
+            pst.setString(2, email);
+            pst.executeUpdate();
+        } catch (Exception e) {
+            throw new SQLException("Erreur de chiffrement");
+        }
     }
 }

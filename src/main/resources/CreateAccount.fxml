@@ -10,84 +10,96 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
-
 <?import javafx.scene.image.ImageView?>
-<AnchorPane prefHeight="448.0" prefWidth="905.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CreateAccController">
+
+<?import javafx.scene.layout.HBox?>
+<AnchorPane prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: #1D0D34;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.CreateAccController">
     <children>
-        <AnchorPane layoutX="199.0" layoutY="4.0" prefHeight="498.0" prefWidth="525.0" style="-fx-border-color: #D9D9D9; -fx-border-width: 10; -fx-border-radius: 10;">
+        <!-- Diagonal gradient background effect -->
+        <AnchorPane prefHeight="700.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #1D0D34, #3D1D64);" />
+
+        <!-- Logo area -->
+        <Label layoutX="80.0" layoutY="50.0" text="gameXpert." textFill="#a562ff">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+
+
+
+        <!-- Modern signup container -->
+        <AnchorPane layoutX="200.0" layoutY="100.0" prefHeight="550.0" prefWidth="400.0" style="-fx-background-color: rgba(25, 10, 41, 0.95); -fx-background-radius: 10;">
             <children>
-                <Label layoutX="14.0" layoutY="14.0" prefHeight="43.0" prefWidth="134.0" text="Sign In">
+                <Label layoutX="150.0" layoutY="20.0" text="Sign Up" textFill="#FFFFFF">
                     <font>
-                        <Font size="24.0" />
+                        <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
-                <Label layoutX="14.0" layoutY="48.0" prefHeight="18.0" prefWidth="226.0" text="Fill out the form carefully for registration" />
-                <AnchorPane layoutX="41.0" layoutY="76.0" prefHeight="98.0" prefWidth="435.0">
+                <Label layoutX="100.0" layoutY="50.0" prefHeight="18.0" prefWidth="200.0" text="Fill out the form to create your account" textFill="#CCCCCC" style="-fx-font-size: 11px; -fx-alignment: center;" />
+
+                <!-- Name and Last Name fields -->
+                <Label layoutX="50.0" layoutY="80.0" prefHeight="14.0" prefWidth="94.0" text="Name" textFill="#CCCCCC" />
+                <TextField fx:id="nom" layoutX="50.0" layoutY="100.0" prefWidth="130.0" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
+
+                <Label layoutX="220.0" layoutY="80.0" prefHeight="14.0" prefWidth="94.0" text="Last Name" textFill="#CCCCCC" />
+                <TextField fx:id="prenom_tf" layoutX="220.0" layoutY="100.0" prefWidth="130.0" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
+
+                <!-- Birth Date and Phone Number fields -->
+                <Label layoutX="50.0" layoutY="140.0" prefHeight="18.0" prefWidth="68.0" text="Birth Date" textFill="#CCCCCC" />
+                <DatePicker fx:id="birthdate" layoutX="50.0" layoutY="160.0" prefHeight="35.0" prefWidth="130.0" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20;" />
+
+                <Label layoutX="220.0" layoutY="140.0" prefHeight="14.0" prefWidth="94.0" text="Phone Number" textFill="#CCCCCC" />
+                <TextField fx:id="num_telephone" layoutX="220.0" layoutY="160.0" prefWidth="130.0" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
+
+                <!-- Email field -->
+                <Label layoutX="50.0" layoutY="200.0" prefHeight="14.0" prefWidth="94.0" text="E-mail" textFill="#CCCCCC" />
+                <TextField fx:id="email" layoutX="50.0" layoutY="220.0" prefWidth="300.0" promptText="example@gmail.com" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
+
+                <!-- Password fields -->
+                <Label layoutX="50.0" layoutY="260.0" prefHeight="14.0" prefWidth="94.0" text="Password" textFill="#CCCCCC" />
+                <StackPane layoutX="50.0" layoutY="280.0" prefHeight="35.0" prefWidth="130.0">
                     <children>
-                        <TextField fx:id="nom" layoutX="6.0" layoutY="23.0" />
-                        <TextField fx:id="prenom_tf" layoutX="255.0" layoutY="23.0" />
-                        <Label layoutX="6.0" layoutY="5.0" prefHeight="14.0" prefWidth="94.0" text="Name" />
-                        <Label layoutX="255.0" layoutY="5.0" prefHeight="14.0" prefWidth="94.0" text="Last Name" />
-                        <Label layoutX="6.0" layoutY="56.0" prefHeight="18.0" prefWidth="68.0" text="Birth Date" />
-                        <TextField fx:id="num_telephone" layoutX="255.0" layoutY="71.0" />
-                        <Label layoutX="255.0" layoutY="56.0" prefHeight="14.0" prefWidth="94.0" text="Phone Number" />
-                        <DatePicker fx:id="birthdate" layoutX="5.0" layoutY="71.0" prefHeight="26.0" prefWidth="150.0" />
+                        <TextField fx:id="password1" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
+                        <PasswordField fx:id="password" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
                     </children>
-                </AnchorPane>
-                <AnchorPane layoutX="41.0" layoutY="174.0" prefHeight="106.0" prefWidth="435.0">
+                </StackPane>
+
+                <Label layoutX="220.0" layoutY="260.0" prefHeight="14.0" prefWidth="130.0" text="Confirm Password" textFill="#CCCCCC" />
+                <StackPane layoutX="220.0" layoutY="280.0" prefHeight="35.0" prefWidth="130.0">
                     <children>
-                        <TextField fx:id="email" layoutX="7.0" layoutY="14.0" promptText="ex: example@gmail.com" />
-                        <Label layoutX="7.0" prefHeight="14.0" prefWidth="94.0" text="E-mail" />
-                        <Label layoutX="7.0" layoutY="44.0" prefHeight="14.0" prefWidth="94.0" text="Password" />
-                        <Label layoutX="255.0" layoutY="44.0" prefHeight="18.0" prefWidth="175.0" text="Re-write your password please!" />
-                        <StackPane layoutX="6.0" layoutY="61.0" prefHeight="26.0" prefWidth="150.0">
-                            <children>
-                                <TextField fx:id="password1" />
-                                <PasswordField fx:id="password" />
-                            </children>
-                        </StackPane>
-                        <StackPane layoutX="255.0" layoutY="62.0" prefHeight="26.0" prefWidth="150.0">
-                            <children>
-                                <TextField fx:id="password2" />
-                                <PasswordField fx:id="confirmPassword" />
-                            </children>
-                        </StackPane>
+                        <TextField fx:id="password2" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
+                        <PasswordField fx:id="confirmPassword" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" />
                     </children>
-                </AnchorPane>
-                <AnchorPane layoutX="48.0" layoutY="280.0" prefHeight="157.0" prefWidth="406.0">
-                    <children>
-                        <ChoiceBox fx:id="Choicebox" layoutX="171.0" layoutY="1.0" prefWidth="150.0" />
-                        <Label layoutY="5.0" prefHeight="18.0" prefWidth="150.0" text="Choose your account Type" />
-                       <ImageView fx:id="Photo_de_profil" fitHeight="75.0" fitWidth="94.0" layoutX="156.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true" />
-                        <Button fx:id="Uploadbutton" layoutX="264.0" layoutY="73.0" mnemonicParsing="false" onAction="#UploadImage" style="-fx-border-color: #B7C7C3;" text="Upload" />
-                        <TextField fx:id="urlimage" layoutX="12.0" layoutY="74.0" promptText="Enter URL here" visible="false" />
-                    </children>
-                </AnchorPane>
-                <Button fx:id="Submit" layoutX="202.0" layoutY="466.0" mnemonicParsing="false" onAction="#Submitdonnes" prefHeight="26.0" prefWidth="76.0" style="-fx-border-color: #B7C7C3;" text="Submit" />
-                <Hyperlink fx:id="hyperLlogin" layoutX="317.0" layoutY="480.0" onAction="#goToLoginPage" prefHeight="24.0" prefWidth="186.0" text="Already have an account? Signup here.">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </Hyperlink>
+                </StackPane>
+
+                <!-- Account Type and Profile Picture -->
+                <Label layoutX="50.0" layoutY="330.0" prefHeight="18.0" prefWidth="150.0" text="Account Type" textFill="#CCCCCC" />
+                <ChoiceBox fx:id="Choicebox" layoutX="50.0" layoutY="350.0" prefWidth="130.0" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-mark-color: #a562ff; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20;" />
+
+                <!-- Profile picture section -->
+                <Label layoutX="220.0" layoutY="330.0" prefHeight="18.0" prefWidth="150.0" text="Profile Picture" textFill="#CCCCCC" />
+                <ImageView fx:id="Photo_de_profil" fitHeight="80.0" fitWidth="80.0" layoutX="220.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(gaussian, #a562ff, 5, 0.2, 0, 0);" />
+                <Button fx:id="Uploadbutton" layoutX="310.0" layoutY="380.0" mnemonicParsing="false" onAction="#UploadImage" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: rgba(165, 98, 255, 0.2); -fx-text-fill: #CCCCCC; -fx-border-color: #a562ff; -fx-border-radius: 15; -fx-background-radius: 15;" text="Upload" />
+                <TextField fx:id="urlimage" layoutX="220.0" layoutY="440.0" promptText="Enter URL here" style="-fx-background-color: rgba(25, 10, 41, 0.8); -fx-text-fill: #CCCCCC; -fx-border-color: #333333; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 15 8 15;" visible="false" />
+
+                <!-- Submit button -->
+                <Button fx:id="Submit" layoutX="130.0" layoutY="450.0" mnemonicParsing="false" onAction="#Submitdonnes" prefHeight="40.0" prefWidth="140.0" style="-fx-background-color: #a562ff; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 20; -fx-cursor: hand;" text="Create Account" />
+
+                <!-- Login link -->
+                <Hyperlink fx:id="hyperLlogin" layoutX="110.0" layoutY="500.0" onAction="#goToLoginPage" prefHeight="24.0" prefWidth="180.0" text="Already have an account? Log in" textFill="#a562ff" style="-fx-font-size: 12px;" />
             </children>
         </AnchorPane>
-        <AnchorPane layoutX="707.0" layoutY="4.0" prefHeight="390.0" prefWidth="256.0">
+
+        <!-- Error messages container -->
+        <AnchorPane layoutX="610.0" layoutY="130.0" prefHeight="500.0" prefWidth="180.0">
             <children>
-                <TextField fx:id="fieldserr" layoutX="13.0" layoutY="34.0" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: #ff1400; -fx-border-radius: 4; -fx-border-width: 2; -fx-border-style: solid; -fx-border-color: #e60000;" text="Error: please fill out all the fields" visible="false" />
-                <TextField fx:id="Emailused" layoutX="13.0" layoutY="77.0" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: #ffc1bd; -fx-border-width: 2; -fx-border-radius: 4; -fx-border-style: solid; -fx-border-color: #e60000;" text="Error: this Email is already used" visible="false" />
-                <TextField fx:id="emailinv" layoutX="13.0" layoutY="121.0" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: #ffc1bd; -fx-border-width: 2; -fx-background-radius: 4; -fx-border-style: solid; -fx-border-color: #e60000;" text="Error: invalid Email" visible="false" />
-                <TextField fx:id="phone_err" layoutX="13.0" layoutY="213.0" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: #ffc1bd; -fx-border-width: 2; -fx-background-radius: 4; -fx-border-style: solid; -fx-border-color: #e60000;" text="Error: invalid phone number" visible="false" />
-                <TextField fx:id="passerr" layoutX="14.0" layoutY="256.0" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: #ffc1bd; -fx-border-width: 2; -fx-background-radius: 4; -fx-border-style: solid; -fx-border-color: #e60000;" text="Error: passwords do not match" visible="false" />
-                <TextField fx:id="weakPassword" layoutX="14.0" layoutY="300.0" prefHeight="36.0" prefWidth="194.0" style="-fx-background-color: #ffc1bd; -fx-border-width: 2; -fx-background-radius: 4; -fx-border-style: solid; -fx-border-color: #e60000;" text="Error: the chosen password is weak!" visible="false">
-                    <font>
-                        <Font size="11.0" />
-                    </font>
-                </TextField>
-                <TextField fx:id="alphabeticalErr" layoutX="-17.0" layoutY="347.0" prefHeight="36.0" prefWidth="256.0" style="-fx-background-color: #ffc1bd; -fx-border-width: 2; -fx-background-radius: 4; -fx-border-style: solid; -fx-border-color: #e60000;" text="Error: Name and Lastname must be only alphabetical!" visible="false">
-                    <font>
-                        <Font size="10.0" />
-                    </font>
-                </TextField>
+                <TextField fx:id="fieldserr" layoutX="0.0" layoutY="0.0" prefHeight="36.0" prefWidth="180.0" style="-fx-background-color: rgba(255, 20, 0, 0.8); -fx-background-radius: 5; -fx-text-fill: white; -fx-alignment: center;" text="Please fill out all fields" visible="false" />
+                <TextField fx:id="Emailused" layoutX="0.0" layoutY="45.0" prefHeight="36.0" prefWidth="180.0" style="-fx-background-color: rgba(255, 20, 0, 0.8); -fx-background-radius: 5; -fx-text-fill: white; -fx-alignment: center;" text="Email already in use" visible="false" />
+                <TextField fx:id="emailinv" layoutX="0.0" layoutY="90.0" prefHeight="36.0" prefWidth="180.0" style="-fx-background-color: rgba(255, 20, 0, 0.8); -fx-background-radius: 5; -fx-text-fill: white; -fx-alignment: center;" text="Invalid email format" visible="false" />
+                <TextField fx:id="phone_err" layoutX="0.0" layoutY="135.0" prefHeight="36.0" prefWidth="180.0" style="-fx-background-color: rgba(255, 20, 0, 0.8); -fx-background-radius: 5; -fx-text-fill: white; -fx-alignment: center;" text="Invalid phone number" visible="false" />
+                <TextField fx:id="passerr" layoutX="0.0" layoutY="180.0" prefHeight="36.0" prefWidth="180.0" style="-fx-background-color: rgba(255, 20, 0, 0.8); -fx-background-radius: 5; -fx-text-fill: white; -fx-alignment: center;" text="Passwords do not match" visible="false" />
+                <TextField fx:id="weakPassword" layoutX="0.0" layoutY="225.0" prefHeight="36.0" prefWidth="180.0" style="-fx-background-color: rgba(255, 20, 0, 0.8); -fx-background-radius: 5; -fx-text-fill: white; -fx-alignment: center;" text="Password is too weak" visible="false" />
+                <TextField fx:id="alphabeticalErr" layoutX="0.0" layoutY="270.0" prefHeight="36.0" prefWidth="180.0" style="-fx-background-color: rgba(255, 20, 0, 0.8); -fx-background-radius: 5; -fx-text-fill: white; -fx-alignment: center;" text="Name and Lastname must be alphabetical" visible="false" />
             </children>
         </AnchorPane>
     </children>
