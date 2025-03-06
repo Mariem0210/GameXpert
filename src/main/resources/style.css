@@ -93,7 +93,48 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
+/* Style pour la TableView transparente */
+.transparent-table {
 
+    -fx-background-color: rgba(0,0,0,0);/* Fond transparent */
+    -fx-control-inner-background: transparent; /* Fond des cellules transparent */
+    -fx-table-header-border-color: transparent; /* Bordure de l'en-tête transparente */
+    -fx-table-cell-border-color: transparent; /* Bordure des cellules transparente */
+}
+
+/* Style pour les lignes de la TableView */
+.transparent-table .table-row-cell {
+    -fx-background-color: rgba(0,0,0,0); /* Fond des lignes semi-transparent */
+    -fx-text-fill: black; /* Couleur du texte */
+}
+
+/* Style pour les lignes sélectionnées */
+.transparent-table .table-row-cell:selected {
+    -fx-background-color: rgba(173, 216, 230, 0.7); /* Fond bleu clair pour les lignes sélectionnées */
+    -fx-text-fill: black; /* Couleur du texte */
+}
+
+/* Style pour l'en-tête de la TableView */
+.transparent-table .column-header-background {
+    -fx-background-color: rgba(0, 0, 0, 0); /* Fond de l'en-tête semi-transparent */
+}
+
+/* Style pour les cellules de l'en-tête */
+.transparent-table .column-header {
+    -fx-background-color: rgba(0,0,0,0); /* Fond transparent pour les cellules de l'en-tête */
+    -fx-text-fill: black; /* Couleur du texte */
+}
+
+/* Style pour les boutons */
+.payButton {
+    -fx-background-color: #4CAF50; /* Couleur de fond verte */
+    -fx-text-fill: white; /* Texte blanc */
+}
+
+.deleteButton {
+    -fx-background-color: #f44336; /* Couleur de fond rouge */
+    -fx-text-fill: white; /* Texte blanc */
+}
 .scroll-pane {
     -fx-background-color: transparent;
 }

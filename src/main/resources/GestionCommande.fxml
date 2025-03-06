@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
-            prefHeight="720.0" prefWidth="1080.0"
+            prefHeight="480.0" prefWidth="800.0"
             fx:controller="tn.esprit.controllers.CommandeController"
             stylesheets="@style.css">
 
+    <!-- Image de fond -->
+    <ImageView fitHeight="480.0" fitWidth="800.0">
+        <image>
+            <Image url="@game.jpg" /> <!-- Remplacez par le chemin de votre image -->
+        </image>
+    </ImageView>
+
     <!-- Titre -->
-    <Label layoutX="420.0" layoutY="20.0" styleClass="title" text="Gestion des Commandes" />
+    <Label layoutX="300.0" layoutY="10.0" styleClass="title" text="Gestion des Commandes" />
 
     <!-- TableView pour afficher les commandes -->
-    <TableView fx:id="tableCommandes" layoutX="50.0" layoutY="100.0" prefWidth="980.0" prefHeight="500.0">
+    <TableView fx:id="tableCommandes" layoutX="30.0" layoutY="60.0" prefWidth="740" prefHeight="350.0" styleClass="transparent-table">
         <columns>
-            <!-- Colonne ID Commande -->
-            <TableColumn fx:id="colIdCommande" text="ID Commande" prefWidth="150.0" />
-            <!-- Colonne Date Commande -->
-            <TableColumn fx:id="colDateCommande" text="Date Commande" prefWidth="250.0" />
-            <!-- Colonne Montant Total -->
-            <TableColumn fx:id="colMontantTotal" text="Montant Total" prefWidth="200.0" />
-            <!-- Colonne ID Utilisateur -->
-            <TableColumn fx:id="colUtilisateur" text="ID Utilisateur" prefWidth="200.0" />
+            <TableColumn fx:id="colDateCommande" text="Date Commande" prefWidth="200.0" />
+            <TableColumn fx:id="colMontantTotal" text="Montant Total" prefWidth="150.0" />
         </columns>
     </TableView>
 
     <!-- Boutons pour supprimer une commande et payer une commande -->
-    <Button layoutX="250.0" layoutY="630.0" text="Payer Commande" onAction="#handlePayerCommande" styleClass="payButton" />
-    <Button layoutX="400.0" layoutY="630.0" text="Supprimer Commande" onAction="#supprimerCommande" styleClass="deleteButton" />
+    <Button layoutX="200.0" layoutY="430.0" text="Payer Commande" onAction="#handlePayerCommande" styleClass="payButton" />
+    <Button layoutX="350.0" layoutY="430.0" text="Supprimer Commande" onAction="#supprimerCommande" styleClass="deleteButton" />
 </AnchorPane>

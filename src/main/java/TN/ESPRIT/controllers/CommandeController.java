@@ -34,10 +34,10 @@ public class CommandeController {
     @FXML
     public void initialize() {
         // Liaison des colonnes avec les attributs du modèle Commande
-        colIdCommande.setCellValueFactory(new PropertyValueFactory<>("id_commande"));
+       // colIdCommande.setCellValueFactory(new PropertyValueFactory<>("id_commande"));
         colDateCommande.setCellValueFactory(new PropertyValueFactory<>("date_commande"));
         colMontantTotal.setCellValueFactory(new PropertyValueFactory<>("montant_total"));
-        colUtilisateur.setCellValueFactory(new PropertyValueFactory<>("id_utilisateur"));
+       // colUtilisateur.setCellValueFactory(new PropertyValueFactory<>("id_utilisateur"));
         afficherCommandes();
     }
 
