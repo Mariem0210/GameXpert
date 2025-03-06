@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -18,23 +21,23 @@
 
     <children>
         <!-- Titre -->
-        <Text layoutX="474.0" layoutY="115.0" styleClass="title" text="Ajouter Giveaway" />
+        <Text layoutX="426.0" layoutY="127.0" styleClass="title" text="Ajouter Giveaway" />
 
         <!-- Titre du Giveaway -->
-        <Label layoutX="345.0" layoutY="170.0" text="Titre du Giveaway:" />
-        <TextField fx:id="titregField" layoutX="345.0" layoutY="195.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le titre du giveaway" />
+        <Label layoutX="297.0" layoutY="182.0" text="Titre du Giveaway:" />
+        <TextField fx:id="titregField" layoutX="297.0" layoutY="207.0" prefHeight="30.0" prefWidth="400.0" promptText="Entrez le titre du giveaway" />
 
         <!-- Description -->
-        <Label layoutX="345.0" layoutY="240.0" text="Description:" />
-        <TextArea fx:id="descgField" layoutX="345.0" layoutY="265.0" prefHeight="80.0" prefWidth="400.0" promptText="Entrez une description du giveaway" />
+        <Label layoutX="297.0" layoutY="252.0" text="Description:" />
+        <TextArea fx:id="descgField" layoutX="297.0" layoutY="277.0" prefHeight="80.0" prefWidth="400.0" promptText="Entrez une description du giveaway" />
 
         <!-- Date de début -->
-        <Label layoutX="345.0" layoutY="360.0" text="Date de début:" />
-        <DatePicker fx:id="datedgField" layoutX="345.0" layoutY="385.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de début" />
+        <Label layoutX="297.0" layoutY="372.0" text="Date de début:" />
+        <DatePicker fx:id="datedgField" layoutX="297.0" layoutY="397.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de début" />
 
         <!-- Date de fin -->
-        <Label layoutX="345.0" layoutY="430.0" text="Date de fin:" />
-        <DatePicker fx:id="datefgField" layoutX="345.0" layoutY="455.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de fin" />
+        <Label layoutX="297.0" layoutY="442.0" text="Date de fin:" />
+        <DatePicker fx:id="datefgField" layoutX="297.0" layoutY="467.0" prefHeight="30.0" prefWidth="400.0" promptText="Choisir la date de fin" />
 
         <!-- ID Utilisateur
         <Label layoutX="136.0" layoutY="430.0" text="ID Utilisateur:" />
@@ -43,17 +46,29 @@
                    promptText="Entrez l'ID de l'utilisateur" />-->
 
         <!-- Statut -->
-        <Label layoutX="345.0" layoutY="508.0" text="Statut:" />
-        <ComboBox fx:id="statusgComboBox" layoutX="345.0" layoutY="538.0" prefHeight="30.0" prefWidth="400.0" promptText="Sélectionner le statut">
+        <Label layoutX="297.0" layoutY="524.0" text="Statut:" />
+        <ComboBox fx:id="statusgComboBox" layoutX="297.0" layoutY="550.0" prefHeight="30.0" prefWidth="400.0" promptText="Sélectionner le statut">
 
         </ComboBox>
 
 
+
         <!-- Bouton Ajouter -->
-        <Button fx:id="addBtn" layoutX="345.0" layoutY="614.0" mnemonicParsing="false" onAction="#ajouterGiveaway" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Ajouter" />
+        <Button fx:id="addBtn" layoutX="297.0" layoutY="626.0" mnemonicParsing="false" onAction="#ajouterGiveaway" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Ajouter" />
 
         <!-- Bouton Afficher-->
-        <Button fx:id="afficherBtn" layoutX="545.0" layoutY="614.0" mnemonicParsing="false" onAction="#afficherBtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
+        <Button fx:id="afficherBtn" layoutX="497.0" layoutY="626.0" mnemonicParsing="false" onAction="#afficherBtn" prefHeight="40" prefWidth="191.0" styleClass="GeneralButton" text="Afficher la liste" />
+        <BarChart fx:id="statusBarChart" layoutX="706.0" layoutY="239.0" legendVisible="true" prefHeight="337.0" prefWidth="386.0" title="Statistiques des Giveaways">
+            <xAxis>
+                <CategoryAxis label="Statut" fx:id="xAxis" />
+            </xAxis>
+            <yAxis>
+                <NumberAxis fx:id="yAxis" label="Nombre de Giveaways" />
+            </yAxis>
+        </BarChart>
 
+        <Label fx:id="activeCountLabel" layoutX="770.0" layoutY="211.0" text="Actifs : 0" />
+        <Label fx:id="completedCountLabel" layoutX="867.0" layoutY="211.0" text="Terminés : 0" />
+        <Label fx:id="cancelledCountLabel" layoutX="981.0" layoutY="211.0" text="Anuulé : 0" />
     </children>
 </AnchorPane>

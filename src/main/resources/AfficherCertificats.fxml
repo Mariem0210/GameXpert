@@ -8,5 +8,5 @@
         <URL value="@style.css" /> <!-- Lien vers le CSS -->
     </stylesheets>
 
-    <TilePane fx:id="certificatTilePane" hgap="30" vgap="30" prefColumns="3" prefRows="2" styleClass="tile-pane"/>
+    <TilePane fx:id="certificatTilePane" />
 </ScrollPane>

@@ -3,6 +3,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.SnapshotResult;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
+import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -61,32 +68,23 @@ public class AfficherCertificatController {
 
     @FXML
     public void loadCertificats() {
-        certificatTilePane.getChildren().clear();
-        certificatTilePane.setHgap(50);
-        certificatTilePane.setVgap(120);
+        certificatTilePane.getChildren().clear(); // Vider le conteneur avant d'ajouter de nouveaux éléments
+
+        HBox currentRow = new HBox(10); // Créer une ligne pour les cartes
+        currentRow.setAlignment(Pos.TOP_LEFT); // Aligner les cartes en haut à gauche
+
+        int cardCount = 0; // Compteur pour le nombre de cartes dans la ligne actuelle
 
         try {
             List<Certificat> certificats = certificatService.recupererCertificats();
 
             for (Certificat certificat : certificats) {
-                VBox certificatCard = new VBox(10);
-
-                // Chargement de l'image depuis resources
-                /*javafx.scene.image.Image backgroundImage = new Image(getClass().getResource("/1.png").toExternalForm());
-                BackgroundImage background = new BackgroundImage(
-                        backgroundImage,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundRepeat.NO_REPEAT,
-                        BackgroundPosition.CENTER,
-                        new BackgroundSize(100, 100, true, true, false, true)
-                );
-
-                certificatCard.setBackground(new Background(background)); // Appliquer l'image de fond*/
-
+                VBox certificatCard = new VBox(10); // Créer une carte sous forme de VBox
                 certificatCard.setStyle("-fx-border-radius: 10; -fx-border-color: #8a2be2; -fx-padding: 15px;");
                 certificatCard.setPrefSize(280, 320);
 
 
+                // Ajouter les informations du certificat
                 Label nomcLabel = new Label("Nom: " + certificat.getNomc());
                 Label typecLabel = new Label("Type: " + certificat.getTypec());
                 Label scorecLabel = new Label("Score: " + certificat.getScorec());
@@ -100,9 +98,11 @@ public class AfficherCertificatController {
                         "-fx-effect: dropshadow(gaussian, rgba(0, 255, 0, 0.7), 10, 0.5, 0, 0); -fx-cursor: hand;");
                 exportPDFButton.setOnAction(event -> exportCertificatToPDF(certificat));
 
+                // Bouton Supprimer
                 Button deleteButton = new Button("Supprimer");
                 deleteButton.setOnAction(event -> deleteCertificat(certificat));
 
+                // Bouton Modifier
                 Button modifButton = new Button("Modifier");
                 modifButton.setOnAction(event -> {
                     if (certificat.getNomc() == null || certificat.getNomc().isEmpty()) {
@@ -137,20 +137,35 @@ public class AfficherCertificatController {
                     }
                 });
 
+                // Ajouter les éléments à la carte
                 certificatCard.getChildren().addAll(
                         nomcLabel, typecLabel, scorecLabel,
                         etatcLabel, dateExpirationcLabel,
                         exportPDFButton, deleteButton, modifButton
                 );
 
-                certificatTilePane.getChildren().add(certificatCard);
+                // Ajouter la carte à la ligne actuelle
+                currentRow.getChildren().add(certificatCard);
+                cardCount++;
+
+                // Si la ligne est pleine (4 cartes), ajouter la ligne au conteneur et créer une nouvelle ligne
+                if (cardCount >= 4) {
+                    certificatTilePane.getChildren().add(currentRow);
+                    currentRow = new HBox(10);
+                    currentRow.setAlignment(Pos.TOP_LEFT);
+                    cardCount = 0;
+                }
+            }
+
+            // Ajouter la dernière ligne si elle contient des cartes
+            if (cardCount > 0) {
+                certificatTilePane.getChildren().add(currentRow);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Erreur", "Impossible de charger les certificats.");
         }
     }
-
     public void exportCertificatToPDF(Certificat certificat) {
         try {
             // Charger le fichier FXML

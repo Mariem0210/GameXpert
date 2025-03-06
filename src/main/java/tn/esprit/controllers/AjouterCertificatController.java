@@ -46,7 +46,7 @@ public class AjouterCertificatController {
         typecComboBox.getItems().addAll("Participation", "Excellence", "Complétion");
         etatcComboBox.getItems().addAll("Valide", "Expiré", "Révoqué"); // Remplir le ComboBox 'etatc
         // Ajouter un écouteur d'événement pour le bouton de tri
-        trierBtn.setOnAction(event -> trierCertificatsParEtat());
+        //trierBtn.setOnAction(event -> trierCertificatsParEtat());
     }
 
     @FXML

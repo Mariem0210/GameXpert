@@ -1,7 +1,16 @@
 package tn.esprit.controllers;
+import javafx.collections.FXCollections;
+import javafx.fxml.FXML;
+import javafx.scene.chart.BarChart;
+
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.Label;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import tn.esprit.interfaces.GiveawayService;
 
 import javafx.scene.control.Button;
 
@@ -23,6 +32,7 @@ import tn.esprit.interfaces.GiveawayService;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 public class AjouterGiveawayController {
     // Champs FXML
@@ -40,6 +50,18 @@ public class AjouterGiveawayController {
     private ComboBox<String> statusgComboBox;
     @FXML
     private Button afficherBtn;
+    @FXML
+    private Label activeCountLabel; // Label pour afficher le nombre de giveaways actifs
+    @FXML
+    private Label completedCountLabel; // Label pour afficher le nombre de giveaways terminés
+    @FXML
+    private Label cancelledCountLabel; // Label pour afficher le nombre de giveaways terminés
+    @FXML
+    private BarChart<String, Number> statusBarChart; // Histogramme pour les statuts
+    @FXML
+    private CategoryAxis xAxis; // Axe X (statuts)
+    @FXML
+    private NumberAxis yAxis;
 
 
 
@@ -52,6 +74,11 @@ public class AjouterGiveawayController {
         // Remplir la ComboBox avec les statuts
         statusgComboBox.getItems().addAll("actif", "terminé", "annulé");
         statusgComboBox.setValue("actif");
+        xAxis.setLabel("Statut");
+        yAxis.setLabel("Nombre de Giveaways");
+
+        // Mettre à jour les statistiques et l'histogramme
+        updateStatistics();
 
 
 
@@ -115,6 +142,7 @@ public class AjouterGiveawayController {
         // Ajouter le giveaway à la base de données
         giveawayService.add(giveaway);
         showAlert("Succès", "Giveaway ajouté avec succès !");
+        updateStatistics();
         clearFields();
     }
 
@@ -154,6 +182,62 @@ public class AjouterGiveawayController {
     }
 
 
+    private void updateStatistics() {
+        try {
+            List<Giveaway> giveaways = giveawayService.recupererGiveaways();
 
+            // Mettre à jour les labels
+            long activeCount = giveaways.stream()
+                    .filter(g -> "actif".equals(g.getStatusg()))
+                    .count();
 
+            long completedCount = giveaways.stream()
+                    .filter(g -> "terminé".equals(g.getStatusg()))
+                    .count();
+
+            long cancelledCount = giveaways.stream()
+                    .filter(g -> "annulé".equals(g.getStatusg()))
+                    .count();
+
+            activeCountLabel.setText("Actifs : " + activeCount);
+            completedCountLabel.setText("Terminés : " + completedCount);
+            cancelledCountLabel.setText("Annulé : " + cancelledCount);
+
+            // Mettre à jour l'histogramme
+            updateBarChart();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Une erreur s'est produite lors de la récupération des giveaways.");
+        }
+    }
+
+    private void updateBarChart() {
+        try {
+            List<Giveaway> giveaways = giveawayService.recupererGiveaways();
+
+            // Compter le nombre de giveaways par statut
+            long activeCount = giveaways.stream().filter(g -> "actif".equals(g.getStatusg())).count();
+            long completedCount = giveaways.stream().filter(g -> "terminé".equals(g.getStatusg())).count();
+            long cancelledCount = giveaways.stream().filter(g -> "annulé".equals(g.getStatusg())).count();
+
+            // Créer une série de données pour l'histogramme
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+            series.setName("Statut des Giveaways");
+            series.getData().add(new XYChart.Data<>("Actifs", activeCount));
+            series.getData().add(new XYChart.Data<>("Terminés", completedCount));
+            series.getData().add(new XYChart.Data<>("Annulés", cancelledCount));
+
+            // Ajouter la série au BarChart
+            statusBarChart.getData().clear(); // Effacer les données précédentes
+            statusBarChart.getData().add(series);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Une erreur s'est produite lors de la mise à jour de l'histogramme.");
+        }
+    }
 }
+
+
+
+
+

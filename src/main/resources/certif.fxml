@@ -17,7 +17,7 @@
 
 
         <!-- Nom du destinataire -->
-        <Label fx:id="nomLabel" layoutX="291.0" layoutY="300.0" style="-fx-font-size: 24; -fx-text-fill: black;" text="Nom du destinataire" />
+        <Label fx:id="nomLabel" layoutX="314.0" layoutY="300.0" style="-fx-font-size: 24; -fx-text-fill: black;" text="Nom du destinataire" />
 
         <!-- Score -->
         <Label fx:id="scoreLabel" layoutX="258.0" layoutY="377.0" style="-fx-font-size: 18; -fx-text-fill: #black;" text="Score: 95.5" />
