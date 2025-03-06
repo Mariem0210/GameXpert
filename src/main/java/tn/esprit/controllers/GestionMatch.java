@@ -5,6 +5,7 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import java.io.File;
+import javafx.stage.Stage;
 import java.awt.Color;
 import java.time.format.DateTimeFormatter;
 import java.io.IOException;
@@ -208,61 +209,81 @@ public class GestionMatch {
     @FXML
     public void refreshMatchesList() {
         Platform.runLater(() -> {
-            cardContainer.getChildren().clear();
-            HBox currentRow = new HBox(10);
+            cardContainer.getChildren().clear(); // Effacer les cartes existantes
+            HBox currentRow = new HBox(10); // Créer une nouvelle ligne pour les cartes
             currentRow.setAlignment(Pos.TOP_LEFT);
 
-            int cardCount = 0;
+            int cardCount = 0; // Compteur pour limiter le nombre de cartes par ligne
 
             if (tournoiActuel == null) {
                 System.out.println("❌ Aucun tournoi sélectionné !");
                 return;
             }
 
-            int tournoiId = tournoiActuel.getIdt();
+            int tournoiId = tournoiActuel.getIdt(); // ID du tournoi actuel
             System.out.println("Tournoi sélectionné: " + tournoiId);
 
+            // Parcourir tous les matchs disponibles
             for (Match m : sm.getAll()) {
-                StackPane card = new StackPane();
-
-                if (m.getIdt() == tournoiId) {
+                if (m.getIdt() == tournoiId) { // Filtrer les matchs du tournoi actuel
+                    StackPane card = new StackPane();
                     card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
+
+                    // Ajouter une image de fond à la carte
                     ImageView backgroundImage = new ImageView();
                     backgroundImage.setFitWidth(200);
                     backgroundImage.setFitHeight(400);
-                    Image image = new Image("lol1.jpg");
+                    Image image = new Image("lol1.jpg"); // Remplacez par le chemin de votre image
                     backgroundImage.setImage(image);
                     backgroundImage.setOpacity(0.3);
                     card.getChildren().add(backgroundImage);
 
+                    // Créer le contenu de la carte
                     VBox content = new VBox(10);
                     content.setAlignment(Pos.CENTER);
 
+                    // Formater le score (ex: "2-1")
                     String formattedScore = m.getScore();
                     if (formattedScore.length() == 2) {
                         formattedScore = formattedScore.charAt(0) + "-" + formattedScore.charAt(1);
                     }
 
+                    // Ajouter les labels pour les équipes, la date, le score et le statut
                     Label teamsLabel = new Label(m.getEquipe1() + " vs " + m.getEquipe2());
                     teamsLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-family: 'Courier New', monospace; -fx-font-size: 24px; -fx-font-weight: bold;");
+
                     Label dateLabel = new Label("Date: " + m.getDate_debutm());
                     dateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
+
                     Label scoreLabel = new Label("Score: " + formattedScore);
                     scoreLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
+
                     Label statusLabel = new Label("Statut: " + m.getStatus());
                     statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-family: 'Courier New', monospace; -fx-font-size: 18px;");
 
                     content.getChildren().addAll(teamsLabel, dateLabel, scoreLabel, statusLabel);
                     card.getChildren().add(content);
 
+                    // Gestionnaire d'événements pour le clic et le double-clic
                     card.setOnMouseClicked(event -> {
-                        selectedMatch = m;
-                        remplirChamps(m);
+                        if (event.getClickCount() == 2) { // Double-clic
+                            selectedMatch = m;
+                            remplirChamps(m);
+
+                            // Ouvrir une nouvelle fenêtre avec le stream DLive
+                            Stage stage = new Stage();
+                            DLiveStreamViewer.startStream(stage); // Appel de la méthode statique
+                        } else if (event.getClickCount() == 1) { // Simple clic
+                            selectedMatch = m;
+                            remplirChamps(m);
+                        }
                     });
 
+                    // Ajouter la carte à la ligne actuelle
                     currentRow.getChildren().add(card);
                     cardCount++;
 
+                    // Si une ligne contient 4 cartes, passer à une nouvelle ligne
                     if (cardCount >= 4) {
                         cardContainer.getChildren().add(currentRow);
                         currentRow = new HBox(10);
@@ -272,6 +293,7 @@ public class GestionMatch {
                 }
             }
 
+            // Ajouter la dernière ligne si elle contient des cartes
             if (cardCount > 0) {
                 cardContainer.getChildren().add(currentRow);
             }
@@ -280,41 +302,30 @@ public class GestionMatch {
     @FXML
     private void genererPDF(ActionEvent event) {
         try {
-            // Charger l'image
-            File imageFile = new File("C:/Users/amine debbich/IdeaProjects/gameXpert/pdf.jpeg");
-            PDImageXObject pdImage = PDImageXObject.createFromFileByExtension(imageFile, new PDDocument());
-
-            // Créer un nouveau document PDF
             PDDocument document = new PDDocument();
             PDPage page = new PDPage();
             document.addPage(page);
 
-            // Créer un flux de contenu pour la page
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-            // Dessiner l'image en arrière-plan
+            // Charger et ajouter l'image de fond
+            File imageFile = new File("C:/Users/amine debbich/IdeaProjects/gameXpert/pdf.jpeg");
+            PDImageXObject pdImage = PDImageXObject.createFromFileByExtension(imageFile, document);
             contentStream.drawImage(pdImage, 0, 0, page.getMediaBox().getWidth(), page.getMediaBox().getHeight());
 
-            // Définir la police et la taille du texte
             contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            float margin = 50;
+            float yStart = page.getMediaBox().getHeight() - margin;
+            float tableWidth = page.getMediaBox().getWidth() - 2 * margin;
+            float rowHeight = 20;
+            float cellMargin = 5;
 
-            // Définir les dimensions du tableau
-            float margin = 50; // Marge autour du tableau
-            float yStart = page.getMediaBox().getHeight() - margin; // Position Y de départ
-            float tableWidth = page.getMediaBox().getWidth() - 2 * margin; // Largeur du tableau
-            float rowHeight = 20; // Hauteur de chaque ligne
-            float cellMargin = 5; // Marge intérieure des cellules
+            int numberOfColumns = 4;
+            float[] columnWidths = {tableWidth * 0.25f, tableWidth * 0.25f, tableWidth * 0.20f, tableWidth * 0.30f};
 
-            // Définir les colonnes du tableau
-            int numberOfColumns = 4; // Nombre de colonnes (Équipe 1, Équipe 2, Score, Date)
-            float[] columnWidths = {tableWidth * 0.25f, tableWidth * 0.25f, tableWidth * 0.20f, tableWidth * 0.30f}; // Largeurs des colonnes
-
-            // Dessiner l'en-tête du tableau
             float nextY = yStart;
-            contentStream.setLineWidth(1);
-            contentStream.setStrokingColor(Color.BLACK); // Utilisation de java.awt.Color
 
-            // Dessiner les lignes du tableau
+            // Dessiner lignes du tableau
             for (int i = 0; i <= sm.getAll().size(); i++) {
                 contentStream.moveTo(margin, nextY);
                 contentStream.lineTo(margin + tableWidth, nextY);
@@ -322,80 +333,54 @@ public class GestionMatch {
                 nextY -= rowHeight;
             }
 
-            // Dessiner les colonnes du tableau
+            // Dessiner colonnes
             float nextX = margin;
             for (int i = 0; i < numberOfColumns; i++) {
                 contentStream.moveTo(nextX, yStart);
-                contentStream.lineTo(nextX, yStart - (sm.getAll().size() + 1) * rowHeight);
+                contentStream.lineTo(nextX, nextY + rowHeight);
                 contentStream.stroke();
                 nextX += columnWidths[i];
             }
 
-            // Remplir l'en-tête du tableau
+            // Remplir en-tête
             String[] headers = {"Équipe 1", "Équipe 2", "Score", "Date"};
             nextX = margin + cellMargin;
-            nextY = yStart - 15; // Position Y pour l'en-tête
-            for (int i = 0; i < numberOfColumns; i++) {
+            nextY = yStart - 15;
+            for (String header : headers) {
                 contentStream.beginText();
                 contentStream.newLineAtOffset(nextX, nextY);
-                contentStream.showText(headers[i]);
+                contentStream.showText(header);
                 contentStream.endText();
-                nextX += columnWidths[i];
+                nextX += columnWidths[headers.length - 1];
             }
 
-            // Remplir les lignes du tableau avec les informations des matchs
-            nextY = yStart - rowHeight; // Position Y pour la première ligne de données
+            // Remplir les lignes avec les matchs
+            nextY = yStart - rowHeight;
             for (Match m : sm.getAll()) {
                 nextX = margin + cellMargin;
-
-                // Formater la date en String
                 String formattedDate = m.getDate_debutm().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                String[] rowData = {m.getEquipe1(), m.getEquipe2(), m.getScore(), formattedDate};
 
-                String[] rowData = {
-                        m.getEquipe1(),
-                        m.getEquipe2(),
-                        m.getScore(),
-                        formattedDate // Utilisation de la date formatée
-                };
-
-                for (int i = 0; i < numberOfColumns; i++) {
+                for (String cell : rowData) {
                     contentStream.beginText();
-                    contentStream.newLineAtOffset(nextX, nextY);
-                    contentStream.showText(rowData[i]);
+                    contentStream.newLineAtOffset(nextX, nextY - 10);
+                    contentStream.showText(cell);
                     contentStream.endText();
-                    nextX += columnWidths[i];
+                    nextX += columnWidths[rowData.length - 1];
                 }
-
-                nextY -= rowHeight; // Passer à la ligne suivante
-
-                // Si on atteint le bas de la page, créer une nouvelle page
-                if (nextY < margin) {
-                    contentStream.close(); // Fermer le flux de contenu actuel
-                    page = new PDPage(); // Créer une nouvelle page
-                    document.addPage(page);
-                    contentStream = new PDPageContentStream(document, page); // Ouvrir un nouveau flux de contenu
-                    contentStream.drawImage(pdImage, 0, 0, page.getMediaBox().getWidth(), page.getMediaBox().getHeight()); // Redessiner l'image
-                    contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12); // Redéfinir la police
-
-                    // Réinitialiser les positions pour la nouvelle page
-                    yStart = page.getMediaBox().getHeight() - margin;
-                    nextY = yStart - rowHeight;
-                }
+                nextY -= rowHeight;
             }
 
-            // Fermer le dernier flux de contenu
             contentStream.close();
-
-            // Sauvegarder le document PDF
-            document.save(new File("match_list.pdf"));
+            document.save("Matchs.pdf");
             document.close();
 
             showAlert("Succès", "PDF généré avec succès!", Alert.AlertType.INFORMATION);
         } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Erreur lors de la génération du PDF.", Alert.AlertType.ERROR);
+            showAlert("Erreur", "Une erreur est survenue lors de la génération du PDF.", Alert.AlertType.ERROR);
         }
     }
+
     private void remplirChamps(Match m) {
         tfIdm.setText(String.valueOf(m.getIdm()));
         tfIdt.setText(String.valueOf(m.getIdt()));
