@@ -14,7 +14,7 @@ public class ServiceCommande {
     }
 
     public void add(Commande commande) {
-        String qry = "INSERT INTO commande(date_commande, montant_total, id_utilisateur) VALUES (?, ?, ?)";
+        String qry = "INSERT INTO commande(date_commande, montant_total, idu) VALUES (?, ?, ?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setDate(1, new java.sql.Date(commande.getDate_commande().getTime()));
@@ -37,7 +37,7 @@ public class ServiceCommande {
                         rs.getInt("id_commande"),
                         rs.getDate("date_commande"),
                         rs.getFloat("montant_total"),
-                        rs.getInt("id_utilisateur")
+                        rs.getInt("idu")
                 );
                 commandes.add(c);
             }

@@ -15,7 +15,7 @@ public class ServicePanier {
     }
 
     public void add(Panier panier) {
-        String qry = "INSERT INTO panier(id_utilisateur, id_produit, quantite, date_ajout) VALUES (?, ?, ?, ?)";
+        String qry = "INSERT INTO panier(idu, id_produit, quantite, date_ajout) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, panier.getId_utilisateur());
@@ -36,7 +36,7 @@ public class ServicePanier {
             ResultSet rs = stm.executeQuery(qry);
             while (rs.next()) {
                 Produit produit = new Produit(rs.getInt("id_produit"));
-                Panier panier = new Panier(rs.getInt("id_panier"), rs.getInt("id_utilisateur"), produit, rs.getInt("quantite"), rs.getTimestamp("date_ajout"));
+                Panier panier = new Panier(rs.getInt("id_panier"), rs.getInt("idu"), produit, rs.getInt("quantite"), rs.getTimestamp("date_ajout"));
                 panierList.add(panier);
             }
         } catch (SQLException e) {

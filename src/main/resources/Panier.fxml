@@ -1,27 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
-            prefHeight="400" prefWidth="900"
+<BorderPane xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="600" prefWidth="800"
             stylesheets="@style.css"
             styleClass="background"
-            fx:controller="tn.esprit.controllers.PanierController"
-            >
+            fx:controller="tn.esprit.controllers.PanierController">
 
-    <!-- Titre de la page -->
-    <Label layoutX="420.0" layoutY="20.0" styleClass="title" text="Gestion du Panier" />
+    <!-- Background image that covers the entire window -->
+    <center>
+        <AnchorPane>
+            <children>
+                <!-- Background image -->
+                <ImageView fitHeight="600.0" fitWidth="800.0"
+                           AnchorPane.topAnchor="0.0"
+                           AnchorPane.leftAnchor="0.0"
+                           AnchorPane.rightAnchor="0.0"
+                           AnchorPane.bottomAnchor="0.0"
+                           opacity="0.3">
+                    <image>
+                        <Image url="@game.jpg" />
+                    </image>
+                </ImageView>
 
-    <!-- TableView pour afficher le panier -->
-    <TableView fx:id="tablePanier" layoutX="50.0" layoutY="100.0" prefWidth="400" prefHeight="900">
-        <columns>
-            <TableColumn fx:id="colProduit" text="Nom Produit" prefWidth="133"/>
-            <TableColumn fx:id="colQuantite" text="Quantité" prefWidth="133"/>
-            <TableColumn fx:id="colDateAjout" text="Date d'Ajout" prefWidth="133"/>
-        </columns>
-    </TableView>
+                <!-- Main content container -->
+                <VBox spacing="20" alignment="TOP_CENTER"
+                      AnchorPane.topAnchor="0.0"
+                      AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0"
+                      AnchorPane.bottomAnchor="0.0">
 
-    <!-- Bouton pour valider le panier -->
-    <Button layoutX="450.0" layoutY="630.0" text="Valider Panier" onAction="#validerPanier" styleClass="validateButton" />
+                    <!-- Header section -->
+                    <HBox alignment="CENTER" spacing="20">
+                        <padding>
+                            <Insets top="20" bottom="20" />
+                        </padding>
+                        <Label styleClass="title" text="Your Shopping Cart">
+                            <font>
+                                <Font name="System Bold" size="28.0" />
+                            </font>
+                        </Label>
+                    </HBox>
 
-</AnchorPane>
+                    <!-- Cart items section -->
+                    <VBox VBox.vgrow="ALWAYS" alignment="CENTER">
+                        <padding>
+                            <Insets left="40" right="40" />
+                        </padding>
+
+                        <!-- Cart table -->
+                        <TableView fx:id="tablePanier"
+                                   VBox.vgrow="ALWAYS"
+                                   prefHeight="400" prefWidth="500"
+                                   styleClass="transparent-table">
+                            <columns>
+                                <TableColumn fx:id="colProduit" text="Product Name" prefWidth="200"/>
+                                <TableColumn fx:id="colQuantite" text="Quantity" prefWidth="250"/>
+                                <TableColumn fx:id="colDateAjout" text="Added On" prefWidth="250"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+
+                    <!-- Action buttons section -->
+                    <HBox alignment="CENTER" spacing="20">
+                        <padding>
+                            <Insets bottom="20" />
+                        </padding>
+                        <Button fx:id="btnCheckout"
+                                text="Proceed to Checkout"
+                                onAction="#validerPanier"
+                                styleClass="button-primary"
+                                prefHeight="40" prefWidth="180" />
+                    </HBox>
+                </VBox>
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>

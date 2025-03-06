@@ -23,6 +23,16 @@ public class Produit {
         this.prix = 100;  // Exemple
         this.stock = 50;  // Exemple
     }
+    public Produit(String nom) {
+        this.id_produit = id_produit;
+        // Vous pouvez récupérer ici les autres informations à partir de la base de données si nécessaire
+        // Exemple : Requête pour récupérer nom, description, etc., à partir de l'ID
+        // Ici, on suppose que le produit est récupéré à partir de l'ID dans une base de données.
+        this.nom = "nom";  // Exemple, vous devez le remplacer par une vraie récupération
+        this.description = "Description du produit " + id_produit;  // Même remarque ici
+        this.prix = 100;  // Exemple
+        this.stock = 50;  // Exemple
+    }
     public Produit(String nom, String description, float prix, int stock, Date date_creation, String categorie, String image_produit) {
         this.nom = nom;
         this.description = description;
