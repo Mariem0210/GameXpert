@@ -140,7 +140,16 @@ public class MatchFront implements Initializable {
 
                     content.getChildren().addAll(teamsLabel, dateLabel, scoreLabel, statusLabel);
                     card.getChildren().add(content);
+                    card.setOnMouseClicked(event -> {
+                        if (event.getClickCount() == 2) { // Double-clic
 
+                            // Ouvrir une nouvelle fenêtre avec le stream DLive
+                            Stage stage = new Stage();
+                            DLiveStreamViewer.startStream(stage); // Appel de la méthode statique
+                        } else if (event.getClickCount() == 1) { // Simple clic
+
+                        }
+                    });
                     currentRow.getChildren().add(card);
                     cardCount++;
 

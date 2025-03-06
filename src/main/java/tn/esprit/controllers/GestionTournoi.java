@@ -5,6 +5,18 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.geometry.Insets;
+
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import org.apache.http.HttpResponse;
@@ -275,11 +287,7 @@ public class GestionTournoi {
 
             Label statusLabel = new Label("Statut: " + t.getStatutt());
             statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
-            Button qrButton = new Button("QR Code");
-            qrButton.setStyle("-fx-background-color: #ffcc00; -fx-text-fill: black; -fx-font-size: 14px;");
-            qrButton.setOnAction(e -> genererQRCode(t));
 
-            content.getChildren().add(qrButton);
             content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);// Ajoutez les autres labels ici
 
             card.getChildren().add(content);
@@ -542,11 +550,7 @@ public class GestionTournoi {
 
             Label statusLabel = new Label("Statut: " + t.getStatutt());
             statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
-            Button qrButton = new Button("QR Code");
-            qrButton.setStyle("-fx-background-color: #ffcc00; -fx-text-fill: black; -fx-font-size: 14px;");
-            qrButton.setOnAction(e -> genererQRCode(t));
 
-            content.getChildren().add(qrButton);
             content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
 
             card.getChildren().add(content);
@@ -603,62 +607,45 @@ public class GestionTournoi {
         }
 
         // Création du PieChart
-        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
-
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         for (Tournoi t : tournois) {
-            data.add(new PieChart.Data(t.getNomt(), t.getNbr_equipes()));
+            pieChartData.add(new PieChart.Data(t.getNomt(), t.getNbr_equipes()));
         }
-
-        PieChart pieChart = new PieChart(data);
+        PieChart pieChart = new PieChart(pieChartData);
         pieChart.setTitle("Nombre d'équipes par tournoi");
 
-        // Affichage dans une nouvelle fenêtre
-        Stage stage = new Stage();
-        VBox vbox = new VBox(pieChart);
-        vbox.setPadding(new Insets(10));
+        // Création du BarChart
+        CategoryAxis xAxis = new CategoryAxis();
+        xAxis.setLabel("Tournoi");
 
-        Scene scene = new Scene(vbox, 500, 500);
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setLabel("Nombre d'équipes");
+
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        barChart.setTitle("Comparaison des Tournois");
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Nombre d'équipes");
+
+        for (Tournoi t : tournois) {
+            series.getData().add(new XYChart.Data<>(t.getNomt(), t.getNbr_equipes()));
+        }
+
+        barChart.getData().add(series);
+
+        // Affichage des graphiques dans une fenêtre
+        Stage stage = new Stage();
+        HBox hbox = new HBox(20, pieChart, barChart);
+        hbox.setPadding(new Insets(10));
+
+        Scene scene = new Scene(hbox, 900, 500);
         stage.setTitle("Statistiques des Tournois");
         stage.setScene(scene);
         stage.show();
     }
-    public class QRCodeGenerator {
 
-        public static void generateQRCode(String qrText, int width, int height, String filePath) throws WriterException, IOException {
-            BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, width, height);
-            Path path = FileSystems.getDefault().getPath(filePath);
-            MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-        }
-    }
-    @FXML
-    private void genererQRCode(Tournoi tournoi) {
-        // URL qui affichera les matchs du tournoi
-        String qrText = "http://localhost:8080/tournoi/" + tournoi.getIdt() + "/matchs";
-        int width = 200;
-        int height = 200;
-        String filePath = "qrCode_" + tournoi.getIdt() + ".png";
 
-        try {
-            QRCodeGenerator.generateQRCode(qrText, width, height, filePath);
 
-            // Afficher le QR Code dans une nouvelle fenêtre
-            Image image = new Image("file:" + filePath);
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(200);
-            imageView.setFitHeight(200);
-
-            Stage qrStage = new Stage();
-            VBox root = new VBox(imageView);
-            root.setAlignment(Pos.CENTER);
-            Scene scene = new Scene(root, 250, 250);
-            qrStage.setScene(scene);
-            qrStage.setTitle("QR Code Tournoi");
-            qrStage.show();
-        } catch (WriterException | IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Impossible de générer le QR Code.", Alert.AlertType.ERROR);
-        }
-    }
     public void remplirChamps(Tournoi t) {
         tfNomt.setText(t.getNomt());
         tfDescriptiont.setText(t.getDescriptiont());

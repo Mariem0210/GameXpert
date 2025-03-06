@@ -302,30 +302,57 @@ public class GestionMatch {
     @FXML
     private void genererPDF(ActionEvent event) {
         try {
+            // Créer un nouveau document PDF
             PDDocument document = new PDDocument();
             PDPage page = new PDPage();
             document.addPage(page);
 
+            // Créer un flux de contenu pour la page
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-            // Charger et ajouter l'image de fond
-            File imageFile = new File("C:/Users/amine debbich/IdeaProjects/gameXpert/pdf.jpeg");
+            // Charger et ajouter l'image de fond (optionnel)
+            File imageFile = new File("C:/Users/amine debbich/IdeaProjects/gameXpert/pdf.jpg");
             PDImageXObject pdImage = PDImageXObject.createFromFileByExtension(imageFile, document);
             contentStream.drawImage(pdImage, 0, 0, page.getMediaBox().getWidth(), page.getMediaBox().getHeight());
 
-            contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+            // Définir les marges et les dimensions du tableau
             float margin = 50;
             float yStart = page.getMediaBox().getHeight() - margin;
             float tableWidth = page.getMediaBox().getWidth() - 2 * margin;
-            float rowHeight = 20;
-            float cellMargin = 5;
+            float rowHeight = 25; // Augmenter la hauteur des lignes pour plus d'espace
+            float cellMargin = 10;
 
+            // Définir les colonnes et leurs largeurs
             int numberOfColumns = 4;
-            float[] columnWidths = {tableWidth * 0.25f, tableWidth * 0.25f, tableWidth * 0.20f, tableWidth * 0.30f};
+            float[] columnWidths = {tableWidth * 0.30f, tableWidth * 0.30f, tableWidth * 0.20f, tableWidth * 0.20f};
 
-            float nextY = yStart;
+            // Définir les couleurs
+            Color headerColor = new Color(0, 102, 204); // Bleu pour l'en-tête
+            Color textColor = new Color(0, 0, 0); // Noir pour le texte
+            Color accentColor = new Color(255, 87, 34); // Orange pour les accents
 
-            // Dessiner lignes du tableau
+            // Dessiner l'en-tête du tableau
+            contentStream.setNonStrokingColor(headerColor);
+            contentStream.addRect(margin, yStart - rowHeight, tableWidth, rowHeight);
+            contentStream.fill();
+
+            // Écrire les en-têtes de colonnes
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 14); // Police plus grande et en gras
+            contentStream.setNonStrokingColor(Color.WHITE); // Texte en blanc pour l'en-tête
+            String[] headers = {"Équipe 1", "Équipe 2", "Score", "Date"};
+            float nextX = margin + cellMargin;
+            float nextY = yStart - 15;
+            for (String header : headers) {
+                contentStream.beginText();
+                contentStream.newLineAtOffset(nextX, nextY);
+                contentStream.showText(header);
+                contentStream.endText();
+                nextX += columnWidths[headers.length - numberOfColumns];
+            }
+
+            // Dessiner les lignes du tableau
+            contentStream.setStrokingColor(Color.BLACK);
+            nextY = yStart - rowHeight;
             for (int i = 0; i <= sm.getAll().size(); i++) {
                 contentStream.moveTo(margin, nextY);
                 contentStream.lineTo(margin + tableWidth, nextY);
@@ -333,8 +360,8 @@ public class GestionMatch {
                 nextY -= rowHeight;
             }
 
-            // Dessiner colonnes
-            float nextX = margin;
+            // Dessiner les colonnes du tableau
+            nextX = margin;
             for (int i = 0; i < numberOfColumns; i++) {
                 contentStream.moveTo(nextX, yStart);
                 contentStream.lineTo(nextX, nextY + rowHeight);
@@ -342,45 +369,61 @@ public class GestionMatch {
                 nextX += columnWidths[i];
             }
 
-            // Remplir en-tête
-            String[] headers = {"Équipe 1", "Équipe 2", "Score", "Date"};
-            nextX = margin + cellMargin;
-            nextY = yStart - 15;
-            for (String header : headers) {
-                contentStream.beginText();
-                contentStream.newLineAtOffset(nextX, nextY);
-                contentStream.showText(header);
-                contentStream.endText();
-                nextX += columnWidths[headers.length - 1];
-            }
-
-            // Remplir les lignes avec les matchs
+            // Remplir les lignes avec les données des matchs
+            contentStream.setFont(PDType1Font.TIMES_ROMAN, 12); // Police plus lisible pour les données
             nextY = yStart - rowHeight;
+            boolean alternateRow = false;
+
             for (Match m : sm.getAll()) {
+                // Alterner les couleurs des lignes
+                if (alternateRow) {
+                    contentStream.setNonStrokingColor(new Color(245, 245, 245)); // Gris très clair pour les lignes alternées
+                    contentStream.addRect(margin, nextY, tableWidth, rowHeight);
+                    contentStream.fill();
+                }
+                alternateRow = !alternateRow;
+
+                // Écrire les données dans les cellules
                 nextX = margin + cellMargin;
                 String formattedDate = m.getDate_debutm().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
                 String[] rowData = {m.getEquipe1(), m.getEquipe2(), m.getScore(), formattedDate};
 
+                contentStream.setNonStrokingColor(textColor); // Texte en noir
                 for (String cell : rowData) {
                     contentStream.beginText();
-                    contentStream.newLineAtOffset(nextX, nextY - 10);
+                    contentStream.newLineAtOffset(nextX, nextY - 15);
                     contentStream.showText(cell);
                     contentStream.endText();
-                    nextX += columnWidths[rowData.length - 1];
+                    nextX += columnWidths[rowData.length - numberOfColumns];
                 }
                 nextY -= rowHeight;
             }
 
+            // Ajouter un titre stylisé
+            contentStream.setFont(PDType1Font.HELVETICA_BOLD_OBLIQUE, 24); // Police stylisée pour le titre
+            contentStream.setNonStrokingColor(accentColor); // Couleur orange pour le titre
+            String title = "Liste des Matchs";
+            float titleWidth = PDType1Font.HELVETICA_BOLD_OBLIQUE.getStringWidth(title) / 1000 * 24;
+            float titleX = (page.getMediaBox().getWidth() - titleWidth) / 2; // Centrer le titre
+            float titleY = page.getMediaBox().getHeight() - 30; // Positionner le titre en haut
+            contentStream.beginText();
+            contentStream.newLineAtOffset(titleX, titleY);
+            contentStream.showText(title);
+            contentStream.endText();
+
+            // Fermer le flux de contenu
             contentStream.close();
+
+            // Sauvegarder le document PDF
             document.save("Matchs.pdf");
             document.close();
 
+            // Afficher une confirmation
             showAlert("Succès", "PDF généré avec succès!", Alert.AlertType.INFORMATION);
         } catch (IOException e) {
             showAlert("Erreur", "Une erreur est survenue lors de la génération du PDF.", Alert.AlertType.ERROR);
         }
     }
-
     private void remplirChamps(Match m) {
         tfIdm.setText(String.valueOf(m.getIdm()));
         tfIdt.setText(String.valueOf(m.getIdt()));
