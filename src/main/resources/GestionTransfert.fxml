@@ -5,37 +5,127 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionTransfert">
 
     <children>
-        <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
-            <image>
-                <Image url="@game.jpg" />
-            </image>
-        </ImageView>
+        <!-- Arrière-plan avec effet parallaxe -->
+        <StackPane AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <ImageView fitHeight="740.0" fitWidth="1100.0">
+                <image>
+                    <Image url="@game.jpg" />
+                </image>
+                <effect>
+                    <javafx.scene.effect.ColorAdjust brightness="-0.2" contrast="0.1" hue="-0.05" saturation="0.2" />
+                </effect>
+            </ImageView>
 
-        <ScrollPane layoutX="407.0" layoutY="72.0" prefHeight="481.0" prefWidth="714.0">
-            <content>
-                <VBox fx:id="transfertContainer" prefHeight="481.0" prefWidth="714.0" spacing="10">
+            <!-- Overlay avec grille de lignes futuriste -->
+            <AnchorPane opacity="0.15">
+                <!-- Lignes horizontales -->
+                <Line startX="0" startY="40" endX="1080" endY="40" stroke="#00e6e6" strokeWidth="1" />
+                <Line startX="0" startY="120" endX="1080" endY="120" stroke="#00e6e6" strokeWidth="1" />
+                <Line startX="0" startY="300" endX="1080" endY="300" stroke="#00e6e6" strokeWidth="1" />
+                <Line startX="0" startY="480" endX="1080" endY="480" stroke="#00e6e6" strokeWidth="1" />
+                <Line startX="0" startY="650" endX="1080" endY="650" stroke="#00e6e6" strokeWidth="1" />
+
+                <!-- Lignes verticales -->
+                <Line startX="180" startY="0" endX="180" endY="720" stroke="#00e6e6" strokeWidth="1" />
+                <Line startX="400" startY="0" endX="400" endY="720" stroke="#00e6e6" strokeWidth="1" />
+                <Line startX="780" startY="0" endX="780" endY="720" stroke="#00e6e6" strokeWidth="1" />
+                <Line startX="960" startY="0" endX="960" endY="720" stroke="#00e6e6" strokeWidth="1" />
+
+                <!-- Cercles décoratifs -->
+                <Circle centerX="180" centerY="120" radius="5" fill="#00e6e6" />
+                <Circle centerX="400" centerY="300" radius="5" fill="#00e6e6" />
+                <Circle centerX="780" centerY="480" radius="5" fill="#00e6e6" />
+                <Circle centerX="960" centerY="650" radius="5" fill="#9d4edd" />
+            </AnchorPane>
+        </StackPane>
+
+        <!-- Conteneur principal -->
+        <VBox spacing="20" AnchorPane.topAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
+
+            <!-- En-tête avec titre -->
+            <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+                <Label text="GESTION DES TRANSFERTS" styleClass="title-text" />
+                <HBox.margin>
+                    <Insets bottom="10" />
+                </HBox.margin>
+            </HBox>
+
+            <!-- Contenu principal -->
+            <HBox spacing="20" VBox.vgrow="ALWAYS">
+
+                <!-- Panneau latéral pour le formulaire -->
+                <VBox styleClass="side-panel" prefWidth="300" spacing="20">
+
+                    <!-- Section informations transfert -->
+                    <Label text="INFORMATIONS TRANSFERT" styleClass="section-title, neon-glow" />
+
+                    <VBox spacing="15">
+                        <Label text="ANCIENNE ÉQUIPE" />
+                        <TextField fx:id="tfAncienneEquipe" promptText="Entrez l'ancienne équipe" />
+
+                        <Label text="NOUVELLE ÉQUIPE" />
+                        <TextField fx:id="tfNouvelleEquipe" promptText="Entrez la nouvelle équipe" />
+
+                        <Label text="MONTANT" />
+                        <TextField fx:id="tfMontantt" promptText="Entrez le montant" />
+
+                        <Label text="DATE DE TRANSFERT" />
+                        <DatePicker fx:id="dpDateT" promptText="Sélectionnez la date" />
+                    </VBox>
+
+                    <Separator styleClass="separator" />
+
+                    <!-- Section recherche -->
+
+
+
+
+
+                    <!-- Statistiques (éléments décoratifs) -->
+
                 </VBox>
-            </content>
-        </ScrollPane>
 
-        <TextField fx:id="tfAncienneEquipe" layoutX="165.0" layoutY="130.0" prefHeight="34.0" prefWidth="160.0" promptText="Ancienne Équipe" />
-        <TextField fx:id="tfNouvelleEquipe" layoutX="165.0" layoutY="177.0" prefHeight="34.0" prefWidth="160.0" promptText="Nouvelle Équipe" />
-        <TextField fx:id="tfMontantt" layoutX="165.0" layoutY="224.0" prefHeight="34.0" prefWidth="160.0" promptText="Montant" />
-        <DatePicker fx:id="dpDateT" layoutX="165.0" layoutY="271.0" prefHeight="34.0" prefWidth="160.0" promptText="Date" />
+                <!-- Panneau principal avec liste des transferts -->
+                <VBox spacing="10" HBox.hgrow="ALWAYS" styleClass="main-container">
+                    <padding>
+                        <Insets top="15" right="15" bottom="15" left="15" />
+                    </padding>
 
-        <Button layoutX="17.0" layoutY="633.0" onAction="#ajouterTransfert" prefHeight="39.0" prefWidth="84.0" text="Ajouter" />
-        <Button fx:id="btnModifier" layoutX="114.0" layoutY="634.0" onAction="#modifierTransfert" prefHeight="39.0" prefWidth="84.0" text="Modifier" />
-        <Button fx:id="btnSupprimer" layoutX="209.0" layoutY="634.0" onAction="#supprimerTransfert" prefHeight="39.0" prefWidth="93.0" text="Supprimer" />
+                    <!-- En-tête du panneau -->
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label text="LISTE DES TRANSFERTS" styleClass="section-title, neon-glow" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label text="RÉCENT" styleClass="status-badge" />
+                    </HBox>
 
-        <Button fx:id="btnTrierAsc" layoutX="650.0" layoutY="580.0" onAction="#trierTransfertsAscendant" prefHeight="39.0" prefWidth="93.0" text="Trier ↑" />
-        <Button fx:id="btnTrierDesc" layoutX="750.0" layoutY="580.0" onAction="#trierTransfertsDescendant" prefHeight="39.0" prefWidth="93.0" text="Trier ↓" />
+                    <!-- ScrollPane pour la liste des transferts -->
+                    <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="scroll-pane">
+                        <VBox fx:id="transfertContainer" styleClass="transfert-container" spacing="15">
+                            <!-- Le contenu sera généré dynamiquement -->
+                        </VBox>
+                    </ScrollPane>
 
-        <Button fx:id="btnExportPDF" layoutX="130.0" layoutY="580.0" onAction="#genererPDF" prefHeight="39.0" prefWidth="120.0" styleClass="export-button" text="Exporter PDF">
-            <font><Font name="Cambria" size="14.0" /></font>
-        </Button>
+                    <!-- Barre de tri -->
+                    <HBox spacing="15" alignment="CENTER_RIGHT">
+                        <Button fx:id="btnTrierAsc" onAction="#trierTransfertsAscendant" text="TRIER ↑" styleClass="button, sort-button" />
+                        <Button fx:id="btnTrierDesc" onAction="#trierTransfertsDescendant" text="TRIER ↓" styleClass="button, sort-button" />
+                    </HBox>
+
+                    <!-- Barre d'actions -->
+                    <HBox spacing="15" alignment="CENTER">
+                        <Button onAction="#ajouterTransfert" text="AJOUTER" styleClass="button, add-button" />
+                        <Button fx:id="btnModifier" onAction="#modifierTransfert" text="MODIFIER" styleClass="button, edit-button" />
+                        <Button fx:id="btnSupprimer" onAction="#supprimerTransfert" text="SUPPRIMER" styleClass="button, delete-button" />
+                        <Button fx:id="btnExportPDF" onAction="#genererPDF" text="EXPORTER PDF" styleClass="button, export-button" />
+                    </HBox>
+                </VBox>
+            </HBox>
+        </VBox>
     </children>
 </AnchorPane>
