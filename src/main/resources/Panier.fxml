@@ -4,8 +4,10 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
             prefHeight="400" prefWidth="900"
+            stylesheets="@style.css"
+            styleClass="background"
             fx:controller="tn.esprit.controllers.PanierController"
-            stylesheets="@style.css">
+            >
 
     <!-- Titre de la page -->
     <Label layoutX="420.0" layoutY="20.0" styleClass="title" text="Gestion du Panier" />

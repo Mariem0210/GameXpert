@@ -1,55 +1,99 @@
-/* Style général */
+/* ============================ */
+/*      STYLE GENERAL          */
+/* ============================ */
 .root {
-    -fx-font-family: "Arial";
-    -fx-background-color: #F0F0F0; /* Couleur de fond */
+    -fx-background-color: #f4f4f4;
+}
+.root {
+    -fx-background-color: #1e1e2e;
+    -fx-padding: 20px;
 }
 
-/* Style des labels */
+.transparent{
+    -fx-background-color: rgba(0,0,0,0);
+}
+/* ============================ */
+/*         STYLE LABELS         */
+/* ============================ */
 .label {
     -fx-text-fill: white;
     -fx-font-size: 16px;
 }
 
-/* Style du titre */
 .title {
-    -fx-font-size: 24px;
+    -fx-font-size: 28px;
     -fx-font-weight: bold;
-    -fx-text-fill: #ffcc00; /* Jaune */
+    -fx-text-fill: #ff00ff;
+    -fx-effect: dropshadow(gaussian, #ff00ff, 15, 0.5, 0, 0);
 }
 
-/* Style des champs de texte */
-.text-field, .date-picker {
-    -fx-background-color: #2a2a3d; /* Fond sombre */
+/* ============================ */
+/*     CHAMPS DE TEXTE         */
+/* ============================ */
+.text-field, .date-picker, .text-area {
+    -fx-background-color: #2a2a3d;
     -fx-text-fill: white;
-    -fx-border-color: #03a9f4; /* Bordure bleue */
+    -fx-border-color: #00e5ff;
     -fx-border-radius: 5px;
     -fx-padding: 5px;
+    -fx-prompt-text-fill: #888888;
 }
 
-/* Style des boutons */
+/* ============================ */
+/*         BOUTONS              */
+/* ============================ */
 .button {
-    -fx-background-radius: 5px;
+    -fx-background-radius: 8px;
     -fx-font-size: 14px;
-    -fx-padding: 8px 16px;
-    -fx-background-color: #6B7FD7; /* Bleu */
+    -fx-padding: 10px 18px;
     -fx-text-fill: white;
+    -fx-background-color: #6B7FD7;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.5), 5, 0.5, 0, 0);
+    -fx-cursor: hand;
+    -fx-transition: all 0.3s ease;
 }
 
 .button:hover {
-    -fx-background-color: #5A6EC7; /* Bleu plus foncé au survol */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 255, 0.7), 15, 0.7, 0, 0);
 }
 
-/* Style des cartes de produits */
-.product-card {
-    -fx-padding: 10px;
-    -fx-background-color: #1e1e2e; /* Fond sombre */
-    -fx-border-color: #ffcc00; /* Bordure jaune */
-    -fx-border-radius: 10px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 5, 0, 0, 0);
-    -fx-alignment: center;
+/* ============================ */
+/*      CONTAINERS & CARDS      */
+/* ============================ */
+#cardContainer {
+    -fx-background-color: rgba(37, 37, 56, 0.9);
+    -fx-padding: 20px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #ff00ff;
+    -fx-effect: dropshadow(gaussian, #ff00ff, 20, 0.5, 0, 0);
 }
 
-/* Style du ScrollPane */
+
+
+.formation-card:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(255, 0, 255, 0.7), 20, 0.7, 0, 0);
+}
+
+/* ============================ */
+/*  TABLES ET SCROLLPANE       */
+/* ============================ */
+.table-view {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CCCCCC;
+    -fx-border-radius: 5px;
+}
+
+.table-view .column-header {
+    -fx-background-color: #6B7FD7;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
 .scroll-pane {
     -fx-background-color: transparent;
 }
@@ -58,89 +102,6 @@
     -fx-background-color: transparent;
 }
 
-/* Style de l'image de fond */
-.background-image {
-    -fx-opacity: 0.7;
-}
-
-/* Style des boutons spécifiques */
-.button-ajouter {
-    -fx-background-color: #ff5722; /* Orange */
-    -fx-text-fill: white;
-}
-
-.button-modifier {
-    -fx-background-color: #03a9f4; /* Bleu */
-    -fx-text-fill: white;
-}
-
-.button-supprimer {
-    -fx-background-color: #e74c3c; /* Rouge */
-    -fx-text-fill: white;
-}
-
-/* Style du champ de recherche */
-.search-field {
-    -fx-background-color: white;
-    -fx-background-radius: 20px;
-    -fx-border-color: #6B7FD7; /* Bleu */
-    -fx-border-radius: 20px;
-}
-/* Style de la TableView */
-.table-view {
-    -fx-background-color: #FFFFFF; /* Fond blanc */
-    -fx-border-color: #CCCCCC; /* Bordure grise */
-    -fx-border-radius: 5px;
-}
-
-/* Style des cellules de la TableView */
-.table-cell {
-    -fx-text-fill: #333333; /* Couleur du texte */
-    -fx-font-size: 14px;
-    -fx-alignment: CENTER;
-}
-
-/* Style des en-têtes de colonnes */
-.table-view .column-header {
-    -fx-background-color: #6B7FD7; /* Fond bleu */
-    -fx-text-fill: white; /* Texte blanc */
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-
-/* Style des boutons dans la colonne Actions */
-.button {
-    -fx-background-color: #6B7FD7; /* Bleu */
-    -fx-text-fill: white;
-    -fx-font-size: 12px;
-    -fx-padding: 5px 10px;
-}
-
-.button:hover {
-    -fx-background-color: #5A6EC7; /* Bleu plus foncé au survol */
-}
-/* Style du bouton de suppression (rouge) */
-.delete-button {
-    -fx-background-color: #FF0000; /* Rouge */
-    -fx-text-fill: white; /* Texte blanc */
-    -fx-font-size: 14px;
-}
-
-/* Style des boutons + et - */
-.increment-button {
-    -fx-background-color: #4CAF50; /* Vert */
-    -fx-text-fill: white; /* Texte blanc */
-    -fx-font-size: 14px;
-}
-
-.decrement-button {
-    -fx-background-color: #F44336; /* Rouge */
-    -fx-text-fill: white; /* Texte blanc */
-    -fx-font-size: 14px;
-}
-
-/* Style du label de quantité */
-.quantity-label {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-}
+/* ============================ */
+/*        FIN DU STYLE          */
+/* ============================ */

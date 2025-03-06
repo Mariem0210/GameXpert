@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<AnchorPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            stylesheets="@style.css"
+            styleClass="background"
+            fx:controller="tn.esprit.controllers.OffresDuJourController"
+            prefHeight="720.0" prefWidth="1080.0">
+
+    <!-- Image de fond -->
+    <ImageView fitHeight="720.0" fitWidth="1080.0"
+               layoutX="0.0" layoutY="0.0"
+               opacity="0.3">
+        <image>
+            <Image url="@game.jpg" />
+        </image>
+    </ImageView>
+
+    <!-- ScrollPane pour contenir les offres -->
+    <ScrollPane layoutX="10" layoutY="10" prefWidth="1060" prefHeight="600">
+        <content>
+            <!-- FlowPane pour organiser les cartes d'offres -->
+            <FlowPane fx:id="offresContainer" prefWidth="1060" prefHeight="600" />
+        </content>
+    </ScrollPane>
+
+    <!-- Bouton pour fermer la fenêtre -->
+    <Button layoutX="980" layoutY="620" text="Fermer" onAction="#fermerFenetre" />
+</AnchorPane>

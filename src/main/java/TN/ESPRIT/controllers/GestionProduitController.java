@@ -90,15 +90,31 @@ public class GestionProduitController {
     @FXML
 
 
+
     private void rechercherOffres() {
-        System.out.println("Bouton 'Rechercher des offres' cliqué."); // Log pour vérifier que la méthode est appelée
         try {
+            // Récupérer les offres de l'API
             String reponseAPI = cheapSharkAPI.searchDeals("");
-            System.out.println("Réponse de l'API : " + reponseAPI); // Log la réponse de l'API
-            displayDeals(reponseAPI); // Parser et afficher les offres
+
+            // Charger la nouvelle page FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/OffresDuJour.fxml"));
+            Parent root = loader.load();
+
+            // Obtenir le contrôleur de la nouvelle page
+            OffresDuJourController offresController = loader.getController();
+            offresController.afficherOffres(reponseAPI); // Afficher les offres
+
+            // Créer une nouvelle scène
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Offres du Jour");
+            stage.setScene(scene);
+
+            // Afficher la fenêtre
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            taChat.appendText("Erreur : Impossible de récupérer les offres.\n");
+            showAlert("Erreur", "Impossible d'ouvrir les offres du jour.", Alert.AlertType.ERROR);
         }
     }
 

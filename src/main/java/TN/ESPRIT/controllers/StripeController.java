@@ -34,12 +34,12 @@ public class StripeController {
     @FXML
     public void processPayment() {
         try {
-            // 1. Créer un token pour la carte bancaire (utilisez des cartes de test Stripe)
+            // 1. Créer un token pour la carte bancaire avec les informations saisies par l'utilisateur
             Map<String, Object> cardParams = new HashMap<>();
-            cardParams.put("number", "4242424242424242"); // Carte de test Stripe
-            cardParams.put("exp_month", 12); // Mois d'expiration
-            cardParams.put("exp_year", 2024); // Année d'expiration
-            cardParams.put("cvc", "123"); // CVC
+            cardParams.put("number", tfCardNumber.getText().replaceAll("\\s+", "")); // Supprimer les espaces
+            cardParams.put("exp_month", Integer.parseInt(tfExpMonth.getText())); // Mois d'expiration
+            cardParams.put("exp_year", Integer.parseInt(tfExpYear.getText())); // Année d'expiration
+            cardParams.put("cvc", tfCVC.getText()); // CVC
 
             Map<String, Object> tokenParams = new HashMap<>();
             tokenParams.put("card", cardParams);

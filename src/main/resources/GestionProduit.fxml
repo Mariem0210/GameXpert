@@ -86,10 +86,8 @@
                 prefHeight="39.0" prefWidth="160.0"
                 styleClass="button"
                 text="Choisir une image"/>
-        <Button layoutX="400" layoutY="400" prefHeight="30" prefWidth="150" text="Rechercher des offres" onAction="#rechercherOffres"/>
-        <TextArea fx:id="taChat"
-                  layoutX="400" layoutY="440"
-                  prefWidth="300" prefHeight="200"/>
+        <Button layoutX="700" layoutY="633" prefHeight="30" prefWidth="250" text="OFFRES DU JOUR SUR LES JEUX" onAction="#rechercherOffres"/>
+
         <TextField fx:id="tfRecherche"
                    layoutX="165.0" layoutY="40.0"
                    prefHeight="34.0" prefWidth="200.0"
