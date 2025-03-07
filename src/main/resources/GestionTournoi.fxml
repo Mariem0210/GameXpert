@@ -5,90 +5,89 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.shape.Line?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.GestionTournoi">
 
     <children>
-      <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
-         <image>
-            <Image url="@game.jpg" />
-         </image>
-      </ImageView>
-        <!-- Scrollable container for cards -->
-        <ScrollPane layoutX="407.0" layoutY="72.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
-            <content>
-                <VBox fx:id="cardContainer" prefHeight="481.0" prefWidth="714.0" spacing="10" />
-            </content>
-        </ScrollPane>
+        <!-- Main title -->
+        <Label layoutX="20.0" layoutY="15.0" styleClass="title-label" text="GESTION DES TOURNOIS" AnchorPane.topAnchor="15.0" AnchorPane.leftAnchor="20.0" />
 
-        <!-- Other UI components -->
-        <TextField fx:id="tfNomt" layoutX="165.0" layoutY="83.0" prefHeight="34.0" prefWidth="160.0" promptText="Nom Tournoi" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfDescriptiont" layoutX="120.0" layoutY="459.0" prefHeight="125.0" prefWidth="250.0" promptText="Description" styleClass="shadow" stylesheets="@styles.css" />
-        <DatePicker fx:id="dpDateDebutt" layoutX="166.0" layoutY="130.0" prefHeight="50.0" prefWidth="160.0" promptText="Date Début" styleClass="shadow" stylesheets="@styles.css" />
-        <DatePicker fx:id="dpDateFint" layoutX="163.0" layoutY="206.0" prefHeight="50.0" prefWidth="160.0" promptText="Date Fin" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfNbrEquipes" layoutX="165.0" layoutY="275.0" prefHeight="38.0" prefWidth="160.0" promptText="Nombre d'équipes" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfPrixt" layoutX="164.0" layoutY="335.0" prefHeight="39.0" prefWidth="160.0" promptText="Prix" styleClass="shadow" stylesheets="@styles.css" />
-        <TextField fx:id="tfStatutt" layoutX="165.0" layoutY="400.0" prefHeight="38.0" prefWidth="160.0" promptText="Statut" styleClass="shadow" stylesheets="@styles.css" />
+        <!-- Divider line -->
+        <Line startX="20" startY="60" endX="1060" endY="60" stroke="#00e6e6" strokeWidth="1" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
 
-        <Label layoutX="54.0" layoutY="90.0" styleClass="label" text="Nom" textFill="#948080">
-            <font><Font name="Cambria Bold" size="18.0" /></font>
-        </Label>
-        <Label layoutX="10.0" layoutY="510.0" styleClass="label" text="Description" textFill="#948080">
-            <font><Font name="Cambria Bold" size="18.0" /></font>
-        </Label>
-        <Label layoutX="39.0" layoutY="144.0" styleClass="label" text="Date Debut" textFill="#948080">
-            <font><Font name="Cambria Bold" size="18.0" /></font>
-        </Label>
-        <Label layoutX="38.0" layoutY="220.0" styleClass="label" text="Date Fin" textFill="#948080">
-            <font><Font name="Cambria Bold" size="18.0" /></font>
-        </Label>
-        <Label layoutX="5.0" layoutY="283.0" prefHeight="22.0" prefWidth="160.0" styleClass="label" text="Nombre d'équipes" textFill="#948080">
-            <font><Font name="Cambria Bold" size="18.0" /></font>
-        </Label>
-        <Label layoutX="38.0" layoutY="339.0" prefHeight="22.0" prefWidth="70.0" styleClass="label" text="Prix" textFill="#948080">
-            <font><Font name="Cambria" size="24.0" /></font>
-        </Label>
-        <Label layoutX="28.0" layoutY="404.0" styleClass="label" text="Statut" textFill="#948080">
-            <font><Font name="Cambria" size="24.0" /></font>
-        </Label>
+        <!-- Left panel: Tournament form -->
+        <VBox layoutX="20.0" layoutY="80.0" prefHeight="600.0" prefWidth="350.0" spacing="15" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="80.0" AnchorPane.bottomAnchor="40.0">
+            <Label styleClass="title-label" text="INFORMATIONS TOURNOI" />
 
-        <Button id="ajouterTournoi" layoutX="17.0" layoutY="633.0" mnemonicParsing="false" onAction="#ajouterTournoi" prefHeight="39.0" prefWidth="84.0" styleClass="button button-ajouter" text="Ajouter">
-            <font><Font name="Cambria" size="14.0" /></font>
-        </Button>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Nom" prefWidth="120" />
+                <TextField fx:id="tfNomt" prefHeight="34.0" prefWidth="220.0" promptText="Nom Tournoi" styleClass="shadow" HBox.hgrow="ALWAYS" />
+            </HBox>
 
-        <HBox layoutX="664.0" layoutY="474.0" spacing="10" />
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Date Début" prefWidth="120" />
+                <DatePicker fx:id="dpDateDebutt" prefHeight="34.0" prefWidth="220.0" promptText="Date Début" styleClass="shadow" HBox.hgrow="ALWAYS" />
+            </HBox>
 
-        <HBox alignment="CENTER" prefHeight="110.0" prefWidth="227.0">
-            <children>
-                <Label text="TOURNAMENT" textFill="#433c3c">
-                    <font><Font name="Cambria Bold" size="30.0" /></font>
-                </Label>
-            </children>
-        </HBox>
-        <Button layoutX="313.0" layoutY="634.0" onAction="#afficherStatistiques" text="Voir Statistiques" />
-        <Button fx:id="btnDateAscend" layoutX="839.0" layoutY="576.0" onAction="#trierParDateAscend" text="Date Ascendante" />
-        <Button fx:id="btnDateDescend" layoutX="702.0" layoutY="576.0" onAction="#trierParDateDescend" prefHeight="38.0" prefWidth="120.0" text="Date Descendante" />
-        <Button fx:id="btnChat" layoutX="566.0" layoutY="576.0" onAction="#ouvrirChat" prefHeight="39.0" prefWidth="120.0" styleClass="chat-button" text="Chat Bot">
-            <font><Font name="Cambria" size="14.0" /></font>
-        </Button>
-        <Button fx:id="btnShowCalendar" layoutX="702.0" layoutY="633.0" onAction="#showTournamentCalendar" prefHeight="39.0" prefWidth="120.0" styleClass="calendar-button" text="Show Calendar">
-            <font><Font name="Cambria" size="14.0" /></font>
-        </Button>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Date Fin" prefWidth="120" />
+                <DatePicker fx:id="dpDateFint" prefHeight="34.0" prefWidth="220.0" promptText="Date Fin" styleClass="shadow" HBox.hgrow="ALWAYS" />
+            </HBox>
 
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Nombre d'équipes" prefWidth="120" />
+                <TextField fx:id="tfNbrEquipes" prefHeight="34.0" prefWidth="220.0" promptText="Nombre d'équipes" styleClass="shadow" HBox.hgrow="ALWAYS" />
+            </HBox>
 
-        <Button fx:id="btnModifier" layoutX="114.0" layoutY="634.0" onAction="#modifierTournoi" prefHeight="39.0" prefWidth="84.0" styleClass="edit-button" text="Modifier">
-            <font><Font name="Cambria" size="14.0" /></font>
-        </Button>
-        <Button fx:id="btnSupprimer" layoutX="209.0" layoutY="634.0" onAction="#supprimerTournoi" prefHeight="39.0" prefWidth="93.0" styleClass="delete-button" text="Supprimer">
-            <font><Font name="Cambria" size="14.0" /></font>
-        </Button>
-        <TextField fx:id="tfNomt1" layoutX="710.0" layoutY="38.0" prefHeight="34.0" prefWidth="160.0" promptText="Nom Tournoi" styleClass="shadow" stylesheets="@styles.css" />
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Prix" prefWidth="120" />
+                <TextField fx:id="tfPrixt" prefHeight="34.0" prefWidth="220.0" promptText="Prix" styleClass="shadow" HBox.hgrow="ALWAYS" />
+            </HBox>
 
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Statut" prefWidth="120" />
+                <TextField fx:id="tfStatutt" prefHeight="34.0" prefWidth="220.0" promptText="Statut" styleClass="shadow" HBox.hgrow="ALWAYS" />
+            </HBox>
+
+            <Label text="Description" />
+            <TextField fx:id="tfDescriptiont" prefHeight="125.0" prefWidth="350.0" promptText="Description" styleClass="shadow" VBox.vgrow="ALWAYS" />
+
+            <!-- Action buttons -->
+            <HBox spacing="15" alignment="CENTER" prefHeight="50">
+                <Button id="ajouterTournoi" prefHeight="39.0" prefWidth="105.0" onAction="#ajouterTournoi" styleClass="button, button-ajouter" text="AJOUTER" />
+                <Button fx:id="btnModifier" prefHeight="39.0" prefWidth="105.0" onAction="#modifierTournoi" styleClass="button, edit-button" text="MODIFIER" />
+                <Button fx:id="btnSupprimer" prefHeight="39.0" prefWidth="105.0" onAction="#supprimerTournoi" styleClass="button, delete-button" text="SUPPRIMER" />
+            </HBox>
+        </VBox>
+
+        <!-- Right panel: Tournament list -->
+        <VBox layoutX="390.0" layoutY="80.0" prefHeight="600.0" prefWidth="670.0" spacing="15" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0" AnchorPane.bottomAnchor="40.0">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label styleClass="title-label" text="LISTE DES TOURNOIS" />
+                <TextField fx:id="tfNomt1" prefHeight="34.0" prefWidth="200.0" promptText="Rechercher..." styleClass="shadow" HBox.hgrow="ALWAYS" />
+                <Label styleClass="active-indicator" text="ACTIVE" />
+            </HBox>
+
+            <ScrollPane prefHeight="470.0" prefWidth="670.0" styleClass="card-scroll" VBox.vgrow="ALWAYS" fitToWidth="true" fitToHeight="true">
+                <content>
+                    <VBox fx:id="cardContainer" spacing="10" />
+                </content>
+            </ScrollPane>
+
+            <!-- Bottom action buttons -->
+            <HBox spacing="15" alignment="CENTER">
+                <Button fx:id="btnChat" prefHeight="39.0" prefWidth="150.0" onAction="#ouvrirChat" styleClass="button, chat-button" text="CHAT BOT" />
+                <Button fx:id="btnDateDescend" prefHeight="39.0" prefWidth="150.0" onAction="#trierParDateDescend" styleClass="button" text="DATE ↓" />
+                <Button fx:id="btnDateAscend" prefHeight="39.0" prefWidth="150.0" onAction="#trierParDateAscend" styleClass="button" text="DATE ↑" />
+                <Button fx:id="btnShowCalendar" prefHeight="39.0" prefWidth="150.0" onAction="#showTournamentCalendar" styleClass="button, calendar-button" text="CALENDRIER" />
+            </HBox>
+
+            <Button onAction="#afficherStatistiques" prefHeight="39.0" prefWidth="670.0" styleClass="button" text="VOIR STATISTIQUES" />
+        </VBox>
     </children>
 </AnchorPane>

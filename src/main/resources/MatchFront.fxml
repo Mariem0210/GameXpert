@@ -1,42 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.MatchFront">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.MatchFront">
     <children>
-        <ImageView fitHeight="785.0" fitWidth="1382.0" layoutX="-85.0">
+        <!-- Background gradient with image -->
+        <Rectangle width="1280.0" height="720.0" styleClass="background-gradient"/>
+
+        <ImageView fitHeight="720.0" fitWidth="1280.0" opacity="0.4" preserveRatio="false">
             <image>
                 <Image url="@game.jpg" />
             </image>
         </ImageView>
-        <!-- Scrollable container for cards -->
-        <ScrollPane layoutX="172.0" layoutY="90.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
-            <content>
-                <VBox fx:id="cardContainer" prefHeight="481.0" prefWidth="714.0" spacing="10">
-                    <!-- Dynamically added cards will go here -->
-                </VBox>
-            </content>
-        </ScrollPane>
 
-        <TextField fx:id="tfIdm" layoutX="114.0" layoutY="46.0" managed="false" promptText="ID Match" styleClass="shadow" visible="false" />
-        <TextField fx:id="tfIdt" layoutX="114.0" layoutY="90.0" managed="false" promptText="ID Tournoi" styleClass="shadow" visible="false" />
+        <!-- Header with title -->
+        <HBox alignment="CENTER" layoutX="0.0" layoutY="20.0" prefWidth="1280.0">
+            <StackPane styleClass="header-container">
+                <Rectangle width="500.0" height="60.0" styleClass="header-rectangle"/>
+                <Label fx:id="titleLabel" text="MATCHS DU TOURNOI" styleClass="header-text"/>
+                <Polygon points="0,0, 30,0, 40,15, 500,15, 510,0, 540,0, 520,60, 20,60" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+            </StackPane>
+        </HBox>
 
+        <!-- Hidden fields for IDs -->
+        <TextField fx:id="tfIdm" layoutX="50.0" layoutY="46.0" managed="false" promptText="ID Match" styleClass="shadow" visible="false" />
+        <TextField fx:id="tfIdt" layoutX="50.0" layoutY="90.0" managed="false" promptText="ID Tournoi" styleClass="shadow" visible="false" />
 
-        <!-- Title Label -->
-        <HBox alignment="CENTER" layoutX="-21.0" layoutY="-24.0" prefHeight="110.0" prefWidth="227.0">
-            <children>
-                <Label text="MATCH" textFill="#878787">
-                    <font><Font name="Cambria Bold" size="30.0" /></font>
-                </Label>
-            </children>
+        <!-- Main content area - focus on match card display -->
+        <HBox spacing="20" layoutX="40.0" layoutY="100.0" prefHeight="540.0" prefWidth="1200.0">
+            <!-- Main panel for match cards -->
+            <StackPane styleClass="main-panel" HBox.hgrow="ALWAYS">
+                <Rectangle width="1200.0" height="540.0" styleClass="panel-background"/>
+                <Polygon points="0,0, 1150,0, 1200,50, 1200,490, 1150,540, 0,540, 50,490, 50,50" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+
+                <!-- ScrollPane for matches -->
+                <ScrollPane prefHeight="520.0" prefWidth="1180.0" styleClass="transparent-scroll-pane" hbarPolicy="NEVER">
+                    <VBox fx:id="cardContainer" spacing="20" styleClass="team-container">
+                        <!-- Match cards will be added here dynamically -->
+                    </VBox>
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                </ScrollPane>
+            </StackPane>
+        </HBox>
+
+        <!-- Bottom bar with action buttons -->
+        <HBox alignment="CENTER" layoutX="40.0" layoutY="660.0" spacing="20.0" prefWidth="1200.0">
+            <!-- Back button -->
+            <StackPane>
+                <Rectangle width="150.0" height="40.0" styleClass="button-background"/>
+                <Label text="RETOUR" styleClass="button-text"/>
+                <Polygon points="0,0, 130,0, 150,20, 150,40, 20,40, 0,20" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+                <padding>
+                    <Insets right="10.0"/>
+                </padding>
+            </StackPane>
+
+            <!-- Refresh button -->
+            <StackPane>
+                <Rectangle width="150.0" height="40.0" styleClass="button-background"/>
+                <Label text="RAFRAÎCHIR" styleClass="button-text"/>
+                <Polygon points="0,0, 130,0, 150,20, 150,40, 20,40, 0,20" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+                <padding>
+                    <Insets right="10.0"/>
+                </padding>
+            </StackPane>
+
+            <!-- Info text -->
+            <StackPane HBox.hgrow="ALWAYS">
+                <Rectangle width="800.0" height="40.0" styleClass="username-box"/>
+                <Label text="Détails des matchs du tournoi" styleClass="username-text"/>
+                <Polygon points="0,0, 780,0, 800,20, 800,40, 20,40, 0,20" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+            </StackPane>
+        </HBox>
+
+        <!-- Footer with copyright/version info -->
+        <HBox alignment="CENTER_RIGHT" layoutX="0.0" layoutY="700.0" prefWidth="1280.0">
+            <Label text="Esprit eSports v1.0" styleClass="footer-link"/>
+            <padding>
+                <Insets right="20.0"/>
+            </padding>
         </HBox>
     </children>
 </AnchorPane>

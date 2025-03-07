@@ -1,100 +1,669 @@
+/* Main Background and Base Styles */
 .root {
-    -fx-background-color: #f4f4f4;
-}
-.transparent{
-    -fx-background-color: rgba(0,0,0,0);
+    -fx-background-color: #0a0b17;
+    -fx-font-family: 'Cambria';
 }
 
-.text-field, .date-picker {
-    -fx-border-radius: 5px;
-    -fx-padding: 8px;
-}
-.right-bar{
-    -fx-background-color: #D3D3D3;
-}
-.shadow{
-    -fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1), 10.0 , 0.0 , 0.0 ,10.0);
-}
-
-.button {
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-padding: 10px;
-    -fx-font-weight: bold;
-    -fx-border-radius: 5px;
-}
-
-.card {
-    -fx-background-color: white;
-    -fx-padding: 15px;
-    -fx-border-radius: 10px;
-    -fx-border-color: #ddd;
+/* Card container and scrollpane */
+.card-scroll {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: #00e6e6;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
-}
-.root {
-    -fx-background-color: #f4f4f4;
-}
-
-.text-field, .date-picker {
-    -fx-border-radius: 5px;
-    -fx-padding: 8px;
-}
-
-.button {
-    -fx-background-color: #4CAF50;
-    -fx-text-fill: white;
-    -fx-padding: 10px;
-    -fx-font-weight: bold;
     -fx-border-radius: 5px;
 }
 
-.card {
-    -fx-background-color: white;
-    -fx-padding: 15px;
-    -fx-border-radius: 10px;
-    -fx-border-color: #ddd;
+.card-scroll > .viewport {
+    -fx-background-color: rgba(10, 11, 23, 0.7);
+}
+
+.card-scroll .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.card-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #00e6e6;
+}
+
+/* Card items */
+.tournament-card {
+    -fx-background-color: rgba(29, 31, 53, 0.8);
+    -fx-border-color: #ffd700;
     -fx-border-width: 1px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
-}
-.root {
-    -fx-background-color: #1e1e2e;
-    -fx-padding: 20px;
-}
-.card {
-    -fx-background-color: #2a2a3d;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 10px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
     -fx-padding: 10px;
-    -fx-min-width: 220px;
-    -fx-max-width: 250px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 5);
-    -fx-transition: all 0.3s ease-in-out;
 }
-#cardContainer {
-    -fx-background-color: #252538;
-    -fx-padding: 15px;
-    -fx-border-color: #ffcc00;
-    -fx-border-radius: 10px;
+
+/* Form elements */
+.shadow {
+    -fx-background-color: rgba(29, 31, 53, 0.7);
+    -fx-border-color: #00e6e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #8a8a8a;
 }
-.card:hover {
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+
+.shadow:focused {
+    -fx-border-color: #00ffff;
+    -fx-effect: dropshadow(gaussian, #00ffff, 10, 0, 0, 0);
+}
+
+/* Date picker styling */
+.date-picker {
+    -fx-background-color: transparent;
+}
+
+.date-picker .text-field {
+    -fx-background-color: rgba(29, 31, 53, 0.7);
+    -fx-border-color: #00e6e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #8a8a8a;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #00e6e6;
+    -fx-background-radius: 0 5 5 0;
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+/* Label styling */
+.label {
+    -fx-text-fill: #00e6e6;
+    -fx-font-family: 'Cambria';
+    -fx-font-weight: bold;
+}
+
+.title-label {
+    -fx-text-fill: #00e6e6;
+    -fx-font-size: 30px;
+    -fx-font-family: 'Cambria';
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, #00ffff, 5, 0, 0, 0);
+}
+
+/* Button styling */
+.button {
+    -fx-background-color: #0a0b17;
+    -fx-border-color: #00e6e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-text-fill: #00e6e6;
+    -fx-font-family: 'Cambria';
+    -fx-font-size: 14px;
     -fx-cursor: hand;
 }
-.text-field, .date-picker {
-    -fx-background-color: #2a2a3d;
-    -fx-text-fill: white;
-    -fx-border-color: #03a9f4;
-    -fx-border-radius: 5px;
-    -fx-padding: 5px;
-}
-#btnAjouter {
-    -fx-background-color: #ff5722;
-}
-#btnAfficher {
-    -fx-background-color: #03a9f4;
-}
+
 .button:hover {
-    -fx-opacity: 0.8;
+    -fx-background-color: #00e6e6;
+    -fx-text-fill: #0a0b17;
+    -fx-effect: dropshadow(gaussian, #00ffff, 10, 0, 0, 0);
+}
+
+.button-ajouter {
+    -fx-border-color: #00ff00;
+    -fx-text-fill: #00ff00;
+}
+
+.button-ajouter:hover {
+    -fx-background-color: #00ff00;
+    -fx-text-fill: #0a0b17;
+    -fx-effect: dropshadow(gaussian, #00ff00, 10, 0, 0, 0);
+}
+
+.edit-button {
+    -fx-border-color: #ffd700;
+    -fx-text-fill: #ffd700;
+}
+
+.edit-button:hover {
+    -fx-background-color: #ffd700;
+    -fx-text-fill: #0a0b17;
+    -fx-effect: dropshadow(gaussian, #ffd700, 10, 0, 0, 0);
+}
+
+.delete-button {
+    -fx-border-color: #ff3366;
+    -fx-text-fill: #ff3366;
+}
+
+.delete-button:hover {
+    -fx-background-color: #ff3366;
+    -fx-text-fill: #0a0b17;
+    -fx-effect: dropshadow(gaussian, #ff3366, 10, 0, 0, 0);
+}
+
+.chat-button {
+    -fx-border-color: #9900ff;
+    -fx-text-fill: #9900ff;
+}
+
+.chat-button:hover {
+    -fx-background-color: #9900ff;
+    -fx-text-fill: #0a0b17;
+    -fx-effect: dropshadow(gaussian, #9900ff, 10, 0, 0, 0);
+}
+
+.calendar-button {
+    -fx-border-color: #ff9900;
+    -fx-text-fill: #ff9900;
+}
+
+.calendar-button:hover {
+    -fx-background-color: #ff9900;
+    -fx-text-fill: #0a0b17;
+    -fx-effect: dropshadow(gaussian, #ff9900, 10, 0, 0, 0);
+}
+
+/* Tournament card style */
+.card {
+    -fx-background-color: rgba(29, 31, 53, 0.8);
+    -fx-border-color: #ffd700;
+    -fx-border-width: 1px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+.card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffd700;
+}
+
+.card-date {
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #00e6e6;
+}
+
+.card-description {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.card-status {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.status-active {
+    -fx-text-fill: #00ff00;
+}
+
+.status-upcoming {
+    -fx-text-fill: #ff9900;
+}
+
+.status-completed {
+    -fx-text-fill: #9900ff;
+}
+
+/* Active indicator */
+.active-indicator {
+    -fx-background-color: #00ff00;
+    -fx-background-radius: 5px;
+    -fx-padding: 3px 8px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+/* Base styles */
+.root {
+    -fx-font-family: 'Montserrat', sans-serif;
+    -fx-background-color: #080C17;
+}
+
+/* Main background */
+.main-background {
+    -fx-background-color: #080C17;
+}
+
+/* Titles */
+.main-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00e6e6;
+    -fx-effect: dropshadow(gaussian, #00e6e680, 10, 0, 0, 0);
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00e6e6;
+    -fx-effect: dropshadow(gaussian, #00e6e680, 5, 0, 0, 0);
+}
+
+/* Panels */
+.form-panel, .list-panel {
+    -fx-background-color: rgba(25, 31, 45, 0.7);
+    -fx-background-radius: 15px;
+    -fx-border-color: #00e6e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 230, 230, 0.3), 10, 0, 0, 0);
+}
+
+/* Inputs */
+.game-input {
+    -fx-background-color: rgba(20, 26, 40, 0.8);
+    -fx-background-radius: 5px;
+    -fx-border-color: #00e6e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #aaaaaa;
+}
+
+.game-input:focused {
+    -fx-border-color: #00ffff;
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.5), 5, 0, 0, 0);
+}
+
+/* Date picker */
+.date-picker {
+    -fx-background-color: transparent;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #00e6e6;
+    -fx-background-radius: 0 5px 5px 0;
+}
+
+.date-picker .text-field {
+    -fx-background-color: rgba(20, 26, 40, 0.8);
+    -fx-background-radius: 5px 0 0 5px;
+    -fx-border-color: #00e6e6;
+    -fx-border-width: 1px 0 1px 1px;
+    -fx-border-radius: 5px 0 0 5px;
+    -fx-text-fill: white;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: rgba(0, 230, 230, 0.2);
+    -fx-background-radius: 5px;
+    -fx-border-color: #00e6e6;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #00e6e6;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: rgba(0, 230, 230, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 255, 255, 0.6), 10, 0, 0, 0);
+}
+
+.button-ajouter {
+    -fx-background-color: rgba(0, 230, 139, 0.2);
+    -fx-border-color: #00e68b;
+    -fx-text-fill: #00e68b;
+}
+
+.button-ajouter:hover {
+    -fx-background-color: rgba(0, 230, 139, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(0, 230, 139, 0.6), 10, 0, 0, 0);
+}
+
+.edit-button {
+    -fx-background-color: rgba(255, 215, 0, 0.2);
+    -fx-border-color: #ffd700;
+    -fx-text-fill: #ffd700;
+}
+
+.edit-button:hover {
+    -fx-background-color: rgba(255, 215, 0, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.6), 10, 0, 0, 0);
+}
+
+.delete-button {
+    -fx-background-color: rgba(255, 69, 69, 0.2);
+    -fx-border-color: #ff4545;
+    -fx-text-fill: #ff4545;
+}
+
+.delete-button:hover {
+    -fx-background-color: rgba(255, 69, 69, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(255, 69, 69, 0.6), 10, 0, 0, 0);
+}
+
+.export-button {
+    -fx-background-color: rgba(186, 85, 211, 0.2);
+    -fx-border-color: #ba55d3;
+    -fx-text-fill: #ba55d3;
+}
+
+.export-button:hover {
+    -fx-background-color: rgba(186, 85, 211, 0.4);
+    -fx-effect: dropshadow(gaussian, rgba(186, 85, 211, 0.6), 10, 0, 0, 0);
+}
+
+/* ScrollPane and Card styles */
+.card-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.card-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.card-scroll .scroll-bar:vertical {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+}
+
+.card-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #00e6e6;
+}
+
+.card-container {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+/* Active indicator */
+.active-indicator {
+    -fx-background-color: rgba(0, 230, 139, 0.2);
+    -fx-background-radius: 5px;
+    -fx-border-color: #00e68b;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-text-fill: #00e68b;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 10px;
+}
+
+/* Card item style - for dynamically created match cards */
+.match-card {
+    -fx-background-color: rgba(25, 31, 45, 0.9);
+    -fx-background-radius: 10px;
+    -fx-border-color: #ffd700;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.3), 5, 0, 0, 0);
+}
+
+.match-card:hover {
+    -fx-background-color: rgba(35, 41, 55, 0.9);
+    -fx-effect: dropshadow(gaussian, rgba(255, 215, 0, 0.5), 10, 0, 0, 0);
+}
+
+.match-card .match-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffd700;
+}
+
+.match-card .match-details {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.match-card .match-status {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.match-status-upcoming {
+    -fx-text-fill: #00e6e6;
+}
+
+.match-status-ongoing {
+    -fx-text-fill: #00e68b;
+}
+
+.match-status-completed {
+    -fx-text-fill: #ffd700;
+}
+
+.match-status-cancelled {
+    -fx-text-fill: #ff4545;
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: #1a0033;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #9932CC;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #330066;
+}
+
+.progress-bar {
+    -fx-control-inner-background: #330066;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #9932CC;
+    -fx-background-radius: 0;
+}
+.root {
+    -fx-background-color: #1a0033;
+}
+
+.title-container {
+    -fx-border-color: #9932CC;
+    -fx-border-width: 2;
+    -fx-background-color: transparent;
+    -fx-shape: "M0,0 H400 L380,80 H20 Z";
+}
+
+.title-text {
+    -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.3), 2, 0, 0, 0);
+}
+
+.main-container {
+    -fx-border-color: #9932CC;
+    -fx-border-width: 2;
+    -fx-background-color: transparent;
+}
+
+.bottom-decoration {
+    -fx-border-color: #9932CC;
+    -fx-border-width: 2;
+    -fx-background-color: transparent;
+    -fx-shape: "M0,0 H120 L80,30 H0 Z";
+}
+
+.card-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.card-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.card-scroll .scroll-bar:vertical {
+    -fx-background-color: #1a0033;
+}
+
+.card-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #9932CC;
+}
+
+.card-scroll .scroll-bar:vertical .track {
+    -fx-background-color: #330066;
+}
+
+.card-container {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+/* Style pour les cartes d'équipe */
+.team-card {
+    -fx-border-color: #9932CC;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-color: #1a0033;
+}
+
+.avatar-container {
+    -fx-border-color: #9932CC;
+    -fx-border-width: 1;
+}
+
+.team-name {
+    -fx-text-fill: #d3b3ff;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+}
+
+.team-info {
+    -fx-text-fill: #b088ff;
+    -fx-font-size: 14;
+}
+
+.progress-bar {
+    -fx-control-inner-background: #330066;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #9932CC;
+    -fx-background-radius: 0;
+}
+
+.progress-text {
+    -fx-text-fill: #b088ff;
+    -fx-font-size: 14;
+}
+.root {
+    -fx-background-color: #1E0533;
+}
+
+.title-container {
+    -fx-border-color: #9D4EDD;
+    -fx-border-width: 2;
+    -fx-background-color: transparent;
+    -fx-shape: "M0,0 H400 L380,60 H20 Z";
+}
+
+.main-container {
+    -fx-border-color: #9D4EDD;
+    -fx-border-width: 2;
+    -fx-background-color: transparent;
+}
+
+.card-scroll {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+
+.card-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+.card-scroll .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.card-scroll .scroll-bar:vertical .thumb {
+    -fx-background-color: #9D4EDD;
+}
+
+.team-card {
+    -fx-border-color: #9D4EDD;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-color: transparent;
+}
+
+.team-name {
+    -fx-text-fill: #a287bc;
+    -fx-font-size: 18px;
+}
+
+.custom-progress-bar {
+    -fx-accent: #9D4EDD;
+}
+
+.custom-progress-bar .track {
+    -fx-background-color: #3c3c3c;
+}
+
+.label {
+    -fx-text-fill: #a287bc;
+}
+.root {
+    -fx-background-color: #14081f;
+}
+
+.card-scroll {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.card-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #9b5de5;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #2a1b3a;
+    -fx-background-radius: 0;
+}
+
+/* Style for tournament cards */
+.tournament-card {
+    -fx-background-color: #2a1b3a;
+    -fx-border-color: #9b5de5;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(gaussian, rgba(155, 93, 229, 0.4), 10, 0, 0, 0);
+    -fx-opacity: 0.95;
+}
+
+.tournament-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(155, 93, 229, 0.8), 15, 0, 0, 0);
+    -fx-opacity: 1.0;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.label-title {
+    -fx-text-fill: #ffcc00;
+    -fx-font-family: 'Consolas';
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.label-content {
+    -fx-text-fill: #dcdcdc;
+    -fx-font-family: 'Consolas';
+    -fx-font-size: 12px;
 }

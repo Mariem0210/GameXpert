@@ -1,39 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.TournoiFront">
-
+<AnchorPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.TournoiFront">
     <children>
-        <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
-            <image>
-                <Image url="@game.jpg" />
-            </image>
-        </ImageView>
-        <!-- Scrollable container for cards -->
-        <ScrollPane layoutX="136.0" layoutY="172.0" prefHeight="481.0" prefWidth="714.0" styleClass="card-scroll">
-            <content>
-                <VBox fx:id="cardContainer" prefHeight="481.0" prefWidth="714.0" spacing="10" />
-            </content>
-        </ScrollPane>
-        
+        <!-- Background gradient - fills entire area -->
+        <Rectangle AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" styleClass="background-gradient"/>
 
-        <HBox layoutX="664.0" layoutY="474.0" spacing="10" />
-
-        <HBox alignment="CENTER" prefHeight="110.0" prefWidth="227.0">
-            <children>
-                <Label text="TOURNAMENT" textFill="#433c3c">
-                    <font><Font name="Cambria Bold" size="30.0" /></font>
-                </Label>
-            </children>
+        <!-- Header with title - anchored to top and sides -->
+        <HBox alignment="CENTER" AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <StackPane styleClass="header-container">
+                <Rectangle fx:id="headerRect" width="500.0" height="60.0" styleClass="header-rectangle"/>
+                <Label text="LISTE DES TOURNOIS" styleClass="header-text"/>
+                <Polygon fx:id="headerPolygon" points="0,0, 30,0, 40,15, 500,15, 510,0, 540,0, 520,60, 20,60" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+            </StackPane>
         </HBox>
 
+        <!-- Main content area - anchored to all sides with margins -->
+        <HBox spacing="20" AnchorPane.topAnchor="100.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.bottomAnchor="80.0">
+            <!-- Main panel for tournament cards -->
+            <StackPane styleClass="main-panel" HBox.hgrow="ALWAYS">
+                <Rectangle fx:id="mainPanelRect" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" styleClass="panel-background"/>
+                <Polygon fx:id="mainPanelPolygon" styleClass="panel-border" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+
+                <!-- ScrollPane for tournaments -->
+                <ScrollPane fitToWidth="true" styleClass="transparent-scroll-pane" hbarPolicy="NEVER">
+                    <VBox fx:id="cardContainer" spacing="20" styleClass="team-container">
+                        <!-- Tournament cards will be added here dynamically -->
+                    </VBox>
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                </ScrollPane>
+            </StackPane>
+        </HBox>
+
+        <!-- Bottom bar with action buttons - anchored to bottom -->
+        <HBox fx:id="bottomBar" alignment="CENTER" spacing="20.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.bottomAnchor="40.0">
+            <!-- Refresh button -->
+            <StackPane fx:id="refreshButtonContainer">
+                <Rectangle fx:id="refreshButtonRect" width="150.0" height="40.0" styleClass="button-background"/>
+                <Label text="RAFRAÎCHIR" styleClass="button-text"/>
+                <Polygon fx:id="refreshButtonPolygon" points="0,0, 130,0, 150,20, 150,40, 20,40, 0,20" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+                <padding>
+                    <Insets right="10.0"/>
+                </padding>
+            </StackPane>
+
+            <!-- Info text -->
+            <StackPane HBox.hgrow="ALWAYS">
+                <Rectangle fx:id="infoRect" styleClass="username-box"/>
+                <Label text="Double-cliquez sur un tournoi pour voir ses matchs" styleClass="username-text"/>
+                <Polygon fx:id="infoPolygon" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+            </StackPane>
+        </HBox>
+
+        <!-- Footer with copyright/version info - anchored to bottom right -->
+        <HBox alignment="CENTER_RIGHT" AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="10.0">
+            <Label text="Esprit eSports v1.0" styleClass="footer-link"/>
+        </HBox>
     </children>
 </AnchorPane>

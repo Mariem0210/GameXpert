@@ -13,12 +13,7 @@ import tn.esprit.models.Match;
 import tn.esprit.services.ServiceMatch;
 import tn.esprit.models.Tournoi;
 import javafx.application.Platform;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
+
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import org.apache.http.HttpResponse;
@@ -33,7 +28,6 @@ import java.nio.file.Path;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import java.io.IOException;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

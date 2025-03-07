@@ -1,4 +1,5 @@
 package tn.esprit.controllers;
+
 import javafx.geometry.Pos;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +13,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.Cursor;
+import javafx.geometry.Insets;
 import tn.esprit.interfaces.IService;
 import tn.esprit.models.Tournoi;
 import tn.esprit.services.ServiceTournoi;
@@ -30,75 +37,121 @@ public class TournoiFront {
         refreshTournoisList();
     }
 
+    @FXML
+    public void onRefreshClick() {
+        refreshTournoisList();
+    }
+
     private void refreshTournoisList() {
         cardContainer.getChildren().clear();
 
-        HBox currentRow = new HBox(10);
-        currentRow.setAlignment(Pos.TOP_LEFT);
-
-        int cardCount = 0;
-
         for (Tournoi t : st.getAll()) {
-            StackPane card = new StackPane();
-            card.setStyle("-fx-background-color: #2a2a3d; -fx-border-color: #ffcc00; -fx-border-width: 2px; -fx-border-radius: 20px; -fx-padding: 20px; -fx-max-width: 300px; -fx-spacing: 15px; -fx-background-radius: 20px; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 10); -fx-opacity: 0.95; -fx-transition: transform 0.3s ease, opacity 0.3s ease;");
+            // Create the tournament card with the cyberpunk/gaming theme
+            StackPane card = createTournamentCard(t);
+            cardContainer.getChildren().add(card);
+        }
+    }
 
-            ImageView backgroundImage = new ImageView();
-            backgroundImage.setFitWidth(200);
-            backgroundImage.setFitHeight(400);
+    private StackPane createTournamentCard(Tournoi t) {
+        // Main card container with background image
+        StackPane cardStack = new StackPane();
+        cardStack.getStyleClass().add("team-card");
+        cardStack.setPrefWidth(1100);
+
+        // Background image
+        ImageView backgroundImage = new ImageView();
+        backgroundImage.setFitWidth(1100);
+        backgroundImage.setFitHeight(200);
+        try {
             Image image = new Image("lol.jpg");
             backgroundImage.setImage(image);
-            backgroundImage.setOpacity(0.3);
+            backgroundImage.setOpacity(0.3); // Partially transparent
+            backgroundImage.setPreserveRatio(true);
+        } catch (Exception e) {
+            System.err.println("Erreur de chargement de l'image: " + e.getMessage());
+        }
 
-            card.getChildren().add(backgroundImage);
+        // Content container
+        VBox content = new VBox(10);
+        content.setPadding(new Insets(15));
+        content.setAlignment(Pos.CENTER_LEFT);
 
-            VBox content = new VBox(10);
-            content.setAlignment(Pos.CENTER);
+        // Header with tournament name
+        Label nameLabel = new Label(t.getNomt());
+        nameLabel.getStyleClass().add("team-name");
 
-            Label nameLabel = new Label("Nom: " + t.getNomt());
-            nameLabel.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 16px; -fx-font-family: 'Courier New', monospace; -fx-font-weight: bold;");
+        // Tournament details in a grid format
+        HBox detailsBox = new HBox(30);
+        detailsBox.setAlignment(Pos.CENTER_LEFT);
 
-            Label descriptionLabel = new Label("Description: " + t.getDescriptiont());
-            descriptionLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace; -fx-line-spacing: 4px;");
+        // Left column - dates and teams
+        VBox leftDetails = new VBox(5);
+        Label startDateLabel = new Label("Début: " + t.getDate_debutt());
+        startDateLabel.getStyleClass().add("team-info");
+        Label endDateLabel = new Label("Fin: " + t.getDate_fint());
+        endDateLabel.getStyleClass().add("team-info");
+        Label teamsLabel = new Label("Équipes: " + t.getNbr_equipes());
+        teamsLabel.getStyleClass().add("team-info");
+        leftDetails.getChildren().addAll(startDateLabel, endDateLabel, teamsLabel);
 
-            Label startDateLabel = new Label("Début: " + t.getDate_debutt());
-            startDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+        // Middle column - description
+        VBox middleDetails = new VBox(5);
+        Label descriptionLabel = new Label("Description: " + t.getDescriptiont());
+        descriptionLabel.getStyleClass().add("team-info");
+        descriptionLabel.setWrapText(true);
+        descriptionLabel.setPrefWidth(600);
+        middleDetails.getChildren().add(descriptionLabel);
 
-            Label endDateLabel = new Label("Fin: " + t.getDate_fint());
-            endDateLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+        // Right column - price and status
+        VBox rightDetails = new VBox(5);
+        Label priceLabel = new Label("Prix: " + t.getPrixt());
+        priceLabel.getStyleClass().add("team-info");
+        Label statusLabel = new Label("Statut: " + t.getStatutt());
+        statusLabel.getStyleClass().add("team-info");
+        // Style the status label based on tournament status
+        if (t.getStatutt().equalsIgnoreCase("En cours")) {
+            statusLabel.setTextFill(Color.GREEN);
+        } else if (t.getStatutt().equalsIgnoreCase("Terminé")) {
+            statusLabel.setTextFill(Color.RED);
+        } else {
+            statusLabel.setTextFill(Color.YELLOW);
+        }
+        rightDetails.getChildren().addAll(priceLabel, statusLabel);
 
-            Label teamsLabel = new Label("Équipes: " + t.getNbr_equipes());
-            teamsLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+        // Add all columns to the details box
+        detailsBox.getChildren().addAll(leftDetails, middleDetails, rightDetails);
 
-            Label priceLabel = new Label("Prix: " + t.getPrixt());
-            priceLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+        // Add everything to the content container
+        content.getChildren().addAll(nameLabel, detailsBox);
 
-            Label statusLabel = new Label("Statut: " + t.getStatutt());
-            statusLabel.setStyle("-fx-text-fill: #dcdcdc; -fx-font-size: 12px; -fx-font-family: 'Courier New', monospace;");
+        // Add background and content to the stack
+        cardStack.getChildren().addAll(backgroundImage, content);
 
-            content.getChildren().addAll(nameLabel, descriptionLabel, startDateLabel, endDateLabel, teamsLabel, priceLabel, statusLabel);
-            card.getChildren().add(content);
+        // Add hover effects
+        cardStack.setOnMouseEntered(e -> {
+            cardStack.setCursor(Cursor.HAND);
+            cardStack.setStyle("-fx-background-color: rgba(50, 0, 75, 0.8);");
+            DropShadow glow = new DropShadow();
+            glow.setColor(Color.valueOf("#b14fff"));
+            glow.setWidth(20);
+            glow.setHeight(20);
+            cardStack.setEffect(glow);
+        });
 
-            // Double-clic pour ouvrir MatchFront
-            card.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2) {
-                    ouvrirGestionMatch(t);
-                }
-            });
+        cardStack.setOnMouseExited(e -> {
+            cardStack.setStyle(null);
+            cardStack.getStyleClass().add("team-card");
+            cardStack.setEffect(null);
+        });
 
-            currentRow.getChildren().add(card);
-            cardCount++;
-
-            if (cardCount >= 4) {
-                cardContainer.getChildren().add(currentRow);
-                currentRow = new HBox(10);
-                currentRow.setAlignment(Pos.TOP_LEFT);
-                cardCount = 0;
+        // Set double-click event to open match management
+        cardStack.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                ouvrirGestionMatch(t);
             }
-        }
+        });
 
-        if (cardCount > 0) {
-            cardContainer.getChildren().add(currentRow);
-        }
+        return cardStack;
     }
 
     private void ouvrirGestionMatch(Tournoi tournoi) {

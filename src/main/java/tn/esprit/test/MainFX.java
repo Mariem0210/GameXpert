@@ -18,7 +18,7 @@ import java.io.IOException;
         @Override
         public void start(Stage primaryStage) {
 
-            FXMLLoader loader =new FXMLLoader(getClass().getResource("/GestionTournoi.fxml"));
+            FXMLLoader loader =new FXMLLoader(getClass().getResource("/TournoiFront.fxml"));
             try {
                 Parent root = loader.load();
                 Scene scene = new Scene(root);
