@@ -4,34 +4,49 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1080.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.FrontOffre_de_recrutement">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.FrontOffre_de_recrutement">
 
     <children>
-        <!-- Image de fond -->
-        <ImageView fitHeight="729.0" fitWidth="1345.0" layoutX="-74.0" layoutY="-1.0">
-            <image>
-                <Image url="@game.jpg" />
-            </image>
-        </ImageView>
+        <!-- Background gradient -->
+        <Rectangle width="1280.0" height="720.0" styleClass="background-gradient"/>
 
-        <!-- ScrollPane pour afficher les équipes -->
-        <ScrollPane layoutX="50.0" layoutY="50.0" prefHeight="620.0" prefWidth="980.0" style="-fx-background: transparent; -fx-background-color: transparent;" hbarPolicy="NEVER">
-            <content>
-                <VBox fx:id="offreContainer" prefHeight="620.0" prefWidth="980.0" spacing="20" style="-fx-background-color: transparent;">
-                </VBox>
-            </content>
-        </ScrollPane>
+        <!-- Header with title -->
+        <HBox alignment="CENTER" layoutX="0.0" layoutY="20.0" prefWidth="1280.0">
+            <StackPane styleClass="header-container">
+                <Rectangle width="500.0" height="60.0" styleClass="header-rectangle"/>
+                <Label text="LISTE DES OFFRES DE RECRUTEMENT" styleClass="header-text"/>
+                <Polygon points="0,0, 30,0, 40,15, 500,15, 510,0, 540,0, 520,60, 20,60" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+            </StackPane>
+        </HBox>
 
+        <!-- Main content area - focus on card display -->
+        <HBox spacing="20" layoutX="40.0" layoutY="100.0" prefHeight="540.0" prefWidth="1200.0">
+            <!-- Main panel for offer cards -->
+            <StackPane styleClass="main-panel" HBox.hgrow="ALWAYS">
+                <Rectangle width="1200.0" height="540.0" styleClass="panel-background"/>
+                <Polygon points="0,0, 1150,0, 1200,50, 1200,490, 1150,540, 0,540, 50,490, 50,50" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
 
-        <!-- Titre de la page -->
-        <Label layoutX="50.0" layoutY="10.0" text="Liste des offres de recrutements" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+                <!-- ScrollPane for offers -->
+                <ScrollPane prefHeight="520.0" prefWidth="1180.0" styleClass="transparent-scroll-pane" hbarPolicy="NEVER">
+                    <VBox fx:id="offreContainer" spacing="20" styleClass="team-container">
+                        <!-- Offer cards will be added here dynamically -->
+                    </VBox>
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                </ScrollPane>
+            </StackPane>
+        </HBox>
+
+        <!-- Bottom bar with username, donate button, etc. -->
+        <HBox alignment="CENTER_LEFT" layoutX="40.0" layoutY="660.0" spacing="20.0" prefWidth="1200.0">
+            <StackPane layoutX="220.0">
+                <Rectangle width="120.0" height="40.0" styleClass="button-background"/>
+                <Polygon points="0,0, 70,0, 120,40, 0,40" fill="transparent" stroke="#b14fff" strokeWidth="2.0"/>
+            </StackPane>
+        </HBox>
     </children>
 </AnchorPane>
-
-
-
-
-
-
-
