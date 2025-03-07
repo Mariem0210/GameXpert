@@ -141,3 +141,32 @@
     -fx-background-color: rgba(50, 0, 75, 0.8);
     -fx-effect: dropshadow(gaussian, #b14fff66, 15, 0, 0, 0);
 }
+
+/* Home button styling */
+.home-button-container {
+    -fx-effect: dropshadow(gaussian, rgba(177, 79, 255, 0.5), 10, 0.5, 0, 0);
+}
+
+.home-button-background {
+    -fx-fill: linear-gradient(to bottom right, #2a0845, #1a0835);
+    -fx-stroke: #b14fff;
+    -fx-stroke-width: 1.5;
+    -fx-arc-width: 0;
+    -fx-arc-height: 0;
+}
+
+.home-button-text {
+    -fx-font-family: "Orbitron", "Rajdhani", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #b14fff;
+    -fx-effect: dropshadow(gaussian, rgba(177, 79, 255, 0.8), 3, 0.5, 0, 0);
+}
+
+.home-button-container:hover .home-button-background {
+    -fx-fill: linear-gradient(to bottom right, #3a0855, #2a0845);
+}
+
+.home-button-container:hover .home-button-text {
+    -fx-text-fill: #d19fff;
+}
