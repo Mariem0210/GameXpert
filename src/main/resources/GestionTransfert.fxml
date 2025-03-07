@@ -50,7 +50,12 @@
 
             <!-- En-tête avec titre -->
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
+                <Button fx:id="btnHome" styleClass="button, home-button" text="HOME" >
+                    <!-- Vous pouvez ajouter une icône ici si nécessaire -->
+                </Button>
+
                 <Label text="GESTION DES TRANSFERTS" styleClass="title-text" />
+
                 <HBox.margin>
                     <Insets bottom="10" />
                 </HBox.margin>

@@ -45,16 +45,22 @@
             </AnchorPane>
         </StackPane>
 
+
         <!-- Conteneur principal -->
         <VBox spacing="20" AnchorPane.topAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0">
-
-            <!-- En-tête avec titre -->
             <HBox styleClass="header" alignment="CENTER_LEFT" spacing="20">
-                <Label text="GESTION DES OFFRES DE RECRUTEMENT" styleClass="title-text" />
+                <Button fx:id="btnHome" styleClass="button, home-button" text="HOME" >
+                    <!-- Vous pouvez ajouter une icône ici si nécessaire -->
+                </Button>
+
+                <Label text="GESTION DES OFFRES DE RECRUTEMENTS" styleClass="title-text" />
+
                 <HBox.margin>
                     <Insets bottom="10" />
                 </HBox.margin>
             </HBox>
+            <!-- En-tête avec titre -->
+
 
             <!-- Contenu principal -->
             <HBox spacing="20" VBox.vgrow="ALWAYS">

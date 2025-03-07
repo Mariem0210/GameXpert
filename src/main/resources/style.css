@@ -256,3 +256,16 @@
     -fx-font-weight: bold;
     -fx-padding: 2 8;
 }
+/* Bouton Home */
+.home-button {
+    -fx-border-color: #00e6e6;
+    -fx-text-fill: #00e6e6;
+    -fx-padding: 8 16;
+    -fx-font-size: 12px;
+}
+
+.home-button:hover {
+    -fx-background-color: rgba(0, 230, 230, 0.1);
+    -fx-border-color: white;
+    -fx-effect: dropshadow(gaussian, #00e6e6, 15, 0.7, 0, 0);
+}
